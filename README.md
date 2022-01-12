@@ -1,4 +1,4 @@
-[![CI](https://github.com/CloverBots/RapidReact2022/actions/workflows/main.yml/badge.svg)](https://github.com/CloverBots/RapidReact2022/actions/workflows/main.yml)
+[![CI](https://github.com/CloverBots/RapidReact2022/actions/workflows/main.yaml/badge.svg)](https://github.com/CloverBots/RapidReact2022/actions/workflows/main.yaml)
 
 # Rapid React 2022
 
