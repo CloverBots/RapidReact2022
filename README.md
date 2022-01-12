@@ -1,4 +1,4 @@
-[![CI](https://github.com/MackinnonBuck/github-tutorial/actions/workflows/main.yml/badge.svg)](https://github.com/MackinnonBuck/github-tutorial/actions/workflows/main.yml)
+[![CI](https://github.com/CloverBots/RapidReact2022/actions/workflows/main.yml/badge.svg)](https://github.com/CloverBots/RapidReact2022/actions/workflows/main.yml)
 
 # FRC GitHub Tutorial
 
