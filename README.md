@@ -1,5 +1,5 @@
-[![CI](https://github.com/MackinnonBuck/github-tutorial/actions/workflows/main.yml/badge.svg)](https://github.com/MackinnonBuck/github-tutorial/actions/workflows/main.yml)
+[![CI](https://github.com/CloverBots/RapidReact2022/actions/workflows/main.yaml/badge.svg)](https://github.com/CloverBots/RapidReact2022/actions/workflows/main.yaml)
 
-# FRC GitHub Tutorial
+# Rapid React 2022
 
-This is an example repository showing how we might use GitHub for collaborative robot code development.
+Team 3674's robot code for the 2022 season.
