@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.LiftSubsystemDummy;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -24,7 +26,12 @@ public class RobotContainer {
     private final XboxController driverController = new XboxController(Ids.CONTROLLER_DRIVE_PORT);
 
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-    private final LiftSubsystem liftSubsystem = new LiftSubsystem();
+    
+    // For now, we don't want a working LifSubsystem. So, we are replacing the real LiftSubsystem
+    // with a dummy class that says the lift is always down. TF
+
+    //private final LiftSubsystem liftSubsystem = new LiftSubsystem();
+    private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
