@@ -37,7 +37,7 @@ public class DriveFromControllerCommand extends CommandBase {
     @Override
     public void execute() {
         updateMaximumOutput();
-        driveSubsystem.arcadeDrive(forward.getAsDouble(), rotation.getAsDouble());
+        driveSubsystem.arcadeDrive(forward.getAsDouble(), -rotation.getAsDouble());
     }
 
     /**
