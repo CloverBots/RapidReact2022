@@ -53,6 +53,7 @@ public class VisionTargetTracker {
     private static final String LIMELIGHT_TABLE_ENTRY_A = "ta";
     private static final String LIMELIGHT_TABLE_ENTRY_LED_MODE = "ledMode";
 
+    private final VisionConfiguration configuration;
     private final NetworkTable table;
     private final NetworkTableEntry tx;
     private final NetworkTableEntry ty;
@@ -62,7 +63,9 @@ public class VisionTargetTracker {
     /**
      * Constructs a new {@link VisionTargetTracker} instance.
      */
-    public VisionTargetTracker() {
+    public VisionTargetTracker(VisionConfiguration configuration) {
+        this.configuration = configuration;
+
         table = NetworkTableInstance.getDefault().getTable(LIMELIGHT_TABLE_NAME);
         tx = table.getEntry(LIMELIGHT_TABLE_ENTRY_X);
         ty = table.getEntry(LIMELIGHT_TABLE_ENTRY_Y);
@@ -108,5 +111,17 @@ public class VisionTargetTracker {
      */
     public void setLedMode(LedMode mode) {
         ledMode.setNumber(mode.getValue());
+    }
+
+    /**
+     * Computes the distance to the target, usually in inches.
+     * @param config The configuration describing camera and field measurements.
+     */
+    public double computeTargetDistance() {
+        var targetHeight = configuration.getTargetHeight();
+        var cameraHeight = configuration.getCameraHeight();
+        var cameraPitch = configuration.getCameraPitch();
+
+        return (targetHeight - cameraHeight) / Math.tan(Math.toRadians(cameraPitch + getY()));
     }
 }
