@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.VisionTargetTracker;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftObserver;
@@ -23,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+    private final VisionTargetTracker visionTarget = new VisionTargetTracker();
+
     private final XboxController driverController = new XboxController(Ids.CONTROLLER_DRIVE_PORT);
 
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
