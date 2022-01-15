@@ -55,8 +55,6 @@ public class RobotContainer {
      */
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
-        shooterCommand.addRequirements(shooterSubsystem);
-        intakeCommand.addRequirements(intakeSubsystem);
 
         intakeSubsystem.setDefaultCommand(intakeCommand);
 
