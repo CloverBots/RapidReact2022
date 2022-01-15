@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase {
-    IntakeSubsystem intakeSubsystem;
-    DoubleSupplier speed;
+    private IntakeSubsystem intakeSubsystem;
+    private DoubleSupplier speed;
 
     /** Creates a new ShootBall. */
     public IntakeCommand(IntakeSubsystem intakeSubsystem, DoubleSupplier speed) {
