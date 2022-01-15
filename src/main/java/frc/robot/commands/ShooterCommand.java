@@ -7,7 +7,7 @@ public class ShooterCommand extends CommandBase {
 
     private static final double SHOOTER_SPEED = 0.5; // TODO Find shooter speed
 
-    ShooterSubsystem shooterSubsystem;
+    private final ShooterSubsystem shooterSubsystem;
 
     /** Creates a new ShootBall. */
     public ShooterCommand(ShooterSubsystem shooterSubsystem) {
