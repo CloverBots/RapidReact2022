@@ -17,10 +17,10 @@ public final class Ids {
     public static final int RATCHET_SOLENOID_REVERSE = 7;
 
     // Shooter motor ID
-    public static final int SHOOTER_LEAD_DEVICE = 1; //TODO check proper port number
-    public static final int SHOOTER_FOLLOW_DEVICE_1 = 2;
+    public static final int SHOOTER_LEAD_DEVICE = 8; //TODO check proper port number
+    public static final int SHOOTER_FOLLOW_DEVICE_1 = 9;
     public static final int SHOOTER_FOLLOW_DEVICE_2 = 10;
     public static final int SHOOTER_FOLLOW_DEVICE_3 = 11;
-    public static final int INTAKE_LEAD_DEVICE = 3; //TODO proper port number
+    public static final int INTAKE_LEAD_DEVICE = 12; //TODO proper port number
 
 }

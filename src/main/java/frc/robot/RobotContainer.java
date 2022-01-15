@@ -54,7 +54,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        //driveSubsystem.setDefaultCommand(driveFromController);
+        driveSubsystem.setDefaultCommand(driveFromController);
         shooterCommand.addRequirements(shooterSubsystem);
         intakeCommand.addRequirements(intakeSubsystem);
 
