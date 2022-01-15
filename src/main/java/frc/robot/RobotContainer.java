@@ -12,7 +12,6 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
-import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.LiftSubsystemDummy;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,14 +27,26 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+    private final double VISION_TARGET_HEIGHT = 104.0;
+    private final double CAMERA_HEIGHT = 20.0;
+    private final double CAMERA_PITCH = 5.0;
+    
+    private final VisionConfiguration visionConfiguration = new VisionConfiguration(
+            VISION_TARGET_HEIGHT,
+            CAMERA_HEIGHT,
+            CAMERA_PITCH);
+
+    private final VisionTargetTracker visionTarget = new VisionTargetTracker(visionConfiguration);
+
     private final XboxController driverController = new XboxController(Ids.CONTROLLER_DRIVE_PORT);
 
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-    
-    // For now, we don't want a working LifSubsystem. So, we are replacing the real LiftSubsystem
+
+    // For now, we don't want a working LifSubsystem. So, we are replacing the real
+    // LiftSubsystem
     // with a dummy class that says the lift is always down. TF
 
-    //private final LiftSubsystem liftSubsystem = new LiftSubsystem();
+    // private final LiftSubsystem liftSubsystem = new LiftSubsystem();
     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
