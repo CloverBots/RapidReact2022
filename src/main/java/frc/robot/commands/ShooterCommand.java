@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterCommand extends CommandBase {
-    ShooterSubsystem shooterSubsystem;
+
     private static final double SHOOTER_SPEED = 0.5; // TODO Find shooter speed
+
+    ShooterSubsystem shooterSubsystem;
 
     /** Creates a new ShootBall. */
     public ShooterCommand(ShooterSubsystem shooterSubsystem) {
