@@ -4,11 +4,33 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
+/**
+ * Represents the vision tracking system for the robot and provides read/write
+ * access to the vision configuration.
+ */
 public class VisionTargetTracker {
+    /**
+     * Represents the LED mode for the camera.
+     */
     public enum LedMode {
+        /**
+         * Maintain the current LED mode.
+         */
         CURRENT(0),
+
+        /**
+         * Force the LEDs to be off.
+         */
         FORCE_OFF(1),
+
+        /**
+         * Force the LEDs to blink.
+         */
         FORCE_BLINK(2),
+
+        /**
+         * Force the LEDs to be on.
+         */
         FORCE_ON(3);
 
         private final int value;
@@ -17,6 +39,9 @@ public class VisionTargetTracker {
             this.value = value;
         }
 
+        /**
+         * Gets the integer representation of the {@link LedMode}.
+         */
         public int getValue() {
             return value;
         }
@@ -34,6 +59,9 @@ public class VisionTargetTracker {
     private final NetworkTableEntry ta;
     private final NetworkTableEntry ledMode;
 
+    /**
+     * Constructs a new {@link VisionTargetTracker} instance.
+     */
     public VisionTargetTracker() {
         table = NetworkTableInstance.getDefault().getTable(LIMELIGHT_TABLE_NAME);
         tx = table.getEntry(LIMELIGHT_TABLE_ENTRY_X);
@@ -42,23 +70,42 @@ public class VisionTargetTracker {
         ledMode = table.getEntry(LIMELIGHT_TABLE_ENTRY_LED_MODE);
     }
 
+    /**
+     * Gets the center X offset of the vision target in degrees
+     * ranging from -27.0 to 27.0.
+     */
     public double getX() {
         return tx.getDouble(0.0);
     }
 
+    /**
+     * Gets the center Y offset of the vision target in degrees
+     * ranging from -20.5 to 20.5.
+     */
     public double getY() {
         return ty.getDouble(0.0);
     }
 
+    /**
+     * Gets the area of the vision target ranging from 0.0 to 100.0, where
+     * 100.0 is the full area of the camera view.
+     */
     public double getArea() {
         return ta.getDouble(0.0);
     }
 
+    /**
+     * Gets the {@link LedMode} of the camera.
+     */
     public LedMode getLedMode() {
         var intValue = ledMode.getNumber(0).intValue();
         return LedMode.values()[intValue];
     }
 
+    /**
+     * Sets the {@link LedMode} of the camera.
+     * @param mode The {@link LedMode} of the camera.
+     */
     public void setLedMode(LedMode mode) {
         ledMode.setNumber(mode.getValue());
     }
