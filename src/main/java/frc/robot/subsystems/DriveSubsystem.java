@@ -54,6 +54,8 @@ public class DriveSubsystem extends SubsystemBase {
 
         configureEncoder(leftEncoder);
         configureEncoder(rightEncoder);
+
+        rightMotors.setInverted(true);
     }
 
     @Override
