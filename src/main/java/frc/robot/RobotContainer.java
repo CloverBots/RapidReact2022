@@ -6,11 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.VisionTargetTracker;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftObserver;
-import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.LiftSubsystemDummy;
 import edu.wpi.first.wpilibj2.command.Command;
 
