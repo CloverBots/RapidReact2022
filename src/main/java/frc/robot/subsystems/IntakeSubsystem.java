@@ -11,7 +11,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private final CANSparkMax intakeLeadMotor = new CANSparkMax(Ids.INTAKE_LEAD_DEVICE, MotorType.kBrushless);
     private final MotorControllerGroup intakeMotors = new MotorControllerGroup(intakeLeadMotor);
 
-    /** Creates a new Shooter. */
+    /** Creates a new Intake. */
     public IntakeSubsystem() {
 
     }
