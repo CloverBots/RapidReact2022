@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ids;
+import frc.robot.RobotLifecycleCallbacks;
 
-public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
+
     private static final double LIME_PID_P = 0.09;
     private static final double LIME_PID_I = 0.0;
     private static final double LIME_PID_D = 0.0;
@@ -56,18 +58,23 @@ public class DriveSubsystem extends SubsystemBase {
         configureEncoder(rightEncoder);
 
         rightMotors.setInverted(true);
+
+        // Temporarily turning saftey off to allow the motors to run without constant
+        // updates
+        // differentialDrive.setSafetyEnabled(false);
     }
 
     @Override
     public void periodic() {
         differentialDriveOdometry.update(
-            getRotation(),
-            leftEncoder.getPosition(),
-            rightEncoder.getPosition());
+                getRotation(),
+                leftEncoder.getPosition(),
+                rightEncoder.getPosition());
     }
 
     /**
      * Sets the maximum drive output.
+     * 
      * @param maxOutput The maximum drive output, from a -1 to 1 range.
      */
     public void setMaxOutput(double maxOutput) {
@@ -83,16 +90,26 @@ public class DriveSubsystem extends SubsystemBase {
 
     /**
      * Updates the drive output given arcade drive values.
+     * 
      * @param forward The forward value, from a -1 to 1 range.
-     * @param rotate The rotational value, from a -1 to 1 range.
+     * @param rotate  The rotational value, from a -1 to 1 range.
      */
     public void arcadeDrive(double forward, double rotate) {
         differentialDrive.arcadeDrive(forward, rotate);
     }
 
+    // differentialDrive requires constant updates, so we are manually setting the
+    // motor speeds to test autonomous
+    public void autoDrive(double forward, double rotate) { // TODO: Investigate why arcadeDrive isn't working, but
+                                                           // autoDrive is.
+        leftLeadMotor.set(forward + rotate);
+        rightLeadMotor.set(forward - rotate);
+    }
+
     /**
      * Updates the drive output given tank drive values.
-     * @param leftVoltage The voltage to apply to the left motors.
+     * 
+     * @param leftVoltage  The voltage to apply to the left motors.
      * @param rightVoltage The voltage to apply to the right motors.
      */
     public void tankDrive(double leftVoltage, double rightVoltage) {
@@ -108,5 +125,19 @@ public class DriveSubsystem extends SubsystemBase {
 
     private Rotation2d getRotation() {
         return Rotation2d.fromDegrees(gyro.getAngle() % 360.0);
+    }
+
+    @Override
+    public void autonomousInit() {
+        // Disable the differentialDrive safety during autonomous
+        // differentialDrive requires constant feeding of motor inputs when safety is
+        // enabled.
+        differentialDrive.setSafetyEnabled(false);
+    }
+
+    @Override
+    public void teleopInit() {
+        // Re-enable safety for teleop
+        differentialDrive.setSafetyEnabled(true);
     }
 }

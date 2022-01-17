@@ -73,6 +73,10 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        for (RobotLifecycleCallbacks robotLifecycleCallback : robotContainer.getLifecycleCallbacks()) {
+            robotLifecycleCallback.autonomousInit();
+        }
+
         autonomousCommand = robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
@@ -88,6 +92,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+
+        for (RobotLifecycleCallbacks robotLifecycleCallback : robotContainer.getLifecycleCallbacks()) {
+            robotLifecycleCallback.teleopInit();
+        }
+
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
