@@ -19,6 +19,5 @@ public class AutonomousOne extends SequentialCommandGroup {
         addCommands(new DriveFromCommand(driveSubsystem, .1, 0)); // TODO: update with real value
         addCommands(new WaitCommand(3));
         addCommands(new DriveFromCommand(driveSubsystem, 0, 0));
-
     }
 }
