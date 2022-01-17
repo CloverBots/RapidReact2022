@@ -27,9 +27,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    private final double VISION_TARGET_HEIGHT = 104.0;
-    private final double CAMERA_HEIGHT = 20.0;
-    private final double CAMERA_PITCH = 5.0;
+    private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
+    private static final double CAMERA_HEIGHT = 55.75; //on test robot
+    private static final double CAMERA_PITCH = -3.0;
     
     private final VisionConfiguration visionConfiguration = new VisionConfiguration(
             VISION_TARGET_HEIGHT,
@@ -50,9 +50,12 @@ public class RobotContainer {
     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem);
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, visionTarget);
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+
+    //By passing in the driverController right trigger to the intakeCommand, the controller value will
+    // automatically be fed into the intakeCommand as the speed value.
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, driverController::getRightTriggerAxis);
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(

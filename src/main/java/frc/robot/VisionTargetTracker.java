@@ -5,6 +5,12 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
+ * To find the IP address of the vision system, open SmartDashboard
+ * from within the Driver station and it will be displayed.
+ * Port 5800 gives camera view, port 5801 opens a config view.
+ */
+
+/**
  * Represents the vision tracking system for the robot and provides read/write
  * access to the vision configuration.
  */
@@ -51,6 +57,8 @@ public class VisionTargetTracker {
     private static final String LIMELIGHT_TABLE_ENTRY_X = "tx";
     private static final String LIMELIGHT_TABLE_ENTRY_Y = "ty";
     private static final String LIMELIGHT_TABLE_ENTRY_A = "ta";
+    // tv = 0 if no valid targets identified, tv = 1 for valid target
+    private static final String LIMELIGHT_TABLE_ENTRY_VALID = "tv";
     private static final String LIMELIGHT_TABLE_ENTRY_LED_MODE = "ledMode";
 
     private final VisionConfiguration configuration;
@@ -58,6 +66,7 @@ public class VisionTargetTracker {
     private final NetworkTableEntry tx;
     private final NetworkTableEntry ty;
     private final NetworkTableEntry ta;
+    private final NetworkTableEntry tv;
     private final NetworkTableEntry ledMode;
 
     /**
@@ -70,6 +79,7 @@ public class VisionTargetTracker {
         tx = table.getEntry(LIMELIGHT_TABLE_ENTRY_X);
         ty = table.getEntry(LIMELIGHT_TABLE_ENTRY_Y);
         ta = table.getEntry(LIMELIGHT_TABLE_ENTRY_A);
+        tv = table.getEntry(LIMELIGHT_TABLE_ENTRY_VALID);
         ledMode = table.getEntry(LIMELIGHT_TABLE_ENTRY_LED_MODE);
     }
 
@@ -98,6 +108,17 @@ public class VisionTargetTracker {
     }
 
     /**
+     * Get whether there is a valid target visible
+     */
+    public boolean isValid() {
+        if (tv.getNumber(0).intValue() == 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Gets the {@link LedMode} of the camera.
      */
     public LedMode getLedMode() {
@@ -113,6 +134,7 @@ public class VisionTargetTracker {
         ledMode.setNumber(mode.getValue());
     }
 
+    
     /**
      * Computes the distance to the target, usually in inches.
      * @param config The configuration describing camera and field measurements.
