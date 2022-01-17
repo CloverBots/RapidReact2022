@@ -21,9 +21,10 @@ public class IntakeSubsystem extends SubsystemBase {
         // This method will be called once per scheduler run
     }
 
+    // trying to set values to a port that does not exist leads to inconsistant
+    // behavior
     public void startIntake(double speed) {
         intakeMotors.set(speed);
-
     }
 
     public void stop() {

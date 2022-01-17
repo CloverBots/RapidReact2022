@@ -6,6 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
@@ -14,8 +19,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -28,9 +31,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
     private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
-    private static final double CAMERA_HEIGHT = 55.75; //on test robot
+    private static final double CAMERA_HEIGHT = 55.75; // on test robot
     private static final double CAMERA_PITCH = -3.0;
-    
+
     private final VisionConfiguration visionConfiguration = new VisionConfiguration(
             VISION_TARGET_HEIGHT,
             CAMERA_HEIGHT,
@@ -54,9 +57,11 @@ public class RobotContainer {
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
-    //By passing in the driverController right trigger to the intakeCommand, the controller value will
+    // By passing in the driverController right trigger to the intakeCommand, the
+    // controller value will
     // automatically be fed into the intakeCommand as the speed value.
-    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, driverController::getRightTriggerAxis);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem,
+            driverController::getRightTriggerAxis);
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
@@ -64,13 +69,28 @@ public class RobotContainer {
             driverController::getLeftY,
             driverController::getRightX);
 
+    // lifecyclecallbacks used when special cases are needed for autonomous and
+    // teleop
+    private final RobotLifecycleCallbacks[] robotLifecycleCallbacks = new RobotLifecycleCallbacks[] {
+            driveSubsystem
+    };
+
+    private final SendableChooser<Command> chooser = new SendableChooser<>();
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
 
-        intakeSubsystem.setDefaultCommand(intakeCommand);
+        // TODO: Enable when ready (it doesn't work consistantly with no motors
+        // connected)
+        // intakeSubsystem.setDefaultCommand(intakeCommand);
+
+        // Add choices to the chooser
+        chooser.setDefaultOption("Autonomous One", new AutonomousOne(driveSubsystem));
+        // Add chooser to the SmartDashboard
+        SmartDashboard.putData("Automous", chooser);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -96,6 +116,10 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return null;
+        return chooser.getSelected();
+    }
+
+    public RobotLifecycleCallbacks[] getLifecycleCallbacks() {
+        return robotLifecycleCallbacks;
     }
 }
