@@ -134,7 +134,6 @@ public class VisionTargetTracker {
         ledMode.setNumber(mode.getValue());
     }
 
-    
     /**
      * Computes the distance to the target, usually in inches.
      * @param config The configuration describing camera and field measurements.
