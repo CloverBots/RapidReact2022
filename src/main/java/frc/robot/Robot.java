@@ -92,7 +92,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-
         for (RobotLifecycleCallbacks robotLifecycleCallback : robotContainer.getLifecycleCallbacks()) {
             robotLifecycleCallback.teleopInit();
         }
