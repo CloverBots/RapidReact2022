@@ -4,20 +4,20 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.SequentialCommandGroupExtended;
 import frc.robot.subsystems.DriveSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutonomousOne extends SequentialCommandGroup {
+public class AutonomousOne extends SequentialCommandGroupExtended {
     /** Creates a new AutonomousOne. */
     public AutonomousOne(DriveSubsystem driveSubsystem) {
         // Add your commands in the addCommands() call, e.g.
         // addCommands(new FooCommand(), new BarCommand());
-        addCommands(new DriveFromCommand(driveSubsystem, .1, 0)); // TODO: update with real value
+        addInstant(() -> driveSubsystem.autoDrive(0.1, 0), driveSubsystem); // TODO: Update with real value.
         addCommands(new WaitCommand(3));
-        addCommands(new DriveFromCommand(driveSubsystem, 0, 0));
+        addInstant(() -> driveSubsystem.autoDrive(0, 0), driveSubsystem);
     }
 }
