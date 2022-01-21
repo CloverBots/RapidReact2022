@@ -14,11 +14,13 @@ import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.TestShooterCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TestShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -57,6 +59,9 @@ public class RobotContainer {
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
+    private final TestShooterSubsystem testShooterSubsystem = new TestShooterSubsystem();
+    private final TestShooterCommand testShooterCommand = new TestShooterCommand(testShooterSubsystem);
+
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
@@ -82,6 +87,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
+        testShooterSubsystem.setDefaultCommand(testShooterCommand);
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
