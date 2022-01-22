@@ -7,12 +7,14 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase {
     private final IntakeSubsystem intakeSubsystem;
-    private final DoubleSupplier speed;
+    private final DoubleSupplier forwardSpeed;
+    private final DoubleSupplier reverseSpeed;
 
     /** Creates a new ShootBall. */
-    public IntakeCommand(IntakeSubsystem intakeSubsystem, DoubleSupplier speed) {
+    public IntakeCommand(IntakeSubsystem intakeSubsystem, DoubleSupplier forwardSpeed, DoubleSupplier reverseSpeed) {
         this.intakeSubsystem = intakeSubsystem;
-        this.speed = speed;
+        this.forwardSpeed = forwardSpeed;
+        this.reverseSpeed = reverseSpeed;
         addRequirements(intakeSubsystem);
 
         // Use addRequirements() here to declare subsystem dependencies.
@@ -26,7 +28,7 @@ public class IntakeCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        intakeSubsystem.startIntake(speed.getAsDouble());
+        intakeSubsystem.startIntake(forwardSpeed.getAsDouble()-reverseSpeed.getAsDouble());
     }
 
     // Called once the command ends or is interrupted.

@@ -48,6 +48,7 @@ public class RobotContainer {
     private final VisionTargetTracker visionTarget = new VisionTargetTracker(visionConfiguration);
 
     private final XboxController driverController = new XboxController(Ids.CONTROLLER_DRIVE_PORT);
+    private final XboxController operatorController = new XboxController(Ids.CONTROLLER_OPERATOR_PORT);
 
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
@@ -76,7 +77,7 @@ public class RobotContainer {
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem,
-            driverController::getRightTriggerAxis);
+            operatorController::getRightTriggerAxis, operatorController::getLeftTriggerAxis);
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
@@ -106,7 +107,7 @@ public class RobotContainer {
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
-        // intakeSubsystem.setDefaultCommand(intakeCommand);
+        intakeSubsystem.setDefaultCommand(intakeCommand);
 
         // Add choices to the chooser
         chooser.setDefaultOption("Autonomous One", new AutonomousOne(driveSubsystem));

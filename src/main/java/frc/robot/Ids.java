@@ -2,7 +2,7 @@ package frc.robot;
 
 public final class Ids {
     public static final int CONTROLLER_DRIVE_PORT = 0;
-    public static final int CONTROLLER_OPERATOR_PORT = 0;
+    public static final int CONTROLLER_OPERATOR_PORT = 1;
 
     public static final int DRIVE_LEFT_LEAD_DEVICE = 3;
     public static final int DRIVE_LEFT_FOLLOW_DEVICE = 4;
@@ -17,10 +17,12 @@ public final class Ids {
     public static final int RATCHET_SOLENOID_REVERSE = 7;
 
     // Shooter motor ID
-    public static final int SHOOTER_LEAD_DEVICE = 8; //TODO check proper port number
-    public static final int SHOOTER_FOLLOW_DEVICE_1 = 9;
+    public static final int SHOOTER_LEAD_DEVICE = 14; //TODO check proper port number
+    public static final int SHOOTER_FOLLOW_DEVICE_1 = 15;
     public static final int SHOOTER_FOLLOW_DEVICE_2 = 10;
     public static final int SHOOTER_FOLLOW_DEVICE_3 = 11;
+
+    public static final int INTAKE_LEAD_DEVICE = 13; //TODO proper port number
 
     // pneumatics ids
     public static final int TEST_SOLENOID1_FORWARD = 3;
@@ -29,7 +31,5 @@ public final class Ids {
     // Test shooter motor ID
     public static final int TEST_SHOOTER_LEAD_DEVICE = 14;
     public static final int TEST_SHOOTER_FOLLOW_DEVICE_1 = 15;
-
-    public static final int INTAKE_LEAD_DEVICE = 12; //TODO proper port number
 
 }
