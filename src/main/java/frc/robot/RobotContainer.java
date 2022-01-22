@@ -15,11 +15,13 @@ import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TestShooterCommand;
+import frc.robot.commands.TestShooterNeoCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TestShooterNeoSubsystem;
 import frc.robot.subsystems.TestShooterSubsystem;
 
 /**
@@ -62,6 +64,9 @@ public class RobotContainer {
     private final TestShooterSubsystem testShooterSubsystem = new TestShooterSubsystem();
     private final TestShooterCommand testShooterCommand = new TestShooterCommand(testShooterSubsystem);
 
+    private final TestShooterNeoSubsystem testShooterNeoSubsystem = new TestShooterNeoSubsystem();
+    private final TestShooterNeoCommand testShooterNeoCommand = new TestShooterNeoCommand(testShooterNeoSubsystem);
+
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
@@ -88,6 +93,7 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
         testShooterSubsystem.setDefaultCommand(testShooterCommand);
+        testShooterNeoSubsystem.setDefaultCommand(testShooterNeoCommand);
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
