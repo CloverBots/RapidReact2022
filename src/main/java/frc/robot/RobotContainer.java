@@ -15,6 +15,7 @@ import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.PneumaticsCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.TestFalconCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestShooterNeoCommand;
 import frc.robot.subsystems.DriveSubsystem;
@@ -23,6 +24,7 @@ import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TestFalconSubsystem;
 import frc.robot.subsystems.TestShooterNeoSubsystem;
 import frc.robot.subsystems.TestShooterSubsystem;
 
@@ -73,6 +75,9 @@ public class RobotContainer {
     private final TestShooterNeoSubsystem testShooterNeoSubsystem = new TestShooterNeoSubsystem();
     private final TestShooterNeoCommand testShooterNeoCommand = new TestShooterNeoCommand(testShooterNeoSubsystem);
 
+    private final TestFalconSubsystem testFalconSubsystem = new TestFalconSubsystem();
+    private final TestFalconCommand testFalconCommand = new TestFalconCommand(testFalconSubsystem);
+
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
@@ -100,10 +105,9 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
         testShooterSubsystem.setDefaultCommand(testShooterCommand);
-
         pneumaticsSubsystem.setDefaultCommand(pneumaticsCommand);
-
         testShooterNeoSubsystem.setDefaultCommand(testShooterNeoCommand);
+        testFalconSubsystem.setDefaultCommand(testFalconCommand);
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
