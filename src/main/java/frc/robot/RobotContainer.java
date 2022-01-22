@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.PneumaticsCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestShooterNeoCommand;
@@ -20,6 +21,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
+import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TestShooterNeoSubsystem;
 import frc.robot.subsystems.TestShooterSubsystem;
@@ -64,6 +66,9 @@ public class RobotContainer {
     private final TestShooterSubsystem testShooterSubsystem = new TestShooterSubsystem();
     private final TestShooterCommand testShooterCommand = new TestShooterCommand(testShooterSubsystem);
 
+    private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
+    private final PneumaticsCommand pneumaticsCommand = new PneumaticsCommand(pneumaticsSubsystem, driverController::getBButton);
+
     private final TestShooterNeoSubsystem testShooterNeoSubsystem = new TestShooterNeoSubsystem();
     private final TestShooterNeoCommand testShooterNeoCommand = new TestShooterNeoCommand(testShooterNeoSubsystem);
 
@@ -82,7 +87,8 @@ public class RobotContainer {
     // lifecyclecallbacks used when special cases are needed for autonomous and
     // teleop
     private final RobotLifecycleCallbacks[] robotLifecycleCallbacks = new RobotLifecycleCallbacks[] {
-            driveSubsystem
+            driveSubsystem, 
+            pneumaticsSubsystem
     };
 
     private final SendableChooser<Command> chooser = new SendableChooser<>();
@@ -93,6 +99,9 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
         testShooterSubsystem.setDefaultCommand(testShooterCommand);
+
+        pneumaticsSubsystem.setDefaultCommand(pneumaticsCommand);
+
         testShooterNeoSubsystem.setDefaultCommand(testShooterNeoCommand);
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors

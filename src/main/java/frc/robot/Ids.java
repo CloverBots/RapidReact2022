@@ -22,9 +22,14 @@ public final class Ids {
     public static final int SHOOTER_FOLLOW_DEVICE_2 = 10;
     public static final int SHOOTER_FOLLOW_DEVICE_3 = 11;
 
+    // pneumatics ids
+    public static final int TEST_SOLENOID1_FORWARD = 3;
+    public static final int TEST_SOLENOID1_REVERSE = 4;
+
     // Test shooter motor ID
     public static final int TEST_SHOOTER_LEAD_DEVICE = 14;
     public static final int TEST_SHOOTER_FOLLOW_DEVICE_1 = 15;
 
     public static final int INTAKE_LEAD_DEVICE = 12; //TODO proper port number
+
 }
