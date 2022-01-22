@@ -7,12 +7,12 @@ import frc.robot.subsystems.PneumaticsSubsystem;
 
 public class PneumaticsCommand extends CommandBase {
     PneumaticsSubsystem pneumaticsSubsystem;
-    BooleanSupplier supplier;
+    BooleanSupplier position;
 
     /** Creates a new PneumaticsCommand. */
-    public PneumaticsCommand(PneumaticsSubsystem pneumaticsSubsystem, BooleanSupplier supplier) {
+    public PneumaticsCommand(PneumaticsSubsystem pneumaticsSubsystem, BooleanSupplier position) {
         this.pneumaticsSubsystem = pneumaticsSubsystem;
-        this.supplier = supplier;
+        this.position = position;
         addRequirements(pneumaticsSubsystem);
     }
 
@@ -24,7 +24,7 @@ public class PneumaticsCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        pneumaticsSubsystem.setSoleonoid(supplier.getAsBoolean());
+        pneumaticsSubsystem.setSoleonoid(position.getAsBoolean());
     }
 
     // Called once the command ends or is interrupted.
