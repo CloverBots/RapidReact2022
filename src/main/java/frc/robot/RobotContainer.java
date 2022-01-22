@@ -100,7 +100,7 @@ public class RobotContainer {
         intakeSubsystem.setDefaultCommand(intakeCommand);
 
         // Add choices to the chooser
-        //chooser.setDefaultOption("Autonomous One", new AutonomousOne(driveSubsystem));
+        chooser.setDefaultOption("Autonomous One", new AutonomousOne(driveSubsystem));
         // Add chooser to the SmartDashboard
         SmartDashboard.putData("Automous", chooser);
 

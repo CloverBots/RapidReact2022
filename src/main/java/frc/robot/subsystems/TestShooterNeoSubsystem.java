@@ -25,7 +25,7 @@ public class TestShooterNeoSubsystem extends SubsystemBase {
 
     private final RelativeEncoder encoder = shooterLeadMotor.getEncoder();
 
-    private SparkMaxPIDController pidController;
+    private final SparkMaxPIDController pidController;
 
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
