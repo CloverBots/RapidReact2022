@@ -140,4 +140,9 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
         // Re-enable safety for teleop
         differentialDrive.setSafetyEnabled(true);
     }
+
+    @Override
+    public void disabledInit() {
+        // TODO Auto-generated method stub
+    }
 }
