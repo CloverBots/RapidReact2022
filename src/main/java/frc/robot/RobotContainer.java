@@ -97,7 +97,7 @@ public class RobotContainer {
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
-        intakeSubsystem.setDefaultCommand(intakeCommand);
+        // intakeSubsystem.setDefaultCommand(intakeCommand);
 
         // Add choices to the chooser
         chooser.setDefaultOption("Autonomous One", new AutonomousOne(driveSubsystem));
