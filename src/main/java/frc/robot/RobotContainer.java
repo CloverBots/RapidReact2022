@@ -78,7 +78,7 @@ public class RobotContainer {
     // lifecyclecallbacks used when special cases are needed for autonomous and
     // teleop
     private final RobotLifecycleCallbacks[] robotLifecycleCallbacks = new RobotLifecycleCallbacks[] {
-          driveSubsystem
+            driveSubsystem
     };
 
     private final SendableChooser<Command> chooser = new SendableChooser<>();
