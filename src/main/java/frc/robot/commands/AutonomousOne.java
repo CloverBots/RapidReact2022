@@ -16,8 +16,9 @@ public class AutonomousOne extends SequentialCommandGroupExtended {
     public AutonomousOne(DriveSubsystem driveSubsystem) {
         // Add your commands in the addCommands() call, e.g.
         // addCommands(new FooCommand(), new BarCommand());
-        addInstant(() -> driveSubsystem.autoDrive(0.1, 0), driveSubsystem); // TODO: Update with real value.
-        addCommands(new WaitCommand(3));
-        addInstant(() -> driveSubsystem.autoDrive(0, 0), driveSubsystem);
+        //addInstant(() -> driveSubsystem.autoDrive(0.1, 0), driveSubsystem); // TODO: Update with real value.
+        //addCommands(new WaitCommand(3));
+        //addInstant(() -> driveSubsystem.autoDrive(0, 0), driveSubsystem);
+        addInstant(() -> driveSubsystem.distanceDrive(2), driveSubsystem);
     }
 }
