@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class FeederSubsystem extends SubsystemBase {
 
+    private static final double DEFAULT_FEEDER_RPM = 10; //TODO get real value
+
     private class Gains {
         public final double kP;
         public final double kI;
@@ -97,6 +99,13 @@ public class FeederSubsystem extends SubsystemBase {
     public void startFeeder(double rpm) {
         // 4096 encoder ticks per revolution / 100 ms / minute
         double targetVelocity_UnitsPer100ms = rpm * 4096 / 600;
+
+        talonLead.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+    }
+
+    public void startFeeder() {
+        // 4096 encoder ticks per revolution / 100 ms / minute
+        double targetVelocity_UnitsPer100ms = DEFAULT_FEEDER_RPM * 4096 / 600;
 
         talonLead.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
     }
