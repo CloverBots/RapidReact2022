@@ -104,10 +104,7 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
     public void startFeeder() {
-        // 4096 encoder ticks per revolution / 100 ms / minute
-        double targetVelocity_UnitsPer100ms = DEFAULT_FEEDER_RPM * 4096 / 600;
-
-        talonLead.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+        startFeeder(DEFAULT_FEEDER_RPM);
     }
 
     public void stopFeeder() {
