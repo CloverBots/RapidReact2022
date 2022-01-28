@@ -4,19 +4,26 @@
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
-
 
 public class DriveToDistance extends CommandBase {
   private final DriveSubsystem driveSubsystem;
   private double intitialEncoderPosition;
   private double driveTicks;
-  private double distance;
-  /** Creates a new DriveToDistance. */
-  public DriveToDistance(DriveSubsystem driveSubsystem, double distance) {
+  private double distance; 
+  private double speed;
+
+  /**Creates a new DriveToDistance.
+   * 
+   * @param driveSubsystem what subsystem to use
+   * @param distance distance driven forward in meters
+   * @param speed percentage of motor power (0-1) | Note: Keep speed low until a ramp down system is implemented
+   */
+
+  public DriveToDistance(DriveSubsystem driveSubsystem, double distance, double speed) {
     this.distance = distance;
+    this.speed = speed;
     this.driveSubsystem = driveSubsystem;
     addRequirements(driveSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -25,6 +32,7 @@ public class DriveToDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // fetch the initial encoder position in order to calculate the distance traveled
     intitialEncoderPosition = driveSubsystem.getEncoderPosition();
   }
 
@@ -33,10 +41,8 @@ public class DriveToDistance extends CommandBase {
   public void execute() {
     //calculate the amount distance in meters
     double distancePerRotation = 10*DriveSubsystem.ENCODER_POSITION_CONVERSION_FACTOR;
-    // 
     double distancePerTick = distancePerRotation/ DriveSubsystem.ENCODER_TICKS_PER_ROTATION;
     driveTicks = distance/distancePerTick;
-
   }
 
   // Called once the command ends or is interrupted.
@@ -48,11 +54,12 @@ public class DriveToDistance extends CommandBase {
   public boolean isFinished() {
     // get the current encoder position- used to get the total ticks traveled from the start of the command
     double currentEncoderPosition = driveSubsystem.getEncoderPosition();
-    //end the command when the difference between the desired distance and the actual distance is within a certain threshold (100 for now)
+    // end the command when the difference between the desired distance and the actual distance is within a certain threshold (100 for now)
     if ((Math.abs(currentEncoderPosition-intitialEncoderPosition)-driveTicks)<100){
+      driveSubsystem.autoDrive(speed, 0); //TODO add a ramp down in order to keep the robot from breaking too hard
       return true;
     }
-    
+    driveSubsystem.autoDrive(0, 0);
     return false;
   }
 }
