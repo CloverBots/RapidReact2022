@@ -20,7 +20,8 @@ import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestShooterNeoCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.LiftObserver;
+import frc.robot.subsystems.LiftSubsystemDummy;
 import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TestShooterNeoSubsystem;
@@ -56,8 +57,8 @@ public class RobotContainer {
     // LiftSubsystem
     // with a dummy class that says the lift is always down. TF
 
-    private final LiftSubsystem liftSubsystem = new LiftSubsystem();
-    // private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
+    // private final LiftSubsystem liftSubsystem = new LiftSubsystem();
+    private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, visionTarget);
