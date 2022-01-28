@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class TestFalconSubsystem extends SubsystemBase {
+public class TestTalonFXSubsystem extends SubsystemBase {
    private class Gains {
         public final double kP;
         public final double kI;
@@ -48,12 +48,12 @@ public class TestFalconSubsystem extends SubsystemBase {
      */
     public final Gains kGains_Velocit = new Gains(0.1, 0.001, 5, 1023.0 / 20660.0, 300, 1.00);
 
-    private static final TalonFX talonFx = new TalonFX(18);
+    private static final TalonFX talonFX = new TalonFX(18);
 
-    public TestFalconSubsystem() {
-        talonFx.configFactoryDefault();
+    public TestTalonFXSubsystem() {
+        talonFX.configFactoryDefault();
         /* Config sensor used for Primary PID [Velocity] */
-        talonFx.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
+        talonFX.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
                 kPIDLoopIdx,
                 kTimeoutMs);
 
@@ -61,27 +61,27 @@ public class TestFalconSubsystem extends SubsystemBase {
          * Phase sensor accordingly.
          * Positive Sensor Reading should match Green (blinking) Leds on Talon
          */
-        talonFx.setSensorPhase(true);
+        talonFX.setSensorPhase(true);
 
         /* Config the peak and nominal outputs */
-        talonFx.configNominalOutputForward(0, kTimeoutMs);
-        talonFx.configNominalOutputReverse(0, kTimeoutMs);
-        talonFx.configPeakOutputForward(1, kTimeoutMs);
-        talonFx.configPeakOutputReverse(-1, kTimeoutMs);
+        talonFX.configNominalOutputForward(0, kTimeoutMs);
+        talonFX.configNominalOutputReverse(0, kTimeoutMs);
+        talonFX.configPeakOutputForward(1, kTimeoutMs);
+        talonFX.configPeakOutputReverse(-1, kTimeoutMs);
 
         /* Config the Velocity closed loop gains in slot0 */
-        talonFx.config_kF(kPIDLoopIdx, kGains_Velocit.kF, kTimeoutMs);
-        talonFx.config_kP(kPIDLoopIdx, kGains_Velocit.kP, kTimeoutMs);
-        talonFx.config_kI(kPIDLoopIdx, kGains_Velocit.kI, kTimeoutMs);
-        talonFx.config_kD(kPIDLoopIdx, kGains_Velocit.kD, kTimeoutMs);
+        talonFX.config_kF(kPIDLoopIdx, kGains_Velocit.kF, kTimeoutMs);
+        talonFX.config_kP(kPIDLoopIdx, kGains_Velocit.kP, kTimeoutMs);
+        talonFX.config_kI(kPIDLoopIdx, kGains_Velocit.kI, kTimeoutMs);
+        talonFX.config_kD(kPIDLoopIdx, kGains_Velocit.kD, kTimeoutMs);
     }
 
     public void setRPM(double rpm) {
         // 4096 encoder ticks per revolution / 100 ms / minute
         double targetVelocity_UnitsPer100ms = rpm * 2048 / 600;
 
-        talonFx.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+        talonFX.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
 
-        SmartDashboard.putNumber("Falcon Output RPM", talonFx.getSelectedSensorVelocity() / 2048 * 600);
+        SmartDashboard.putNumber("Falcon Output RPM", talonFX.getSelectedSensorVelocity() / 2048 * 600);
     }
 }
