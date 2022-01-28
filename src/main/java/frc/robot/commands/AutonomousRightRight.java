@@ -20,9 +20,7 @@ public class AutonomousRightRight extends SequentialCommandGroupExtended {
   private static final double speed = 1;
   IntakeSubsystem intakeSubsystem;
   DriveSubsystem driveSubsystem;
-  AimSubsystem aimSubsystem;
   ShooterSubsystem shooterSubSystem;
-  FeederSubSystem feederSubSystem;
   VisionTargetTracker visionTargetTracker;
   FeederSubsystem feederSubsystem;
 
