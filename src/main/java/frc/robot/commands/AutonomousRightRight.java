@@ -17,7 +17,10 @@ import frc.robot.subsystems.ShooterSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutonomousRightRight extends SequentialCommandGroupExtended {
   private static final double DISTANCE_TO_DRIVE = 5;
-  private static final double speed = 1;
+  private static final double INTAKE_SPEED = 1;
+  private static final double SHOOTER_SPEED = 1;
+  private static final double DRIVE_SPEED = 1;
+  private static final double distance = 1;
   IntakeSubsystem intakeSubsystem;
   DriveSubsystem driveSubsystem;
   ShooterSubsystem shooterSubSystem;
@@ -27,10 +30,10 @@ public class AutonomousRightRight extends SequentialCommandGroupExtended {
   /** Creates a new AutonomousRightRight. */
   public AutonomousRightRight() {
     // Add your commands in the addCommands() call, e.g.
-    addInstant(() -> driveSubsystem.autoDriveDistance(DISTANCE_TO_DRIVE), driveSubsystem);
-    addInstant(() -> intakeSubsystem.startIntake(speed), intakeSubsystem);
+    addCommands(new DriveToDistance(driveSubsystem, distance, DRIVE_SPEED));
+    addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED), intakeSubsystem);
     addCommands(new AimHighCommand(driveSubsystem, visionTargetTracker));
-    addInstant(() -> shooterSubSystem.startShooter(speed), shooterSubSystem);
+    addInstant(() -> shooterSubSystem.startShooter(SHOOTER_SPEED), shooterSubSystem);
     addCommands(new FeederCommand(feederSubsystem));
     addCommands(new WaitCommand(3));
   }
