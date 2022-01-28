@@ -9,9 +9,9 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveToDistance extends CommandBase {
   private final DriveSubsystem driveSubsystem;
+  private final double distance;
+  private final double speed;
   private double intitialEncoderPosition;
-  private double distance;
-  private double speed;
 
   /**
    * Creates a new DriveToDistance.
