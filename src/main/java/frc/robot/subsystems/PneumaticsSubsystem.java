@@ -9,9 +9,9 @@ import frc.robot.Ids;
 import frc.robot.RobotLifecycleCallbacks;
 
 public class PneumaticsSubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
-    DoubleSolenoid solenoid1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Ids.TEST_SOLENOID1_FORWARD,
+    DoubleSolenoid solenoid1 = new DoubleSolenoid(Ids.TEST_PCM_ID, PneumaticsModuleType.CTREPCM, Ids.TEST_SOLENOID1_FORWARD,
             Ids.TEST_SOLENOID1_REVERSE);
-    Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+    Compressor compressor = new Compressor(Ids.TEST_PCM_ID, PneumaticsModuleType.CTREPCM);
 
     /** Creates a new PneumaticsSubsystem. */
     public PneumaticsSubsystem() {
