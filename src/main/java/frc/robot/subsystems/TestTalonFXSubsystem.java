@@ -82,6 +82,6 @@ public class TestTalonFXSubsystem extends SubsystemBase {
 
         talonFX.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
 
-        SmartDashboard.putNumber("Falcon Output RPM", talonFX.getSelectedSensorVelocity() / 2048 * 600);
+        SmartDashboard.putNumber("TalonFX Output RPM", talonFX.getSelectedSensorVelocity() / 2048 * 600);
     }
 }

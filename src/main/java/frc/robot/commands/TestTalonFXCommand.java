@@ -7,20 +7,20 @@ import frc.robot.subsystems.TestTalonFXSubsystem;
 public class TestTalonFXCommand extends CommandBase {
     private final TestTalonFXSubsystem testTalonFXSubsystem;
 
-    public TestTalonFXCommand(TestTalonFXSubsystem falconTestSubsystem) {
-        this.testTalonFXSubsystem = falconTestSubsystem;
+    public TestTalonFXCommand(TestTalonFXSubsystem testTalonFXSubsystem) {
+        this.testTalonFXSubsystem = testTalonFXSubsystem;
 
-        addRequirements(falconTestSubsystem);
+        addRequirements(testTalonFXSubsystem);
     }
 
     @Override
     public void initialize() {
-        SmartDashboard.putNumber("Falcon RPM", 0);
+        SmartDashboard.putNumber("TalonFX RPM", 0);
     }
 
     @Override
     public void execute() {
-        double rpm = SmartDashboard.getNumber("Falcon RPM", 0);
+        double rpm = SmartDashboard.getNumber("TalonFX RPM", 0);
         testTalonFXSubsystem.setRPM(rpm);
     }
 }
