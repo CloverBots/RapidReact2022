@@ -40,14 +40,21 @@ public class DriveToDistance extends CommandBase {
   @Override
   public void execute() {
     //calculate the amount distance in meters
-    double distancePerRotation = 10*DriveSubsystem.ENCODER_POSITION_CONVERSION_FACTOR;
-    double distancePerTick = distancePerRotation/ DriveSubsystem.ENCODER_TICKS_PER_ROTATION;
-    driveTicks = distance/distancePerTick;
+    // double distancePerRotation = 10*DriveSubsystem.ENCODER_POSITION_CONVERSION_FACTOR;
+    // double distancePerTick = distancePerRotation/ DriveSubsystem.ENCODER_TICKS_PER_ROTATION;
+    // driveTicks = distance/distancePerTick;
+    driveSubsystem.autoDrive(speed, 0); //TODO add a ramp down in order to keep the robot from breaking too hard
+
+    double currentEncoderPosition = driveSubsystem.getEncoderPosition();
+    System.out.println("Drive ticks: " + driveTicks);
+    System.out.println("Current: " + currentEncoderPosition);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    driveSubsystem.autoDrive(0, 0);
+  }
 
   // Returns true when the command should end.
   @Override
@@ -55,11 +62,6 @@ public class DriveToDistance extends CommandBase {
     // get the current encoder position- used to get the total ticks traveled from the start of the command
     double currentEncoderPosition = driveSubsystem.getEncoderPosition();
     // end the command when the difference between the desired distance and the actual distance is within a certain threshold (100 for now)
-    if ((Math.abs(currentEncoderPosition-intitialEncoderPosition)-driveTicks)<100){
-      driveSubsystem.autoDrive(speed, 0); //TODO add a ramp down in order to keep the robot from breaking too hard
-      return true;
-    }
-    driveSubsystem.autoDrive(0, 0);
-    return false;
+    return ((Math.abs(currentEncoderPosition-intitialEncoderPosition) > distance - 0.1));
   }
 }
