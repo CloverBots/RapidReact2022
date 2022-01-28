@@ -123,7 +123,6 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     // Currently used to get the left encoder for driving by distance, but may be changed to include right
     public double getEncoderPosition() {
         return leftEncoder.getPosition();
-
     }
 
     private void configureEncoder(RelativeEncoder encoder) {
