@@ -20,7 +20,6 @@ public class AutonomousRightRight extends SequentialCommandGroupExtended {
   private static final double INTAKE_SPEED = 1;
   private static final double SHOOTER_SPEED = 1;
   private static final double DRIVE_SPEED = 1;
-  private static final double distance = 1;
   IntakeSubsystem intakeSubsystem;
   DriveSubsystem driveSubsystem;
   ShooterSubsystem shooterSubSystem;
@@ -30,10 +29,16 @@ public class AutonomousRightRight extends SequentialCommandGroupExtended {
   /** Creates a new AutonomousRightRight. */
   public AutonomousRightRight() {
     // Add your commands in the addCommands() call, e.g.
-    addCommands(new DriveToDistance(driveSubsystem, distance, DRIVE_SPEED));
+    addCommands(new DriveToDistance(driveSubsystem, DISTANCE_TO_DRIVE, DRIVE_SPEED));
+    
     addInstant(() -> intakeSubsystem.startIntake(INTAKE_SPEED), intakeSubsystem);
+    // addCommands(new IntakeCommand(intakeSubsystem, forwardSpeed, reverseSpeed));
+    
     addCommands(new AimHighCommand(driveSubsystem, visionTargetTracker));
+    
     addInstant(() -> shooterSubSystem.startShooter(SHOOTER_SPEED), shooterSubSystem);
+    // addCommands(new ShooterCommand(shooterSubSystem, visionTargetTracker));
+    
     addCommands(new FeederCommand(feederSubsystem));
     addCommands(new WaitCommand(3));
   }
