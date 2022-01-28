@@ -64,6 +64,6 @@ public class DriveToDistance extends CommandBase {
                                                                          // rather than just the left
     // end the command when the difference between the desired distance and the
     // actual distance is within a certain threshold (100 for now)
-    return ((Math.abs(currentEncoderPosition - intitialEncoderPosition) > distance - 0.1));
+    return Math.abs(currentEncoderPosition - intitialEncoderPosition) > distance - 0.1;
   }
 }
