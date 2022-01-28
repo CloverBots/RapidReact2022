@@ -10,15 +10,16 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveToDistance extends CommandBase {
   private final DriveSubsystem driveSubsystem;
   private double intitialEncoderPosition;
-  private double driveTicks;
-  private double distance; 
+  private double distance;
   private double speed;
 
-  /**Creates a new DriveToDistance.
+  /**
+   * Creates a new DriveToDistance.
    * 
    * @param driveSubsystem what subsystem to use
-   * @param distance distance driven forward in meters
-   * @param speed percentage of motor power (0-1) | Note: Keep speed low until a ramp down system is implemented
+   * @param distance       distance driven forward in meters
+   * @param speed          percentage of motor power (0-1) | Note: Keep speed low
+   *                       until a ramp down system is implemented
    */
 
   public DriveToDistance(DriveSubsystem driveSubsystem, double distance, double speed) {
@@ -32,36 +33,37 @@ public class DriveToDistance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // fetch the initial encoder position in order to calculate the distance traveled
+    // fetch the initial encoder position in order to calculate the distance
+    // traveled
     intitialEncoderPosition = driveSubsystem.getEncoderPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //calculate the amount distance in meters
-    // double distancePerRotation = 10*DriveSubsystem.ENCODER_POSITION_CONVERSION_FACTOR;
-    // double distancePerTick = distancePerRotation/ DriveSubsystem.ENCODER_TICKS_PER_ROTATION;
-    // driveTicks = distance/distancePerTick;
-    driveSubsystem.autoDrive(speed, 0); //TODO add a ramp down in order to keep the robot from breaking too hard
-
-    double currentEncoderPosition = driveSubsystem.getEncoderPosition();
-    System.out.println("Drive ticks: " + driveTicks);
-    System.out.println("Current: " + currentEncoderPosition);
+    driveSubsystem.autoDrive(speed, 0); 
+    // TODO add a ramp down (probably via PID) in order to keep the robot from
+    // breaking too hard
+    // Also add a PID rotation control to avoid turning
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // Stop the robot from driving forward when the robot has reached the target
+    // position
     driveSubsystem.autoDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // get the current encoder position- used to get the total ticks traveled from the start of the command
-    double currentEncoderPosition = driveSubsystem.getEncoderPosition();
-    // end the command when the difference between the desired distance and the actual distance is within a certain threshold (100 for now)
-    return ((Math.abs(currentEncoderPosition-intitialEncoderPosition) > distance - 0.1));
+    // get the current encoder position- used to get the total ticks traveled from
+    // the start of the command
+    double currentEncoderPosition = driveSubsystem.getEncoderPosition(); // TODO get both encoder positions and average
+                                                                         // rather than just the left
+    // end the command when the difference between the desired distance and the
+    // actual distance is within a certain threshold (100 for now)
+    return ((Math.abs(currentEncoderPosition - intitialEncoderPosition) > distance - 0.1));
   }
 }
