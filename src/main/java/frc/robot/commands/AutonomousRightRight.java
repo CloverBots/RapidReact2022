@@ -6,7 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.SequentialCommandGroupExtended;
+import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -21,16 +23,17 @@ public class AutonomousRightRight extends SequentialCommandGroupExtended {
   AimSubsystem aimSubsystem;
   ShooterSubsystem shooterSubSystem;
   FeederSubSystem feederSubSystem;
+  VisionTargetTracker visionTargetTracker;
+  FeederSubsystem feederSubsystem;
 
   /** Creates a new AutonomousRightRight. */
   public AutonomousRightRight() {
     // Add your commands in the addCommands() call, e.g.
-    // drives set amount of feet
     addInstant(() -> driveSubsystem.autoDriveDistance(DISTANCE_TO_DRIVE), driveSubsystem);
     addInstant(() -> intakeSubsystem.startIntake(speed), intakeSubsystem);
-    addInstant(() -> aimSubsystem.alignShot(), aimSubsystem);
+    addCommands(new AimHighCommand(driveSubsystem, visionTargetTracker));
     addInstant(() -> shooterSubSystem.startShooter(speed), shooterSubSystem);
-    addInstant(() -> feederSubSystem.startFeeder(speed), feederSubSystem);
+    addCommands(new FeederCommand(feederSubsystem));
     addCommands(new WaitCommand(3));
   }
 }
