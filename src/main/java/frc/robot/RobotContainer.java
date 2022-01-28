@@ -81,9 +81,6 @@ public class RobotContainer {
 
     private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTarget);
 
-
-    private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTarget);
-
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
