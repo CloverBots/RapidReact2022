@@ -102,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     // motor speeds to test autonomous
     public void autoDrive(double forward, double rotate) { // TODO: Investigate why arcadeDrive isn't working, but
                                                            // autoDrive is.
-        leftLeadMotor.set(forward + rotate);
+        leftLeadMotor.set(forward - rotate);
         rightLeadMotor.set(forward - rotate);
     }
 

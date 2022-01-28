@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AimHighCommand;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
@@ -73,6 +74,8 @@ public class RobotContainer {
     private final TestShooterNeoSubsystem testShooterNeoSubsystem = new TestShooterNeoSubsystem();
     private final TestShooterNeoCommand testShooterNeoCommand = new TestShooterNeoCommand(testShooterNeoSubsystem);
 
+    private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTarget);
+
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
@@ -129,6 +132,9 @@ public class RobotContainer {
     private void configureButtonBindings() {
         JoystickButton shootButton = new JoystickButton(driverController, XboxController.Button.kY.value);
         shootButton.whileHeld(shooterCommand);
+
+        JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kA.value);
+        aimButton.whileHeld(aimHighCommand);
     }
 
     /**
