@@ -11,18 +11,17 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class AimHighCommand extends CommandBase {
     private static final double MAX_OUTPUT = .05;
-    //public final ShooterSubsystem shooterSubsystem;
-    public final DriveSubsystem driveSubsystem;
-    public final VisionTargetTracker visionTargetTracker;
+
+    private final DriveSubsystem driveSubsystem;
+    private final VisionTargetTracker visionTargetTracker;
 
     /** Creates a new AimRobotForHigh. */
     public AimHighCommand(DriveSubsystem driveSubsystem, VisionTargetTracker visionTargetTracker) {
-        //this.shooterSubsystem = shooterSubsystem;
+
         this.driveSubsystem = driveSubsystem;
         this.visionTargetTracker = visionTargetTracker;
 
         // Use addRequirements() here to declare subsystem dependencies.
-        //addRequirements(shooterSubsystem);
         addRequirements(driveSubsystem);
     }
 
