@@ -9,10 +9,11 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class TestShooterSubsystem extends SubsystemBase {
+public class FeederSubsystem extends SubsystemBase {
+
+    private static final double DEFAULT_FEEDER_RPM = 10; //TODO get real value
 
     private class Gains {
         public final double kP;
@@ -62,10 +63,9 @@ public class TestShooterSubsystem extends SubsystemBase {
     private final Gains kGains_Velocit = new Gains(0.25, 0.001, 20, 1023.0 / 7200.0, 300, 1.00);
 
     TalonSRX talonLead = new WPI_TalonSRX(1);
-    TalonSRX talonFollow = new WPI_TalonSRX(2);
 
-    /** Creates a new TestShooterSubsystem. */
-    public TestShooterSubsystem() {
+    /** Creates a new FeederSubsystem. */
+    public FeederSubsystem() {
         talonLead.configFactoryDefault();
         /* Config sensor used for Primary PID [Velocity] */
         talonLead.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
@@ -89,8 +89,6 @@ public class TestShooterSubsystem extends SubsystemBase {
         talonLead.config_kP(kPIDLoopIdx, kGains_Velocit.kP, kTimeoutMs);
         talonLead.config_kI(kPIDLoopIdx, kGains_Velocit.kI, kTimeoutMs);
         talonLead.config_kD(kPIDLoopIdx, kGains_Velocit.kD, kTimeoutMs);
-
-        talonFollow.follow(talonLead);
     }
 
     @Override
@@ -98,12 +96,18 @@ public class TestShooterSubsystem extends SubsystemBase {
         // This method will be called once per scheduler run
     }
 
-    public void setShooterRPM(double rpm) {
+    public void startFeeder(double rpm) {
         // 4096 encoder ticks per revolution / 100 ms / minute
         double targetVelocity_UnitsPer100ms = rpm * 4096 / 600;
 
         talonLead.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+    }
 
-        SmartDashboard.putNumber("current rpm", talonLead.getSelectedSensorVelocity() / 4096 * 600);
+    public void startFeeder() {
+        startFeeder(DEFAULT_FEEDER_RPM);
+    }
+
+    public void stopFeeder() {
+        talonLead.set(ControlMode.Velocity, 0);
     }
 }

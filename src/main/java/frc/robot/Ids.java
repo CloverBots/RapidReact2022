@@ -33,4 +33,6 @@ public final class Ids {
     public static final int TEST_SHOOTER_LEAD_DEVICE = 14;
     public static final int TEST_SHOOTER_FOLLOW_DEVICE_1 = 15;
 
+    // Test falcon IDs
+    public static final int TEST_TALONFX_ID = 18;
 }
