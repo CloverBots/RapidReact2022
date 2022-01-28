@@ -120,13 +120,10 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
         differentialDrive.feed();
     }
 
-    /**
-     * Drive forward by a certain distance in meters
-     * 
-     * @param forward The distance to move the robot forward by in meters
-     */
+    // Get the current position of the encoder.
+    // Currently used to get the left encoder for driving by distance, but may be changed to include right
+    
     public double getEncoderPosition() {
-
         return leftEncoder.getPosition();
 
     }

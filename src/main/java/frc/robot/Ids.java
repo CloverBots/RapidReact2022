@@ -30,7 +30,8 @@ public final class Ids {
     public static final int TEST_SOLENOID1_REVERSE = 3;
 
     // Test shooter motor ID
-    public static final int TEST_SHOOTER_LEAD_DEVICE = 14;
-    public static final int TEST_SHOOTER_FOLLOW_DEVICE_1 = 15;
+    public static final int TEST_SHOOTER_LEAD_DEVICE = 16; //TODO fix clashing with other shooter ports
+    public static final int TEST_SHOOTER_FOLLOW_DEVICE_1 = 17;//temporarily changed from 14 and 15 to 16 and 17 in order to test code
+
 
 }
