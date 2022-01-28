@@ -21,9 +21,10 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     private static final double LIME_PID_D = 0.0;
     private static final double LIME_PID_DEFAULT_SETPOINT = -3.3;
 
-    private static final double WHEEL_DIAMETER_METERS = 0.1524;
-    private static final double ENCODER_POSITION_CONVERSION_FACTOR = 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
-    private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
+    public static final double WHEEL_DIAMETER_METERS = 0.1524;
+    public static final double ENCODER_POSITION_CONVERSION_FACTOR = 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
+    public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
+    public static final double ENCODER_TICKS_PER_ROTATION = 4096;
 
     private final PIDController limePidController = new PIDController(
             LIME_PID_P,
@@ -116,6 +117,12 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
         leftMotors.setVoltage(leftVoltage);
         rightMotors.setVoltage(rightVoltage);
         differentialDrive.feed();
+    }
+
+    // Get the current position of the encoder.
+    // Currently used to get the left encoder for driving by distance, but may be changed to include right
+    public double getEncoderPosition() {
+        return leftEncoder.getPosition();
     }
 
     private void configureEncoder(RelativeEncoder encoder) {
