@@ -21,7 +21,6 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     private static final double LIME_PID_D = 0.0;
     private static final double LIME_PID_DEFAULT_SETPOINT = -3.3;
 
-    
     public static final double WHEEL_DIAMETER_METERS = 0.1524;
     public static final double ENCODER_POSITION_CONVERSION_FACTOR = 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
