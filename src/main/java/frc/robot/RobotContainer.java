@@ -9,21 +9,23 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimHighCommand;
+import frc.robot.commands.AutonomousLeftMiddleCommand;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.PneumaticsCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TestTalonFXCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestShooterNeoCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeDeploySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
-import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TestTalonFXSubsystem;
 import frc.robot.subsystems.TestShooterNeoSubsystem;
@@ -48,7 +50,7 @@ public class RobotContainer {
             CAMERA_HEIGHT,
             CAMERA_PITCH);
 
-    private final VisionTargetTracker visionTarget = new VisionTargetTracker(visionConfiguration);
+    private final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
     private final XboxController driverController = new XboxController(Ids.CONTROLLER_DRIVE_PORT);
     private final XboxController operatorController = new XboxController(Ids.CONTROLLER_OPERATOR_PORT);
@@ -63,29 +65,33 @@ public class RobotContainer {
     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, visionTarget);
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, visionTargetTracker);
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
     private final TestShooterSubsystem testShooterSubsystem = new TestShooterSubsystem();
     private final TestShooterCommand testShooterCommand = new TestShooterCommand(testShooterSubsystem);
 
-    private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
-    private final PneumaticsCommand pneumaticsCommand = new PneumaticsCommand(pneumaticsSubsystem, driverController::getBButton);
-
     private final TestShooterNeoSubsystem testShooterNeoSubsystem = new TestShooterNeoSubsystem();
     private final TestShooterNeoCommand testShooterNeoCommand = new TestShooterNeoCommand(testShooterNeoSubsystem);
-    
+
     private final TestTalonFXSubsystem testTalonFXSubsystem = new TestTalonFXSubsystem();
     private final TestTalonFXCommand testTalonFXCommand = new TestTalonFXCommand(testTalonFXSubsystem);
 
-    private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTarget);
+    private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTargetTracker);
 
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem,
             operatorController::getRightTriggerAxis, operatorController::getLeftTriggerAxis);
+    private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
+    private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
+            intakeDeploySubsystem);
+    private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
+            intakeDeploySubsystem);
+
+    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
@@ -96,8 +102,8 @@ public class RobotContainer {
     // lifecyclecallbacks used when special cases are needed for autonomous and
     // teleop
     private final RobotLifecycleCallbacks[] robotLifecycleCallbacks = new RobotLifecycleCallbacks[] {
-            driveSubsystem, 
-            pneumaticsSubsystem
+            driveSubsystem,
+            intakeDeploySubsystem
     };
 
     private final SendableChooser<Command> chooser = new SendableChooser<>();
@@ -108,7 +114,6 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
         testShooterSubsystem.setDefaultCommand(testShooterCommand);
-        pneumaticsSubsystem.setDefaultCommand(pneumaticsCommand);
         testShooterNeoSubsystem.setDefaultCommand(testShooterNeoCommand);
         testTalonFXSubsystem.setDefaultCommand(testTalonFXCommand);
 
@@ -117,9 +122,17 @@ public class RobotContainer {
         intakeSubsystem.setDefaultCommand(intakeCommand);
 
         // Add choices to the chooser
-        chooser.setDefaultOption("Autonomous One", new AutonomousOne(driveSubsystem));
+        chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
+        chooser.setDefaultOption("Autonomous Left Middle", new AutonomousLeftMiddleCommand(
+                driveSubsystem,
+                intakeSubsystem,
+                intakeDeploySubsystem,
+                feederSubsystem,
+                shooterSubsystem,
+                visionTargetTracker));
         // Add chooser to the SmartDashboard
-        SmartDashboard.putData("Automous", chooser);
+        SmartDashboard.putData("Autonomous One", chooser);
+        SmartDashboard.putData("Autonomous Left Middle", chooser);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -139,6 +152,10 @@ public class RobotContainer {
 
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kA.value);
         aimButton.whileHeld(aimHighCommand);
+
+        JoystickButton intakeDeployButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+        intakeDeployButton.whenPressed(intakeDeployCommand);
+        intakeDeployButton.whenReleased(intakeRetractCommand);
     }
 
     /**

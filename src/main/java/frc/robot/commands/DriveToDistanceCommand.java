@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class DriveToDistance extends CommandBase {
+public class DriveToDistanceCommand extends CommandBase {
     private final DriveSubsystem driveSubsystem;
     private final double distance;
     private final double speed;
@@ -22,7 +22,7 @@ public class DriveToDistance extends CommandBase {
      *                       until a ramp down system is implemented
      */
 
-    public DriveToDistance(DriveSubsystem driveSubsystem, double distance, double speed) {
+    public DriveToDistanceCommand(DriveSubsystem driveSubsystem, double distance, double speed) {
         this.distance = distance;
         this.speed = speed;
         this.driveSubsystem = driveSubsystem;

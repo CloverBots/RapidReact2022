@@ -24,7 +24,7 @@ public class PneumaticsCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        pneumaticsSubsystem.setSoleonoid(position.getAsBoolean());
+        pneumaticsSubsystem.setSolenoid(position.getAsBoolean());
     }
 
     // Called once the command ends or is interrupted.
