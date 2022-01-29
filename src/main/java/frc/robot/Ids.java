@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.I2C.Port;
+
 public final class Ids {
     public static final int CONTROLLER_DRIVE_PORT = 0;
     public static final int CONTROLLER_OPERATOR_PORT = 1;
@@ -37,4 +39,7 @@ public final class Ids {
 
     // Test falcon IDs
     public static final int TEST_TALONFX_ID = 18;
+
+    //NavX Gyro
+    public static final Port AHRS_PORT_ID = Port.kMXP;
 }
