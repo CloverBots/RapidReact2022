@@ -22,7 +22,7 @@ public class PneumaticsSubsystem extends SubsystemBase implements RobotLifecycle
         // This method will be called once per scheduler run
     }
 
-    public void setSoleonoid(boolean position) {
+    public void setSolenoid(boolean position) {
         if (position) {
             solenoid1.set(Value.kForward);
         }

@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimHighCommand;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeDeployCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TestTalonFXCommand;
 import frc.robot.commands.TestShooterCommand;
@@ -70,12 +70,9 @@ public class RobotContainer {
     private final TestShooterSubsystem testShooterSubsystem = new TestShooterSubsystem();
     private final TestShooterCommand testShooterCommand = new TestShooterCommand(testShooterSubsystem);
 
-    private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
-    private final IntakeDeployCommand intakeDeployCommand = new IntakeDeployCommand(intakeDeploySubsystem, driverController::getBButton);
-
     private final TestShooterNeoSubsystem testShooterNeoSubsystem = new TestShooterNeoSubsystem();
     private final TestShooterNeoCommand testShooterNeoCommand = new TestShooterNeoCommand(testShooterNeoSubsystem);
-    
+
     private final TestTalonFXSubsystem testTalonFXSubsystem = new TestTalonFXSubsystem();
     private final TestTalonFXCommand testTalonFXCommand = new TestTalonFXCommand(testTalonFXSubsystem);
 
@@ -86,6 +83,11 @@ public class RobotContainer {
     // automatically be fed into the intakeCommand as the speed value.
     private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem,
             operatorController::getRightTriggerAxis, operatorController::getLeftTriggerAxis);
+    private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
+    private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
+            intakeDeploySubsystem);
+    private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
+            intakeDeploySubsystem);
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
@@ -96,7 +98,7 @@ public class RobotContainer {
     // lifecyclecallbacks used when special cases are needed for autonomous and
     // teleop
     private final RobotLifecycleCallbacks[] robotLifecycleCallbacks = new RobotLifecycleCallbacks[] {
-            driveSubsystem, 
+            driveSubsystem,
             intakeDeploySubsystem
     };
 
@@ -108,7 +110,6 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
         testShooterSubsystem.setDefaultCommand(testShooterCommand);
-        intakeDeploySubsystem.setDefaultCommand(intakeDeployCommand);
         testShooterNeoSubsystem.setDefaultCommand(testShooterNeoCommand);
         testTalonFXSubsystem.setDefaultCommand(testTalonFXCommand);
 
@@ -139,6 +140,10 @@ public class RobotContainer {
 
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kA.value);
         aimButton.whileHeld(aimHighCommand);
+
+        JoystickButton intakeDeployButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+        intakeDeployButton.whenPressed(intakeDeployCommand);
+        intakeDeployButton.whenReleased(intakeRetractCommand);
     }
 
     /**
