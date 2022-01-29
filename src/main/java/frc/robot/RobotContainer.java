@@ -14,16 +14,16 @@ import frc.robot.commands.AimHighCommand;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.PneumaticsCommand;
+import frc.robot.commands.IntakeDeployCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.TestTalonFXCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestShooterNeoCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeDeploySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
-import frc.robot.subsystems.PneumaticsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TestTalonFXSubsystem;
 import frc.robot.subsystems.TestShooterNeoSubsystem;
@@ -70,8 +70,8 @@ public class RobotContainer {
     private final TestShooterSubsystem testShooterSubsystem = new TestShooterSubsystem();
     private final TestShooterCommand testShooterCommand = new TestShooterCommand(testShooterSubsystem);
 
-    private final PneumaticsSubsystem pneumaticsSubsystem = new PneumaticsSubsystem();
-    private final PneumaticsCommand pneumaticsCommand = new PneumaticsCommand(pneumaticsSubsystem, driverController::getBButton);
+    private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
+    private final IntakeDeployCommand intakeDeployCommand = new IntakeDeployCommand(intakeDeploySubsystem, driverController::getBButton);
 
     private final TestShooterNeoSubsystem testShooterNeoSubsystem = new TestShooterNeoSubsystem();
     private final TestShooterNeoCommand testShooterNeoCommand = new TestShooterNeoCommand(testShooterNeoSubsystem);
@@ -97,7 +97,7 @@ public class RobotContainer {
     // teleop
     private final RobotLifecycleCallbacks[] robotLifecycleCallbacks = new RobotLifecycleCallbacks[] {
             driveSubsystem, 
-            pneumaticsSubsystem
+            intakeDeploySubsystem
     };
 
     private final SendableChooser<Command> chooser = new SendableChooser<>();
@@ -108,7 +108,7 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
         testShooterSubsystem.setDefaultCommand(testShooterCommand);
-        pneumaticsSubsystem.setDefaultCommand(pneumaticsCommand);
+        intakeDeploySubsystem.setDefaultCommand(intakeDeployCommand);
         testShooterNeoSubsystem.setDefaultCommand(testShooterNeoCommand);
         testTalonFXSubsystem.setDefaultCommand(testTalonFXCommand);
 
