@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimHighCommand;
+import frc.robot.commands.AutonomousLeftMiddleCommand;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
@@ -20,6 +21,7 @@ import frc.robot.commands.TestTalonFXCommand;
 import frc.robot.commands.TestShooterCommand;
 import frc.robot.commands.TestShooterNeoCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
@@ -48,7 +50,7 @@ public class RobotContainer {
             CAMERA_HEIGHT,
             CAMERA_PITCH);
 
-    private final VisionTargetTracker visionTarget = new VisionTargetTracker(visionConfiguration);
+    private final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
     private final XboxController driverController = new XboxController(Ids.CONTROLLER_DRIVE_PORT);
     private final XboxController operatorController = new XboxController(Ids.CONTROLLER_OPERATOR_PORT);
@@ -63,7 +65,7 @@ public class RobotContainer {
     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, visionTarget);
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, visionTargetTracker);
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
@@ -76,7 +78,7 @@ public class RobotContainer {
     private final TestTalonFXSubsystem testTalonFXSubsystem = new TestTalonFXSubsystem();
     private final TestTalonFXCommand testTalonFXCommand = new TestTalonFXCommand(testTalonFXSubsystem);
 
-    private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTarget);
+    private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTargetTracker);
 
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
@@ -88,6 +90,8 @@ public class RobotContainer {
             intakeDeploySubsystem);
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
             intakeDeploySubsystem);
+
+    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
@@ -118,9 +122,17 @@ public class RobotContainer {
         intakeSubsystem.setDefaultCommand(intakeCommand);
 
         // Add choices to the chooser
-        chooser.setDefaultOption("Autonomous One", new AutonomousOne(driveSubsystem));
+        chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
+        chooser.setDefaultOption("Autonomous Left Middle", new AutonomousLeftMiddleCommand(
+                driveSubsystem,
+                intakeSubsystem,
+                intakeDeploySubsystem,
+                feederSubsystem,
+                shooterSubsystem,
+                visionTargetTracker));
         // Add chooser to the SmartDashboard
-        SmartDashboard.putData("Automous", chooser);
+        SmartDashboard.putData("Autonomous One", chooser);
+        SmartDashboard.putData("Autonomous Left Middle", chooser);
 
         // Configure the button bindings
         configureButtonBindings();

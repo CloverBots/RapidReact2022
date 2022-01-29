@@ -10,7 +10,7 @@ public class IntakeCommand extends CommandBase {
     private final DoubleSupplier forwardSpeed;
     private final DoubleSupplier reverseSpeed;
 
-    /** Creates a new ShootBall. */
+    /** Creates a new IntakeCommand. */
     public IntakeCommand(IntakeSubsystem intakeSubsystem, DoubleSupplier forwardSpeed, DoubleSupplier reverseSpeed) {
         this.intakeSubsystem = intakeSubsystem;
         this.forwardSpeed = forwardSpeed;
