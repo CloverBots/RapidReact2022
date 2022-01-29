@@ -10,8 +10,10 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ids;
+import frc.robot.NavXGyro;
 import frc.robot.RobotLifecycleCallbacks;
 
 public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
@@ -31,8 +33,6 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
             LIME_PID_I,
             LIME_PID_D);
 
-    private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-
     private final CANSparkMax leftLeadMotor = new CANSparkMax(Ids.DRIVE_LEFT_LEAD_DEVICE, MotorType.kBrushless);
     private final CANSparkMax rightLeadMotor = new CANSparkMax(Ids.DRIVE_RIGHT_LEAD_DEVICE, MotorType.kBrushless);
     private final CANSparkMax leftFollowMotor = new CANSparkMax(Ids.DRIVE_LEFT_FOLLOW_DEVICE, MotorType.kBrushless);
@@ -46,6 +46,8 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
 
     private final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
     private final DifferentialDriveOdometry differentialDriveOdometry;
+
+    private final NavXGyro navXGyro = new NavXGyro();
 
     /**
      * Constructs a new {@link DriveSubsystem} instance.
@@ -71,6 +73,8 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
                 getRotation(),
                 leftEncoder.getPosition(),
                 rightEncoder.getPosition());
+
+        SmartDashboard.putNumber("heading", navXGyro.getHeading());
     }
 
     /**
@@ -131,7 +135,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     }
 
     private Rotation2d getRotation() {
-        return Rotation2d.fromDegrees(gyro.getAngle() % 360.0);
+        return Rotation2d.fromDegrees(navXGyro.getHeading() % 360.0);
     }
 
     @Override
