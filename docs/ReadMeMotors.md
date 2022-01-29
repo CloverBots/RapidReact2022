@@ -1,6 +1,6 @@
 Motors: CIM, BAG, 775pro, NEO, NEO550, Falcon 500
 
-CIM Motor:   
+**CIM Motor:**   
 Free Speed: 5330 rpm  
 Max Power: 337 W  
 Stall Torque: 2.41 N-m  
@@ -9,7 +9,7 @@ Pros: cheap, can be stalled for long amounts of time without issues
 Cons: very heavy, not much power (relative)  
 Use: don't use (better alternatives)  
   
-BAG Motor: Miniature CIM  
+**BAG Motor:** Miniature CIM  
 Freed Speed: 13180 rpm  
 Max Power: 149 W  
 Stall Torque: 0.4 N-m  
@@ -18,7 +18,7 @@ Pros: cheap, lowest power
 Cons: not much torque  
 Use: low power devices (Ex: intake)  
 
-775pro Motor:  
+**775pro Motor:**  
 Free Speed: 18,730 rpm  
 Max Power: 347 W  
 Stall Torque: 0.71 N-m  
@@ -27,7 +27,7 @@ Pros: high rpm, decent power output
 Cons: really easy to burn up when stalled out  
 Use: high rpm (Ex: shooter)  
 
-NEO Brushless Motor:  
+**NEO Brushless Motor:**
 Free Speed: 5676 rpm  
 Max Power: 406 W  
 Stall Torque: 2.6 N-m  
@@ -36,7 +36,7 @@ Pros: build-in encoder, great power output
 Cons: none  
 Use: does everything well, drivetrain, manipulators  
 
-NEO 550 Brushless Motor:  
+**NEO 550 Brushless Motor:** 
 Free Speed: 11000 rpm  
 Max Power: 279 W  
 Stall Torque: 0.97 N-m  
@@ -45,7 +45,7 @@ Pros: very small, built-in encoder
 Cons: low torque and power output  
 Use: very low power devices  
 
-Falcon 500 Motor:  
+**Falcon 500 Motor:**  
 Free Speed: 6380 rpm  
 Max Power: 783 W  
 Stall Torque: 4.69 N-m  
