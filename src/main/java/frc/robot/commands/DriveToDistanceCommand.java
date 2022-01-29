@@ -40,7 +40,6 @@ public class DriveToDistanceCommand extends CommandBase {
         driveSubsystem.driveRotatePidController.setSetpoint(0);
         // Tolerance within 3 cm
         driveSubsystem.driveStraightPidController.setTolerance(0.03);
-        
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -54,7 +53,6 @@ public class DriveToDistanceCommand extends CommandBase {
         double drivingSpeed = driveSubsystem.driveStraightPidController.calculate(distanceTraveled);
         drivingSpeed = Math.max(Math.min(drivingSpeed, -speed), speed);
         driveSubsystem.autoDrive(drivingSpeed, rotateSpeed);
-
     }
 
     // Called once the command ends or is interrupted.

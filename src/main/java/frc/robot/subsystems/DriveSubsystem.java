@@ -51,7 +51,6 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
             DRIVEROTATE_PID_I,
             DRIVEROTATE_PID_D);
 
-
     private final CANSparkMax leftLeadMotor = new CANSparkMax(Ids.DRIVE_LEFT_LEAD_DEVICE, MotorType.kBrushless);
     private final CANSparkMax rightLeadMotor = new CANSparkMax(Ids.DRIVE_RIGHT_LEAD_DEVICE, MotorType.kBrushless);
     private final CANSparkMax leftFollowMotor = new CANSparkMax(Ids.DRIVE_LEFT_FOLLOW_DEVICE, MotorType.kBrushless);

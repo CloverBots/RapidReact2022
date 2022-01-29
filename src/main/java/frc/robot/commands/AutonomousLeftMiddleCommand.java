@@ -9,7 +9,6 @@ import frc.robot.subsystems.IntakeDeploySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-
 public class AutonomousLeftMiddleCommand extends SequentialCommandGroupExtended {
     private final static double DRIVE_SPEED = 0.5;
     private final static double DRIVE_DISTANCE = 1;
