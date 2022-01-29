@@ -23,11 +23,13 @@ public final class Ids {
     public static final int SHOOTER_FOLLOW_DEVICE_3 = 11;
 
     public static final int INTAKE_LEAD_DEVICE = 13; //TODO proper port number
+    public static final int INTAKE_SOLENOID1_FORWARD = 2;
+    public static final int INTAKE_SOLENOID1_REVERSE = 3;
 
     // pneumatics ids
-    public static final int TEST_PCM_ID = 1;
-    public static final int TEST_SOLENOID1_FORWARD = 2;
-    public static final int TEST_SOLENOID1_REVERSE = 3;
+    public static final int PCM_ID = 1;
+    public static final int TEST_SOLENOID1_FORWARD = 4;  //TODO change to correct value
+    public static final int TEST_SOLENOID1_REVERSE = 5; //TODO change to correct value
 
     // Test shooter motor ID
     public static final int TEST_SHOOTER_LEAD_DEVICE = 14;
