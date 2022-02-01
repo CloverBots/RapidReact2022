@@ -27,6 +27,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TestLimitSwitchSubsystem;
 import frc.robot.subsystems.TestTalonFXSubsystem;
 import frc.robot.subsystems.TestShooterNeoSubsystem;
 import frc.robot.subsystems.TestShooterSubsystem;
@@ -92,6 +93,8 @@ public class RobotContainer {
             intakeDeploySubsystem);
 
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
+
+    private final TestLimitSwitchSubsystem testLimitSwitchSubsystem = new TestLimitSwitchSubsystem();
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
