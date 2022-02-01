@@ -1,8 +1,8 @@
 # RoboRIO Documentation
 ## Protips for Pros
 * Before the first competition, check for RoboRIO imaging tool software updates.
-* Don't attempt to format the RoboRIO over wireless. Use a USB connection instead.
-* *To Do: add more entries here*
+* Do not attempt to format the RoboRIO wirelessly. Use a USB connection instead.
+* *To Do: add more notes here*
 
 ## External Resources
 The links below provide software for imaging FRC electronics and assigning CAN device numbers. Some links are not RoboRIO specific.
