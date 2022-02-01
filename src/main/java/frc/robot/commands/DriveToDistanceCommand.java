@@ -3,29 +3,30 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveToDistanceCommand extends CommandBase {
     private final DriveSubsystem driveSubsystem;
     private final double distance;
-    private final double speed;
+    private final double maxSpeed;
     private double intitialEncoderPosition;
+    private double rotate;
 
     /**
      * Creates a new DriveToDistance.
      * 
      * @param driveSubsystem what subsystem to use
      * @param distance       distance driven forward in meters
-     * @param speed          percentage of motor power (0-1) | Note: Keep speed low
-     *                       until a ramp down system is implemented
+     * @param maxSpeed          set the maximum speed
+     * @param rotate         how much to roatate in degrees
      */
 
-    public DriveToDistanceCommand(DriveSubsystem driveSubsystem, double distance, double speed) {
+    public DriveToDistanceCommand(DriveSubsystem driveSubsystem, double distance, double maxSpeed, double rotate) {
         this.distance = distance;
-        this.speed = speed;
+        this.maxSpeed = maxSpeed;
         this.driveSubsystem = driveSubsystem;
+        this.rotate = rotate;
         addRequirements(driveSubsystem);
         // Use addRequirements() here to declare subsystem dependencies.
     }
@@ -35,16 +36,24 @@ public class DriveToDistanceCommand extends CommandBase {
     public void initialize() {
         // fetch the initial encoder position in order to calculate the distance
         // traveled
-        intitialEncoderPosition = driveSubsystem.getEncoderPosition();
+        intitialEncoderPosition = driveSubsystem.getAverageEncoderPosition();
+        driveSubsystem.driveStraightPidController.setSetpoint(distance);
+        driveSubsystem.driveRotatePidController.setSetpoint(rotate);
+        // Tolerance within 3 cm
+        driveSubsystem.driveStraightPidController.setTolerance(0.03);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        driveSubsystem.autoDrive(speed, 0);
-        // TODO add a ramp down (probably via PID) in order to keep the robot from
-        // breaking too hard
-        // Also add a PID rotation control to avoid turning
+        // Begin the ramp down process when the robot is within 50 centimeters of the
+        // target distance
+        double currentEncoderPosition = driveSubsystem.getAverageEncoderPosition();
+        double distanceTraveled = Math.abs(currentEncoderPosition - intitialEncoderPosition);
+        double rotateSpeed = driveSubsystem.driveRotatePidController.calculate(driveSubsystem.navXGyro.getHeading());
+        double drivingSpeed = driveSubsystem.driveStraightPidController.calculate(distanceTraveled);
+        drivingSpeed = Math.max(Math.min(drivingSpeed, -maxSpeed), maxSpeed);
+        driveSubsystem.autoDrive(drivingSpeed, rotateSpeed);
     }
 
     // Called once the command ends or is interrupted.
@@ -58,13 +67,8 @@ public class DriveToDistanceCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // get the current encoder position- used to get the total ticks traveled from
-        // the start of the command
-        double currentEncoderPosition = driveSubsystem.getEncoderPosition(); // TODO get both encoder positions and
-                                                                             // average
-                                                                             // rather than just the left
         // end the command when the difference between the desired distance and the
-        // actual distance is within a certain threshold (100 for now)
-        return Math.abs(currentEncoderPosition - intitialEncoderPosition) > distance - 0.1;
+        // actual distance is within a certain threshold calculated by the PID controller
+        return driveSubsystem.driveStraightPidController.atSetpoint();
     }
 }
