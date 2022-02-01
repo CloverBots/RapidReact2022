@@ -23,6 +23,14 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     private static final double LIME_PID_D = 0.0;
     private static final double LIME_PID_DEFAULT_SETPOINT = -3.3;
 
+    private static final double DRIVESTRAIGHT_PID_P = 0.05;
+    private static final double DRIVESTRAIGHT_PID_I = 0.0;
+    private static final double DRIVESTRAIGHT_PID_D = 0.06;
+
+    private static final double DRIVEROTATE_PID_P = 0.01;
+    private static final double DRIVEROTATE_PID_I = 0.00;
+    private static final double DRIVEROTATE_PID_D = 0.007;
+
     public static final double WHEEL_DIAMETER_METERS = 0.1524;
     public static final double ENCODER_POSITION_CONVERSION_FACTOR = 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
@@ -32,6 +40,16 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
             LIME_PID_P,
             LIME_PID_I,
             LIME_PID_D);
+
+    public final PIDController driveStraightPidController = new PIDController(
+            DRIVESTRAIGHT_PID_P,
+            DRIVESTRAIGHT_PID_I,
+            DRIVESTRAIGHT_PID_D);
+
+    public final PIDController driveRotatePidController = new PIDController(
+            DRIVEROTATE_PID_P,
+            DRIVEROTATE_PID_I,
+            DRIVEROTATE_PID_D);
 
     private final CANSparkMax leftLeadMotor = new CANSparkMax(Ids.DRIVE_LEFT_LEAD_DEVICE, MotorType.kBrushless);
     private final CANSparkMax rightLeadMotor = new CANSparkMax(Ids.DRIVE_RIGHT_LEAD_DEVICE, MotorType.kBrushless);
@@ -47,7 +65,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     private final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
     private final DifferentialDriveOdometry differentialDriveOdometry;
 
-    private final NavXGyro navXGyro = new NavXGyro();
+    public final NavXGyro navXGyro = new NavXGyro();
 
     /**
      * Constructs a new {@link DriveSubsystem} instance.
@@ -123,10 +141,21 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
         differentialDrive.feed();
     }
 
-    // Get the current position of the encoder.
+    // Get the current position of the left encoder.
     // Currently used to get the left encoder for driving by distance, but may be changed to include right
-    public double getEncoderPosition() {
+    public double getLeftEncoderPosition() {
         return leftEncoder.getPosition();
+    }
+
+    // Get the current position of the right encoder.
+    // Currently used to get the left encoder for driving by distance, but may be changed to include right
+    public double getRightEncoderPosition() {
+        return rightEncoder.getPosition();
+    }
+
+    // Get the average position of left and right encoders. 
+    public double getAverageEncoderPosition() {
+        return (rightEncoder.getPosition()+leftEncoder.getPosition())/2;
     }
 
     private void configureEncoder(RelativeEncoder encoder) {
