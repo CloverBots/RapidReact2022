@@ -9,23 +9,24 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveToDistanceCommand extends CommandBase {
     private final DriveSubsystem driveSubsystem;
     private final double distance;
-    private final double speed;
+    private final double maxSpeed;
     private double intitialEncoderPosition;
-    public double drivingSpeed;
+    private double rotate;
 
     /**
      * Creates a new DriveToDistance.
      * 
      * @param driveSubsystem what subsystem to use
      * @param distance       distance driven forward in meters
-     * @param speed          set the maximum speed
+     * @param maxSpeed          set the maximum speed
      * @param rotate         how much to roatate in degrees
      */
 
-    public DriveToDistanceCommand(DriveSubsystem driveSubsystem, double distance, double speed, double rotate) {
+    public DriveToDistanceCommand(DriveSubsystem driveSubsystem, double distance, double maxSpeed, double rotate) {
         this.distance = distance;
-        this.speed = speed;
+        this.maxSpeed = maxSpeed;
         this.driveSubsystem = driveSubsystem;
+        this.rotate = rotate;
         addRequirements(driveSubsystem);
         // Use addRequirements() here to declare subsystem dependencies.
     }
@@ -37,7 +38,7 @@ public class DriveToDistanceCommand extends CommandBase {
         // traveled
         intitialEncoderPosition = driveSubsystem.getAverageEncoderPosition();
         driveSubsystem.driveStraightPidController.setSetpoint(distance);
-        driveSubsystem.driveRotatePidController.setSetpoint(0);
+        driveSubsystem.driveRotatePidController.setSetpoint(rotate);
         // Tolerance within 3 cm
         driveSubsystem.driveStraightPidController.setTolerance(0.03);
     }
@@ -51,7 +52,7 @@ public class DriveToDistanceCommand extends CommandBase {
         double distanceTraveled = Math.abs(currentEncoderPosition - intitialEncoderPosition);
         double rotateSpeed = driveSubsystem.driveRotatePidController.calculate(driveSubsystem.navXGyro.getHeading());
         double drivingSpeed = driveSubsystem.driveStraightPidController.calculate(distanceTraveled);
-        drivingSpeed = Math.max(Math.min(drivingSpeed, -speed), speed);
+        drivingSpeed = Math.max(Math.min(drivingSpeed, -maxSpeed), maxSpeed);
         driveSubsystem.autoDrive(drivingSpeed, rotateSpeed);
     }
 
