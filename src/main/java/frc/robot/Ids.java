@@ -33,13 +33,6 @@ public final class Ids {
     public static final int TEST_SOLENOID1_FORWARD = 4;  //TODO change to correct value
     public static final int TEST_SOLENOID1_REVERSE = 5; //TODO change to correct value
 
-    // Test shooter motor ID
-    public static final int TEST_SHOOTER_LEAD_DEVICE = 14;
-    public static final int TEST_SHOOTER_FOLLOW_DEVICE_1 = 15;
-
-    // Test falcon IDs
-    public static final int TEST_TALONFX_ID = 18;
-
     //NavX Gyro
     public static final Port AHRS_PORT_ID = Port.kMXP;
 }
