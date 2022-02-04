@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimHighCommand;
 import frc.robot.commands.AutonomousLeftMiddleCommand;
@@ -65,10 +67,12 @@ public class RobotContainer {
     // private final LiftSubsystem liftSubsystem = new LiftSubsystem();
     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
-    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, visionTargetTracker);
-
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
+
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, feederSubsystem,
+            visionTargetTracker);
 
     private final TestShooterSubsystem testShooterSubsystem = new TestShooterSubsystem();
     private final TestShooterCommand testShooterCommand = new TestShooterCommand(testShooterSubsystem);
@@ -84,15 +88,15 @@ public class RobotContainer {
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
-    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem,
-            operatorController::getRightTriggerAxis, operatorController::getLeftTriggerAxis);
+    private final IntakeCommand intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem, 1);
+    private final IntakeCommand intakeOutCommand = new IntakeCommand(intakeSubsystem, feederSubsystem, -1);
+    private final IntakeCommand intakeStopCommand = new IntakeCommand(intakeSubsystem, feederSubsystem, 0);
+
     private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
             intakeDeploySubsystem);
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
             intakeDeploySubsystem);
-
-    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
 
     private final TestLimitSwitchSubsystem testLimitSwitchSubsystem = new TestLimitSwitchSubsystem();
 
@@ -122,7 +126,6 @@ public class RobotContainer {
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
-        intakeSubsystem.setDefaultCommand(intakeCommand);
 
         // Add choices to the chooser
         chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
@@ -153,12 +156,20 @@ public class RobotContainer {
         JoystickButton shootButton = new JoystickButton(driverController, XboxController.Button.kY.value);
         shootButton.whileHeld(shooterCommand);
 
-        JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kA.value);
+        JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
         aimButton.whileHeld(aimHighCommand);
 
-        JoystickButton intakeDeployButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+        JoystickButton intakeDeployButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
         intakeDeployButton.whenPressed(intakeDeployCommand);
         intakeDeployButton.whenReleased(intakeRetractCommand);
+
+        JoystickButton startIntakeButton = new JoystickButton(operatorController, XboxController.Button.kX.value);
+        startIntakeButton.whileHeld(intakeInCommand);
+        startIntakeButton.whenReleased(intakeStopCommand);
+
+        JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kBack.value);
+        reverseIntakeButton.whileHeld(intakeOutCommand);
+        reverseIntakeButton.whenReleased(intakeStopCommand);
     }
 
     /**
