@@ -14,8 +14,8 @@ public class AutonomousLeftLeftCommand extends SequentialCommandGroupExtended {
     private final static double DRIVE_DISTANCE = 1;
 
     /** Creates a new AutonomousLM. */
-    public AutonomousLeftLeftCommand
-        (DriveSubsystem driveSubsystem,
+    public AutonomousLeftLeftCommand(
+        DriveSubsystem driveSubsystem,
         IntakeSubsystem intakeSubsystem, 
         IntakeDeploySubsystem intakeDeploySubsystem,
         FeederSubsystem feederSubsystem,
