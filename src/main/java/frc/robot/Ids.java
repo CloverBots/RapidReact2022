@@ -35,4 +35,10 @@ public final class Ids {
 
     //NavX Gyro
     public static final Port AHRS_PORT_ID = Port.kMXP;
+
+    //feeder ids
+    public static final int FEEDER_UPPER_TALON = 10;
+    public static final int FEEDER_LOWER_TALOM = 11;
+    public static final int FEEDER_UPPER_SENSOR = 21;
+    public static final int FEEDER_LOWER_SENSOR = 22;
 }

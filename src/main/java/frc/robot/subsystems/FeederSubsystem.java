@@ -10,14 +10,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Ids;
 
 public class FeederSubsystem extends SubsystemBase {
 
-    TalonSRX upperFeeder = new WPI_TalonSRX(1);
-    TalonSRX lowerFeeder = new WPI_TalonSRX(1);
+    TalonSRX upperFeeder = new WPI_TalonSRX(Ids.FEEDER_UPPER_TALON);
+    TalonSRX lowerFeeder = new WPI_TalonSRX(Ids.FEEDER_LOWER_TALOM);
 
-    DigitalInput upperSensor = new DigitalInput(1);
-    DigitalInput lowerSensor = new DigitalInput(1);
+    DigitalInput upperSensor = new DigitalInput(Ids.FEEDER_UPPER_SENSOR);
+    DigitalInput lowerSensor = new DigitalInput(Ids.FEEDER_LOWER_SENSOR);
 
     /** Creates a new FeederSubsystem. */
     public FeederSubsystem() {
@@ -44,7 +45,7 @@ public class FeederSubsystem extends SubsystemBase {
         return lowerSensor.get();
     }
 
-    public boolean runUntilUpperSensor(double speed) {
+    public boolean loadUpper(double speed) {
         if (!getUpperSensor()) {
             setUpperFeederSpeed(speed);
         } else {
@@ -53,9 +54,9 @@ public class FeederSubsystem extends SubsystemBase {
         return getUpperSensor();
     }
 
-    public boolean runUntilLowerSensor(double speed) {
+    public boolean loadLower(double speed) {
         //run lower until lower is hit but ignore if upper is not hit yet
-        if (!getLowerSensor() && getUpperSensor()) {
+        if (!getLowerSensor() || !getUpperSensor()) {
             setLowerFeederSpeed(speed);
         } else {
             setLowerFeederSpeed(0);
