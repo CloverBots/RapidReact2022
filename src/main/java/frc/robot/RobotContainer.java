@@ -73,6 +73,7 @@ public class RobotContainer {
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
+
     private final IntakeCommand intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
             IntakeConfig.TWO_BALLS, 1);
     private final Command intakeOutCommand = new InstantCommand(() -> {
