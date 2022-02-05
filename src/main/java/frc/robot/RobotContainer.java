@@ -19,6 +19,7 @@ import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.IntakeCommand.IntakeConfig;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
@@ -72,9 +73,11 @@ public class RobotContainer {
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
-    private final IntakeCommand intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem, 1);
-    private final IntakeCommand intakeOutCommand = new IntakeCommand(intakeSubsystem, feederSubsystem, -1);
-    private final IntakeCommand intakeStopCommand = new IntakeCommand(intakeSubsystem, feederSubsystem, 0);
+    private final IntakeCommand intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
+            IntakeConfig.TWO_BALLS, 1);
+    private final Command intakeOutCommand = new InstantCommand(() -> {
+        intakeSubsystem.startIntake(-1);
+    }, intakeSubsystem);
 
     private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
@@ -144,11 +147,9 @@ public class RobotContainer {
 
         JoystickButton startIntakeButton = new JoystickButton(operatorController, XboxController.Button.kX.value);
         startIntakeButton.whileHeld(intakeInCommand);
-        startIntakeButton.whenReleased(intakeStopCommand);
 
         JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kBack.value);
         reverseIntakeButton.whileHeld(intakeOutCommand);
-        reverseIntakeButton.whenReleased(intakeStopCommand);
     }
 
     /**

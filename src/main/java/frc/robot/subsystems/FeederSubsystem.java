@@ -44,7 +44,7 @@ public class FeederSubsystem extends SubsystemBase {
         return lowerSensor.get();
     }
 
-    public boolean runUntilUpperSensor(double speed) {
+    public boolean loadUpper(double speed) {
         if (!getUpperSensor()) {
             setUpperFeederSpeed(speed);
         } else {
@@ -53,9 +53,9 @@ public class FeederSubsystem extends SubsystemBase {
         return getUpperSensor();
     }
 
-    public boolean runUntilLowerSensor(double speed) {
+    public boolean loadLower(double speed) {
         //run lower until lower is hit but ignore if upper is not hit yet
-        if (!getLowerSensor() && getUpperSensor()) {
+        if (!getLowerSensor() || !getUpperSensor()) {
             setLowerFeederSpeed(speed);
         } else {
             setLowerFeederSpeed(0);
