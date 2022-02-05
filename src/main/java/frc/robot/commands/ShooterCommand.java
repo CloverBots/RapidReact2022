@@ -22,9 +22,9 @@ public class ShooterCommand extends CommandBase {
         this.feederSubsystem = feederSubsystem;
 
         // By adding requirement to the shooterSubsystem, WPI will ensure that if
-        // another
-        // system is using the motors, this command will supersede control of the motor.
-        // This prevents multiple commands from trying to control the same motor.
+        // another system is using the motors, this command will supersede control of
+        // the motor. This prevents multiple commands from trying to control the same
+        // motor.
         addRequirements(shooterSubsystem);
         addRequirements(feederSubsystem);
     }
