@@ -49,10 +49,11 @@ public class DriveFromControllerCommand extends CommandBase {
 
         switch (liftPosition) {
             case DOWN:
-                driveSubsystem.resetMaxOutput();
+            // TODO: Update for new DriveTrain Code
+                // driveSubsystem.resetMaxOutput();  
                 break;
             case UP:
-                driveSubsystem.setMaxOutput(LIFT_UP_MAX_OUTPUT);
+                // driveSubsystem.setMaxOutput(LIFT_UP_MAX_OUTPUT);
                 break;
             default:
                 System.err.println("Unknown lift position '" + liftPosition + "'.");
