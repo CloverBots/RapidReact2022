@@ -17,9 +17,7 @@ import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.TestTalonFXCommand;
-import frc.robot.commands.TestShooterCommand;
-import frc.robot.commands.TestShooterNeoCommand;
+import frc.robot.commands.IntakeCommand.IntakeConfig;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
@@ -27,10 +25,6 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftObserver;
 import frc.robot.subsystems.LiftSubsystemDummy;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TestLimitSwitchSubsystem;
-import frc.robot.subsystems.TestTalonFXSubsystem;
-import frc.robot.subsystems.TestShooterNeoSubsystem;
-import frc.robot.subsystems.TestShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -65,36 +59,30 @@ public class RobotContainer {
     // private final LiftSubsystem liftSubsystem = new LiftSubsystem();
     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
-    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, visionTargetTracker);
-
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
 
-    private final TestShooterSubsystem testShooterSubsystem = new TestShooterSubsystem();
-    private final TestShooterCommand testShooterCommand = new TestShooterCommand(testShooterSubsystem);
-
-    private final TestShooterNeoSubsystem testShooterNeoSubsystem = new TestShooterNeoSubsystem();
-    private final TestShooterNeoCommand testShooterNeoCommand = new TestShooterNeoCommand(testShooterNeoSubsystem);
-
-    private final TestTalonFXSubsystem testTalonFXSubsystem = new TestTalonFXSubsystem();
-    private final TestTalonFXCommand testTalonFXCommand = new TestTalonFXCommand(testTalonFXSubsystem);
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, feederSubsystem,
+            visionTargetTracker);
 
     private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTargetTracker);
 
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
-    private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem,
-            operatorController::getRightTriggerAxis, operatorController::getLeftTriggerAxis);
+
+    private final IntakeCommand intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
+            IntakeConfig.TWO_BALLS, 1);
+    private final Command intakeOutCommand = new InstantCommand(() -> {
+        intakeSubsystem.startIntake(-1);
+    }, intakeSubsystem);
+
     private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
             intakeDeploySubsystem);
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
             intakeDeploySubsystem);
-
-    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
-
-    private final TestLimitSwitchSubsystem testLimitSwitchSubsystem = new TestLimitSwitchSubsystem();
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
@@ -116,13 +104,9 @@ public class RobotContainer {
      */
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
-        testShooterSubsystem.setDefaultCommand(testShooterCommand);
-        testShooterNeoSubsystem.setDefaultCommand(testShooterNeoCommand);
-        testTalonFXSubsystem.setDefaultCommand(testTalonFXCommand);
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
-        intakeSubsystem.setDefaultCommand(intakeCommand);
 
         // Add choices to the chooser
         chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
@@ -153,12 +137,18 @@ public class RobotContainer {
         JoystickButton shootButton = new JoystickButton(driverController, XboxController.Button.kY.value);
         shootButton.whileHeld(shooterCommand);
 
-        JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kA.value);
+        JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
         aimButton.whileHeld(aimHighCommand);
 
-        JoystickButton intakeDeployButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+        JoystickButton intakeDeployButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
         intakeDeployButton.whenPressed(intakeDeployCommand);
         intakeDeployButton.whenReleased(intakeRetractCommand);
+
+        JoystickButton startIntakeButton = new JoystickButton(operatorController, XboxController.Button.kX.value);
+        startIntakeButton.whileHeld(intakeInCommand);
+
+        JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kBack.value);
+        reverseIntakeButton.whileHeld(intakeOutCommand);
     }
 
     /**
