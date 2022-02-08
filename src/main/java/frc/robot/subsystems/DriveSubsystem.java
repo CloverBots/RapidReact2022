@@ -1,15 +1,11 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ids;
@@ -34,7 +30,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     public static final double WHEEL_DIAMETER_METERS = 0.1524;
     public static final double ENCODER_POSITION_CONVERSION_FACTOR = 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     public static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
-    public static final double ENCODER_TICKS_PER_ROTATION = 4096;
+    public static final double ENCODER_TICKS_PER_ROTATION = 2048;
 
     private final PIDController limePidController = new PIDController(
             LIME_PID_P,
@@ -51,19 +47,13 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
             DRIVEROTATE_PID_I,
             DRIVEROTATE_PID_D);
 
-    private final CANSparkMax leftLeadMotor = new CANSparkMax(Ids.DRIVE_LEFT_LEAD_DEVICE, MotorType.kBrushless);
-    private final CANSparkMax rightLeadMotor = new CANSparkMax(Ids.DRIVE_RIGHT_LEAD_DEVICE, MotorType.kBrushless);
-    private final CANSparkMax leftFollowMotor = new CANSparkMax(Ids.DRIVE_LEFT_FOLLOW_DEVICE, MotorType.kBrushless);
-    private final CANSparkMax rightFollowMotor = new CANSparkMax(Ids.DRIVE_RIGHT_FOLLOW_DEVICE, MotorType.kBrushless);
+    private final TalonFX leftLeadMotor = new TalonFX(Ids.DRIVE_LEFT_LEAD_DEVICE);
+    private final TalonFX rightLeadMotor = new TalonFX(Ids.DRIVE_RIGHT_LEAD_DEVICE);
+    private final TalonFX leftFollowMotor = new TalonFX(Ids.DRIVE_LEFT_FOLLOW_DEVICE);
+    private final TalonFX rightFollowMotor = new TalonFX(Ids.DRIVE_RIGHT_FOLLOW_DEVICE);
 
-    private final RelativeEncoder leftEncoder = leftLeadMotor.getEncoder();
-    private final RelativeEncoder rightEncoder = rightLeadMotor.getEncoder();
-
-    private final MotorControllerGroup leftMotors = new MotorControllerGroup(leftLeadMotor, leftFollowMotor);
-    private final MotorControllerGroup rightMotors = new MotorControllerGroup(rightLeadMotor, rightFollowMotor);
-
-    private final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotors, rightMotors);
-    private final DifferentialDriveOdometry differentialDriveOdometry;
+    private static final int kPIDLoopIdx = 0;
+    private static final int kTimeoutMs = 30;
 
     public final NavXGyro navXGyro = new NavXGyro();
 
@@ -71,14 +61,17 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
      * Constructs a new {@link DriveSubsystem} instance.
      */
     public DriveSubsystem() {
-        differentialDriveOdometry = new DifferentialDriveOdometry(getRotation());
+        leftFollowMotor.follow(leftLeadMotor);
+        rightFollowMotor.follow(rightLeadMotor);
+
+        leftLeadMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
+        kPIDLoopIdx,
+        kTimeoutMs);
+        rightLeadMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
+        kPIDLoopIdx,
+        kTimeoutMs);
 
         limePidController.setSetpoint(LIME_PID_DEFAULT_SETPOINT);
-
-        configureEncoder(leftEncoder);
-        configureEncoder(rightEncoder);
-
-        rightMotors.setInverted(true);
 
         // Temporarily turning saftey off to allow the motors to run without constant
         // updates
@@ -87,28 +80,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
 
     @Override
     public void periodic() {
-        differentialDriveOdometry.update(
-                getRotation(),
-                leftEncoder.getPosition(),
-                rightEncoder.getPosition());
-
         SmartDashboard.putNumber("heading", navXGyro.getHeading());
-    }
-
-    /**
-     * Sets the maximum drive output.
-     * 
-     * @param maxOutput The maximum drive output, from a -1 to 1 range.
-     */
-    public void setMaxOutput(double maxOutput) {
-        differentialDrive.setMaxOutput(maxOutput);
-    }
-
-    /**
-     * Resets the maximum drive output to its default value (1.0).
-     */
-    public void resetMaxOutput() {
-        differentialDrive.setMaxOutput(1.0);
     }
 
     /**
@@ -118,49 +90,33 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
      * @param rotate  The rotational value, from a -1 to 1 range.
      */
     public void arcadeDrive(double forward, double rotate) {
-        differentialDrive.arcadeDrive(forward, rotate);
+        leftLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
+        rightLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
     }
 
     // differentialDrive requires constant updates, so we are manually setting the
     // motor speeds to test autonomous
     public void autoDrive(double forward, double rotate) { // TODO: Investigate why arcadeDrive isn't working, but
                                                            // autoDrive is.
-        leftLeadMotor.set(forward - rotate);
-        rightLeadMotor.set(forward - rotate);
-    }
-
-    /**
-     * Updates the drive output given tank drive values.
-     * 
-     * @param leftVoltage  The voltage to apply to the left motors.
-     * @param rightVoltage The voltage to apply to the right motors.
-     */
-    public void tankDrive(double leftVoltage, double rightVoltage) {
-        leftMotors.setVoltage(leftVoltage);
-        rightMotors.setVoltage(rightVoltage);
-        differentialDrive.feed();
+        leftLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
+        rightLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
     }
 
     // Get the current position of the left encoder.
     // Currently used to get the left encoder for driving by distance, but may be changed to include right
     public double getLeftEncoderPosition() {
-        return leftEncoder.getPosition();
+        return leftLeadMotor.getSelectedSensorPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_POSITION_CONVERSION_FACTOR;
     }
 
     // Get the current position of the right encoder.
     // Currently used to get the left encoder for driving by distance, but may be changed to include right
     public double getRightEncoderPosition() {
-        return rightEncoder.getPosition();
+        return rightLeadMotor.getSelectedSensorPosition() / ENCODER_TICKS_PER_ROTATION * ENCODER_POSITION_CONVERSION_FACTOR;
     }
 
     // Get the average position of left and right encoders. 
     public double getAverageEncoderPosition() {
-        return (rightEncoder.getPosition()+leftEncoder.getPosition())/2;
-    }
-
-    private void configureEncoder(RelativeEncoder encoder) {
-        encoder.setPositionConversionFactor(ENCODER_POSITION_CONVERSION_FACTOR);
-        encoder.setVelocityConversionFactor(ENCODER_VELOCITY_CONVERSION_FACTOR);
+        return (getLeftEncoderPosition()+getRightEncoderPosition())/2;
     }
 
     private Rotation2d getRotation() {
@@ -172,13 +128,13 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
         // Disable the differentialDrive safety during autonomous
         // differentialDrive requires constant feeding of motor inputs when safety is
         // enabled.
-        differentialDrive.setSafetyEnabled(false);
+        // differentialDrive.setSafetyEnabled(false);
     }
 
     @Override
     public void teleopInit() {
         // Re-enable safety for teleop
-        differentialDrive.setSafetyEnabled(true);
+        // differentialDrive.setSafetyEnabled(true);
     }
 
     @Override
