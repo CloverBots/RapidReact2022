@@ -1,23 +1,27 @@
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends CommandBase {
+    public enum IntakeConfig {
+        ONE_BALL,
+        TWO_BALLS
+    }
     private final IntakeSubsystem intakeSubsystem;
-    private final DoubleSupplier forwardSpeed;
-    private final DoubleSupplier reverseSpeed;
+    private final FeederSubsystem feederSubsystem;
+    private final IntakeConfig intakeConfig;
+    private final double speed;
 
     /** Creates a new IntakeCommand. */
-    public IntakeCommand(IntakeSubsystem intakeSubsystem, DoubleSupplier forwardSpeed, DoubleSupplier reverseSpeed) {
+    public IntakeCommand(IntakeSubsystem intakeSubsystem, FeederSubsystem feederSubsystem, IntakeConfig intakeConfig, double speed) {
         this.intakeSubsystem = intakeSubsystem;
-        this.forwardSpeed = forwardSpeed;
-        this.reverseSpeed = reverseSpeed;
+        this.feederSubsystem = feederSubsystem;
+        this.intakeConfig = intakeConfig;
+        this.speed = speed;
         addRequirements(intakeSubsystem);
-
-        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(feederSubsystem);
     }
 
     // Called when the command is initially scheduled.
@@ -28,18 +32,30 @@ public class IntakeCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        intakeSubsystem.startIntake(forwardSpeed.getAsDouble()-reverseSpeed.getAsDouble());
+        intakeSubsystem.startIntake(speed);
+        feederSubsystem.loadLower(1); //TODO: determine proper value
+        feederSubsystem.loadUpper(1);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
         intakeSubsystem.stop();
+        feederSubsystem.setLowerFeederSpeed(0);
+        feederSubsystem.setUpperFeederSpeed(0);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        switch (intakeConfig) {
+            case ONE_BALL: 
+                return feederSubsystem.getUpperSensor();
+            case TWO_BALLS:
+                return feederSubsystem.getUpperSensor() && feederSubsystem.getLowerSensor();
+            default: 
+                System.err.println("Unknown intake configuration " + intakeConfig);
+                return true;       
+        }
     }
 }

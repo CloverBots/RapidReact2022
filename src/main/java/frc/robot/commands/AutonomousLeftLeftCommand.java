@@ -9,13 +9,13 @@ import frc.robot.subsystems.IntakeDeploySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class AutonomousLeftMiddleCommand extends SequentialCommandGroupExtended {
+public class AutonomousLeftLeftCommand extends SequentialCommandGroupExtended {
     private final static double DRIVE_SPEED = 0.5;
     private final static double DRIVE_DISTANCE = 1;
-    private final static double DRIVE_ROTATE = 0;
 
     /** Creates a new AutonomousLM. */
-    public AutonomousLeftMiddleCommand(DriveSubsystem driveSubsystem,
+    public AutonomousLeftLeftCommand(
+        DriveSubsystem driveSubsystem,
         IntakeSubsystem intakeSubsystem, 
         IntakeDeploySubsystem intakeDeploySubsystem,
         FeederSubsystem feederSubsystem,
@@ -25,7 +25,7 @@ public class AutonomousLeftMiddleCommand extends SequentialCommandGroupExtended 
         //   Autonomous commands in running order
         addInstant(() -> intakeDeploySubsystem.setSolenoid(true), intakeDeploySubsystem); 
         addInstant(() -> intakeSubsystem.startIntake(), intakeSubsystem);
-        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, 0));
         addCommands(new AimHighCommand(driveSubsystem, visionTargetTracker));
         addCommands(new ShooterCommand(shooterSubsystem, feederSubsystem, visionTargetTracker));
         // addInstant(() -> feederSubsystem.startFeeder(), feederSubsystem);
