@@ -35,6 +35,7 @@ public class IntakeCommand extends CommandBase {
         intakeSubsystem.startIntake(speed);
         feederSubsystem.loadLower(1); //TODO: determine proper value
         feederSubsystem.loadUpper(1);
+        System.out.println("Yo");
     }
 
     // Called once the command ends or is interrupted.
