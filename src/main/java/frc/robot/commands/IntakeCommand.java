@@ -54,6 +54,8 @@ public class IntakeCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
+        // TODO: fix this when sensors are actually on the robot or dont
+        return false;/*
         switch (intakeConfig) {
             case ONE_BALL: 
                 return feederSubsystem.getUpperSensor();
@@ -62,6 +64,6 @@ public class IntakeCommand extends CommandBase {
             default: 
                 System.err.println("Unknown intake configuration " + intakeConfig);
                 return true;       
-        }
+        }*/
     }
 }

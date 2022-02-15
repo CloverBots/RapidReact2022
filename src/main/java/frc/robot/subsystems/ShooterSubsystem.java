@@ -18,10 +18,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private final CANSparkMax shooterLeadMotor = new CANSparkMax(Ids.SHOOTER_LEAD_DEVICE, MotorType.kBrushless);
     private final CANSparkMax shooterFollowMotor1 = new CANSparkMax(Ids.SHOOTER_FOLLOW_DEVICE_1, MotorType.kBrushless);
-    private final CANSparkMax shooterFollowMotor2 = new CANSparkMax(Ids.SHOOTER_FOLLOW_DEVICE_2, MotorType.kBrushless);
-    private final CANSparkMax shooterFollowMotor3 = new CANSparkMax(Ids.SHOOTER_FOLLOW_DEVICE_3, MotorType.kBrushless);
-    private final MotorControllerGroup shooterMotors = new MotorControllerGroup(shooterLeadMotor, shooterFollowMotor1,
-            shooterFollowMotor2, shooterFollowMotor3);
+    private final MotorControllerGroup shooterMotors = new MotorControllerGroup(shooterLeadMotor, shooterFollowMotor1);
 
     private final RelativeEncoder encoder = shooterLeadMotor.getEncoder();
 

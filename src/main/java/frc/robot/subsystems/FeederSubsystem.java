@@ -15,7 +15,7 @@ import frc.robot.Ids;
 public class FeederSubsystem extends SubsystemBase {
 
     TalonSRX upperFeeder = new WPI_TalonSRX(Ids.FEEDER_UPPER_TALON);
-    TalonSRX lowerFeeder = new WPI_TalonSRX(Ids.FEEDER_LOWER_TALOM);
+    TalonSRX lowerFeeder = new WPI_TalonSRX(Ids.FEEDER_LOWER_TALON);
 
     DigitalInput upperSensor = new DigitalInput(Ids.FEEDER_UPPER_SENSOR);
     DigitalInput lowerSensor = new DigitalInput(Ids.FEEDER_LOWER_SENSOR);

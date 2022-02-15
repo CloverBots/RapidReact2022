@@ -64,6 +64,9 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
         leftFollowMotor.follow(leftLeadMotor);
         rightFollowMotor.follow(rightLeadMotor);
 
+        rightLeadMotor.setInverted(true);
+        rightFollowMotor.setInverted(true);
+
         leftLeadMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
         kPIDLoopIdx,
         kTimeoutMs);
@@ -90,7 +93,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
      * @param rotate  The rotational value, from a -1 to 1 range.
      */
     public void arcadeDrive(double forward, double rotate) {
-        leftLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
+        leftLeadMotor.set(TalonFXControlMode.PercentOutput, forward + rotate);
         rightLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
     }
 
@@ -98,7 +101,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     // motor speeds to test autonomous
     public void autoDrive(double forward, double rotate) { // TODO: Investigate why arcadeDrive isn't working, but
                                                            // autoDrive is.
-        leftLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
+        leftLeadMotor.set(TalonFXControlMode.PercentOutput, forward + rotate);
         rightLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
     }
 
