@@ -53,8 +53,7 @@ public class RobotContainer {
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
     // For now, we don't want a working LifSubsystem. So, we are replacing the real
-    // LiftSubsystem
-    // with a dummy class that says the lift is always down. TF
+    // LiftSubsystem with a dummy class that says the lift is always down.
 
     // private final LiftSubsystem liftSubsystem = new LiftSubsystem();
     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
@@ -74,6 +73,8 @@ public class RobotContainer {
 
     private final IntakeCommand intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
             IntakeConfig.TWO_BALLS, 1);
+    // Use an InstantCommand since all we need is to run a intakeSubsystem.startIntake method and don't
+    // need a whole command class for this.
     private final Command intakeOutCommand = new InstantCommand(() -> {
         intakeSubsystem.startIntake(-1);
     }, intakeSubsystem);
@@ -140,14 +141,17 @@ public class RobotContainer {
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
         aimButton.whileHeld(aimHighCommand);
 
-        JoystickButton intakeDeployButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
+        JoystickButton intakeDeployButton = new JoystickButton(operatorController,
+                XboxController.Button.kA.value);
         intakeDeployButton.whenPressed(intakeDeployCommand);
         intakeDeployButton.whenReleased(intakeRetractCommand);
 
-        JoystickButton startIntakeButton = new JoystickButton(operatorController, XboxController.Button.kX.value);
+        JoystickButton startIntakeButton = new JoystickButton(operatorController,
+                XboxController.Button.kX.value);
         startIntakeButton.whileHeld(intakeInCommand);
 
-        JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kBack.value);
+        JoystickButton reverseIntakeButton = new JoystickButton(operatorController,
+                XboxController.Button.kBack.value);
         reverseIntakeButton.whileHeld(intakeOutCommand);
     }
 

@@ -1,7 +1,8 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,8 +12,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private final double INTAKE_DEFAULT_SPEED = 10.0;
 
-    private final CANSparkMax intakeLeadMotor = new CANSparkMax(Ids.INTAKE_LEAD_DEVICE, MotorType.kBrushless);
-    private final MotorControllerGroup intakeMotors = new MotorControllerGroup(intakeLeadMotor);
+    private final TalonSRX intakeLeadMotor = new TalonSRX(Ids.INTAKE_LEAD_DEVICE);
+    //private final MotorControllerGroup intakeMotors = new MotorControllerGroup(intakeLeadMotor);
 
     /** Creates a new Intake. */
     public IntakeSubsystem() {
@@ -27,7 +28,7 @@ public class IntakeSubsystem extends SubsystemBase {
     // trying to set values to a port that does not exist leads to inconsistant
     // behavior
     public void startIntake(double speed) {
-        intakeMotors.set(speed);
+        intakeLeadMotor.set(TalonSRXControlMode.PercentOutput, speed);
     }
 
     public void startIntake() {
@@ -35,6 +36,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void stop() {
-        intakeMotors.set(0);
+        intakeLeadMotor.set(TalonSRXControlMode.PercentOutput, 0);
     }
 }
