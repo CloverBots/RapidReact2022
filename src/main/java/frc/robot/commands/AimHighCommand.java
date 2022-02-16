@@ -35,7 +35,7 @@ public class AimHighCommand extends CommandBase {
     @Override
     public void execute() {
         double xOffset = visionTargetTracker.getX();
-        double rotation = Math.min(MAX_OUTPUT, Math.max(-MAX_OUTPUT, xOffset*.01));
+        double rotation = Math.min(MAX_OUTPUT, Math.max(-MAX_OUTPUT, xOffset * .01));
         driveSubsystem.autoDrive(0, rotation);
     }
 

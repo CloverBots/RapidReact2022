@@ -17,7 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     /** Creates a new Intake. */
     public IntakeSubsystem() {
-
+        intakeLeadMotor.setInverted(true);
     }
 
     @Override
