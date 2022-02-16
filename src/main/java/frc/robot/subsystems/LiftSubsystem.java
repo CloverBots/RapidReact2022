@@ -11,7 +11,10 @@ import frc.robot.Ids;
 import frc.robot.LiftPosition;
 
 public class LiftSubsystem extends SubsystemBase implements LiftObserver {
-    private final CANSparkMax winch = new CANSparkMax(Ids.LIFT_WINCH_DEVICE, MotorType.kBrushless);
+    private final int CURRENT_LIMIT = 30;
+
+    private final CANSparkMax winch0 = new CANSparkMax(Ids.LIFT_WINCH_DEVICE0, MotorType.kBrushless);
+    private final CANSparkMax winch1 = new CANSparkMax(Ids.LIFT_WINCH_DEVICE1, MotorType.kBrushless);
 
     private final DoubleSolenoid liftSolenoid = new DoubleSolenoid(
             PneumaticsModuleType.CTREPCM,
@@ -29,7 +32,12 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
      * Constructs a new {@link LiftSubsystem} instance.
      */
     public LiftSubsystem() {
-        winch.getEncoder().setPosition(0);
+        winch0.setSmartCurrentLimit(CURRENT_LIMIT);
+        winch1.setSmartCurrentLimit(CURRENT_LIMIT);
+
+        winch0.getEncoder().setPosition(0);
+        winch0.setInverted(true);
+
         ratchetSolenoid.set(Value.kReverse);
 
         setLiftPosition(LiftPosition.UP);
