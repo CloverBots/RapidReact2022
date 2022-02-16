@@ -22,6 +22,10 @@ public class FeederSubsystem extends SubsystemBase {
 
     /** Creates a new FeederSubsystem. */
     public FeederSubsystem() {
+        upperFeeder.configFactoryDefault();
+        lowerFeeder.configFactoryDefault();
+
+        lowerFeeder.setInverted(true);
     }
 
     @Override
