@@ -11,7 +11,8 @@ public final class Ids {
     public static final int DRIVE_RIGHT_LEAD_DEVICE = 14;
     public static final int DRIVE_RIGHT_FOLLOW_DEVICE = 13;
 
-    public static final int LIFT_WINCH_DEVICE = 8;
+    public static final int LIFT_WINCH_DEVICE0 = 8;
+    public static final int LIFT_WINCH_DEVICE1 = 9;
     public static final int LIFT_SOLENOID_FORWARD = 1;
     public static final int LIFT_SOLENOID_REVERSE = 1;
 
