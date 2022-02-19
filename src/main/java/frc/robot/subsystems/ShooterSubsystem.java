@@ -13,12 +13,12 @@ import frc.robot.Ids;
 public class ShooterSubsystem extends SubsystemBase {
 
     private static final double WHEEL_DIAMETER_METERS = 0.1524;
-    private static final double ENCODER_POSITION_CONVERSION_FACTOR = 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
-    private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
+    private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;//0.1 * WHEEL_DIAMETER_METERS * Math.PI;
+    private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;//ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
 
     private final CANSparkMax shooterLeadMotor = new CANSparkMax(Ids.SHOOTER_LEAD_DEVICE, MotorType.kBrushless);
     private final CANSparkMax shooterFollowMotor1 = new CANSparkMax(Ids.SHOOTER_FOLLOW_DEVICE_1, MotorType.kBrushless);
-    private final MotorControllerGroup shooterMotors = new MotorControllerGroup(shooterLeadMotor, shooterFollowMotor1);
+    // private final MotorControllerGroup shooterMotors = new MotorControllerGroup(shooterLeadMotor, shooterFollowMotor1);
 
     private final RelativeEncoder encoder = shooterLeadMotor.getEncoder();
 
@@ -28,6 +28,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /** Creates a new Shooter. */
     public ShooterSubsystem() {
+        // shooterFollowMotor1.setInverted(true);
+        shooterFollowMotor1.follow(shooterLeadMotor, true);
+
         configureEncoder(encoder);
         pidController = shooterLeadMotor.getPIDController();
         kP = 6e-5;
@@ -63,12 +66,13 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void startShooter(double speed) {
-        shooterMotors.set(speed);
+        // shooterMotors.set(speed);
 
     }
 
     public void stop() {
-        shooterMotors.set(0);
+        // shooterMotors.set(0);
+        pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
     }
 
     private void configureEncoder(RelativeEncoder encoder) {
