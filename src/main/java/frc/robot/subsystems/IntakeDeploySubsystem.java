@@ -36,6 +36,10 @@ public class IntakeDeploySubsystem extends SubsystemBase implements RobotLifecyc
         }
     }
 
+    public boolean getSolenoid() {
+        return solenoid1.get() == Value.kForward;
+    }
+
     private void compressorStart() {
         compressor.enableDigital();
     }
