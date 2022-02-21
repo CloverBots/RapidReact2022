@@ -86,6 +86,11 @@ public class RobotContainer {
             feederSubsystem.setLowerFeederSpeed(1);
     }, feederSubsystem);
 
+    private final Command stopFeedShooterCommand = new InstantCommand(() -> {
+        feederSubsystem.setUpperFeederSpeed(0);
+        feederSubsystem.setLowerFeederSpeed(0);
+    }, feederSubsystem);
+
     private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
             intakeDeploySubsystem);
@@ -150,6 +155,7 @@ public class RobotContainer {
 
         JoystickButton feedShooterButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
         feedShooterButton.whileHeld(feedShooterCommand);
+        feedShooterButton.whenReleased(stopFeedShooterCommand);
 
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
         aimButton.whileHeld(aimHighCommand);
