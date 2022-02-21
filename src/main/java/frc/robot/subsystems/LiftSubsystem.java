@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -35,8 +36,11 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
         winch0.setSmartCurrentLimit(CURRENT_LIMIT);
         winch1.setSmartCurrentLimit(CURRENT_LIMIT);
 
+        winch0.setIdleMode(IdleMode.kBrake);
+        winch1.setIdleMode(IdleMode.kBrake);
+
         winch0.getEncoder().setPosition(0);
-        winch0.setInverted(true);
+        winch1.follow(winch0, true);
 
         ratchetSolenoid.set(Value.kReverse);
 
@@ -57,6 +61,10 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
                 liftSolenoid.set(Value.kForward);
                 break;
         }
+    }
+
+    public void setLiftSpeed(double speed) {
+        winch0.set(speed);
     }
 
     /**
