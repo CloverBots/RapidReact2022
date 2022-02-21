@@ -16,14 +16,14 @@ import frc.robot.commands.AutonomousLeftMiddleCommand;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.IntakeCommand.IntakeConfig;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.LiftCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LiftObserver;
-import frc.robot.subsystems.LiftSubsystemDummy;
+import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 /**
@@ -55,8 +55,8 @@ public class RobotContainer {
     // For now, we don't want a working LifSubsystem. So, we are replacing the real
     // LiftSubsystem with a dummy class that says the lift is always down.
 
-    // private final LiftSubsystem liftSubsystem = new LiftSubsystem();
-    private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
+    private final LiftSubsystem liftSubsystem = new LiftSubsystem();
+//     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
@@ -92,6 +92,8 @@ public class RobotContainer {
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
             intakeDeploySubsystem);
 
+    private final LiftCommand liftCommand = new LiftCommand(liftSubsystem, operatorController::getRightTriggerAxis, operatorController::getLeftY);
+
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
             liftSubsystem,
@@ -112,6 +114,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(driveFromController);
+        liftSubsystem.setDefaultCommand(liftCommand);
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
