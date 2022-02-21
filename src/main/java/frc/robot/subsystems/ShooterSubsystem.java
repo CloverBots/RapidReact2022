@@ -33,11 +33,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
         configureEncoder(encoder);
         pidController = shooterLeadMotor.getPIDController();
-        kP = 6e-5;
+        kP = 8e-5;
         kI = 0;
         kD = 0;
         kIz = 0;
-        kFF = 0.000015;
+        kFF = 0.00017;
         kMaxOutput = 1;
         kMinOutput = -1;
         maxRPM = 5700;

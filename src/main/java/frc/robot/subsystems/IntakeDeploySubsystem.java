@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Ids;
 import frc.robot.RobotLifecycleCallbacks;
 
-public class IntakeDeploySubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
+public class IntakeDeploySubsystem extends SubsystemBase implements RobotLifecycleCallbacks, IntakeDeployObserver {
     DoubleSolenoid solenoid1 = new DoubleSolenoid(Ids.PCM_ID, PneumaticsModuleType.CTREPCM,
             Ids.INTAKE_SOLENOID1_FORWARD,
             Ids.INTAKE_SOLENOID1_REVERSE);
@@ -34,6 +34,10 @@ public class IntakeDeploySubsystem extends SubsystemBase implements RobotLifecyc
         } else {
             solenoid1.set(Value.kReverse);
         }
+    }
+
+    public boolean getSolenoid() {
+        return solenoid1.get() == Value.kForward;
     }
 
     private void compressorStart() {
