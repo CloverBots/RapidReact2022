@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftObserver;
@@ -13,6 +15,8 @@ public class DriveFromControllerCommand extends CommandBase {
     private final LiftObserver liftObserver;
     private final DoubleSupplier forward;
     private final DoubleSupplier rotation;
+    private final DoubleSupplier forwardRight;
+    private final SendableChooser <Boolean> driveModeChooser = new SendableChooser<>();
 
     /**
      * Constructs a new {@link DriveFromControllerCommand} instance.
@@ -25,11 +29,15 @@ public class DriveFromControllerCommand extends CommandBase {
             DriveSubsystem driveSubsystem,
             LiftObserver liftObserver,
             DoubleSupplier forward,
-            DoubleSupplier rotation) {
+            DoubleSupplier rotation, 
+            DoubleSupplier forwardRight) {
         this.driveSubsystem = driveSubsystem;
         this.liftObserver = liftObserver;
         this.forward = forward;
         this.rotation = rotation;
+        this.forwardRight = forwardRight;
+        driveModeChooser.setDefaultOption("arcade", true);
+        driveModeChooser.addOption("tank", false);
 
         addRequirements(driveSubsystem);
     }
@@ -37,7 +45,12 @@ public class DriveFromControllerCommand extends CommandBase {
     @Override
     public void execute() {
         updateMaximumOutput();
-        driveSubsystem.arcadeDrive(forward.getAsDouble(), -rotation.getAsDouble());
+
+        if (driveModeChooser.getSelected()) {
+            driveSubsystem.arcadeDrive(forward.getAsDouble(), rotation.getAsDouble());
+        } else {
+            driveSubsystem.tankDrive(forward.getAsDouble(), -forwardRight.getAsDouble());
+        }
     }
 
     /**

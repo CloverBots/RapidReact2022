@@ -89,7 +89,8 @@ public class RobotContainer {
             driveSubsystem,
             liftSubsystem,
             driverController::getLeftY,
-            driverController::getRightX);
+            driverController::getRightX, 
+            driverController::getRightY);
 
     // lifecyclecallbacks used when special cases are needed for autonomous and
     // teleop

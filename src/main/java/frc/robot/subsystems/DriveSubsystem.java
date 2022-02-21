@@ -105,6 +105,13 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
         rightLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
     }
 
+    //let's try something else 
+    //a double tank drive with left & right controlled separately
+    public void tankDrive(double left, double right) {
+        leftLeadMotor.set(TalonFXControlMode.PercentOutput, left);
+        rightLeadMotor.set(TalonFXControlMode.PercentOutput, right);
+    }
+
     // Get the current position of the left encoder.
     // Currently used to get the left encoder for driving by distance, but may be changed to include right
     public double getLeftEncoderPosition() {
