@@ -23,7 +23,7 @@ public class IntakeCommand extends CommandBase {
         this.speed = speed;
         addRequirements(intakeSubsystem);
         addRequirements(feederSubsystem);
-        SmartDashboard.putNumber("Intake Speed", 0);
+        // SmartDashboard.putNumber("Intake Speed", 0);
     }
 
     // Called when the command is initially scheduled.
@@ -34,13 +34,13 @@ public class IntakeCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double testSpeed = SmartDashboard.getNumber("Intake Speed", 0);
+        // double testSpeed = SmartDashboard.getNumber("Intake Speed", 0);
         intakeSubsystem.startIntake(speed);
         // feederSubsystem.loadLower(1); //TODO: determine proper value
         // feederSubsystem.loadUpper(1);
         
-        feederSubsystem.setLowerFeederSpeed(testSpeed);
-        feederSubsystem.setUpperFeederSpeed(testSpeed);
+        feederSubsystem.setLowerFeederSpeed(speed);
+        // feederSubsystem.setUpperFeederSpeed(testSpeed);
     }
 
     // Called once the command ends or is interrupted.

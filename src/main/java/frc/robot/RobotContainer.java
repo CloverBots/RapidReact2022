@@ -58,7 +58,8 @@ public class RobotContainer {
     private final LiftSubsystem liftSubsystem = new LiftSubsystem();
 //     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
+    private final IntakeSubsystem intakeSubsystem;
     private final FeederSubsystem feederSubsystem = new FeederSubsystem();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
@@ -71,15 +72,21 @@ public class RobotContainer {
     // controller value will
     // automatically be fed into the intakeCommand as the speed value.
 
-    private final IntakeCommand intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
-            IntakeConfig.TWO_BALLS, 1);
+    private final IntakeCommand intakeInCommand;
     // Use an InstantCommand since all we need is to run a intakeSubsystem.startIntake method and don't
     // need a whole command class for this.
-    private final Command intakeOutCommand = new InstantCommand(() -> {
-        intakeSubsystem.startIntake(-1);
-    }, intakeSubsystem);
+    private final Command intakeOutCommand;
 
-    private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
+    private final Command feedShooterCommand = new InstantCommand(() -> {
+            feederSubsystem.setUpperFeederSpeed(1);
+            feederSubsystem.setLowerFeederSpeed(1);
+    }, feederSubsystem);
+
+    private final Command stopFeedShooterCommand = new InstantCommand(() -> {
+        feederSubsystem.setUpperFeederSpeed(0);
+        feederSubsystem.setLowerFeederSpeed(0);
+    }, feederSubsystem);
+
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
             intakeDeploySubsystem);
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
@@ -106,6 +113,16 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        intakeSubsystem = new IntakeSubsystem(intakeDeploySubsystem);
+
+        intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
+            IntakeConfig.TWO_BALLS, 1);
+        intakeOutCommand = new InstantCommand(() -> {
+            intakeSubsystem.startIntake(0);
+            feederSubsystem.setUpperFeederSpeed(-1);
+            feederSubsystem.setLowerFeederSpeed(0);
+        }, intakeSubsystem, feederSubsystem);
+
         driveSubsystem.setDefaultCommand(driveFromController);
         liftSubsystem.setDefaultCommand(liftCommand);
 
@@ -138,8 +155,12 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        JoystickButton shootButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
+        JoystickButton shootButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
         shootButton.whileHeld(shooterCommand);
+
+        JoystickButton feedShooterButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
+        feedShooterButton.whileHeld(feedShooterCommand);
+        feedShooterButton.whenReleased(stopFeedShooterCommand);
 
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
         aimButton.whileHeld(aimHighCommand);
@@ -156,6 +177,7 @@ public class RobotContainer {
         JoystickButton reverseIntakeButton = new JoystickButton(operatorController,
                 XboxController.Button.kBack.value);
         reverseIntakeButton.whileHeld(intakeOutCommand);
+        reverseIntakeButton.whenReleased(stopFeedShooterCommand);
     }
 
     /**
