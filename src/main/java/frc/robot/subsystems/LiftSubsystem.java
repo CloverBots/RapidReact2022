@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -16,6 +18,9 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
 
     private final CANSparkMax winch0 = new CANSparkMax(Ids.LIFT_WINCH_DEVICE0, MotorType.kBrushless);
     private final CANSparkMax winch1 = new CANSparkMax(Ids.LIFT_WINCH_DEVICE1, MotorType.kBrushless);
+
+    private final DigitalInput lowerSwitch = new DigitalInput(Ids.LIFT_LOWER_SWITCH);
+    private final DigitalInput upperSwitch = new DigitalInput(Ids.LIFT_UPPER_SWITCH);
 
     private final DoubleSolenoid liftSolenoid = new DoubleSolenoid(
             PneumaticsModuleType.CTREPCM,
@@ -67,10 +72,27 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
         winch0.set(speed);
     }
 
+    public double getLiftEncoderPostion() {
+        return winch0.getEncoder().getPosition();
+    }
+
+    public void setLiftMaximumPosition(double min, double max) {
+        winch0.setSoftLimit(SoftLimitDirection.kForward, (float)max);
+        winch0.setSoftLimit(SoftLimitDirection.kForward, (float)min);
+    }
+
     /**
      * Returns the position of the lift.
      */
     public LiftPosition getLiftPosition() {
         return liftPosition;
+    }
+
+    public Boolean getLowerSwitch() {
+        return lowerSwitch.get();
+    }
+
+    public Boolean getUpperSwitch() {
+        return upperSwitch.get();
     }
 }

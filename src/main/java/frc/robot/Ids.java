@@ -15,6 +15,8 @@ public final class Ids {
     public static final int LIFT_WINCH_DEVICE1 = 9;
     public static final int LIFT_SOLENOID_FORWARD = 1;
     public static final int LIFT_SOLENOID_REVERSE = 1;
+    public static final int LIFT_UPPER_SWITCH = 0;
+    public static final int LIFT_LOWER_SWITCH = 1;
 
     public static final int RATCHET_SOLENOID_FORWARD = 3;
     public static final int RATCHET_SOLENOID_REVERSE = 7;
