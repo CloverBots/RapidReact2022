@@ -37,9 +37,14 @@ public class DriveFromControllerCommand extends CommandBase {
     @Override
     public void execute() {
         updateMaximumOutput();
-        var rawRotation = rotation.getAsDouble();
-        var sign = rawRotation < 0 ? 1 : -1;
-        driveSubsystem.arcadeDrive(forward.getAsDouble(), rawRotation * rawRotation * sign);
+        driveSubsystem.arcadeDrive(
+            computeInputCurve(forward.getAsDouble(), 1.5), 
+            computeInputCurve(rotation.getAsDouble(), 2));
+    }
+
+    private double computeInputCurve(double rawInput, double power) {
+        var sign = rawInput < 0 ? 1 : -1;
+        return Math.pow(rawInput, power) * sign;
     }
 
     /**
