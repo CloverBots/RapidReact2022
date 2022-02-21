@@ -76,8 +76,15 @@ public class RobotContainer {
     // Use an InstantCommand since all we need is to run a intakeSubsystem.startIntake method and don't
     // need a whole command class for this.
     private final Command intakeOutCommand = new InstantCommand(() -> {
-        intakeSubsystem.startIntake(-1);
-    }, intakeSubsystem);
+        intakeSubsystem.startIntake(0);
+        feederSubsystem.setUpperFeederSpeed(-1);
+        feederSubsystem.setLowerFeederSpeed(0);
+    }, intakeSubsystem, feederSubsystem);
+
+    private final Command feedShooterCommand = new InstantCommand(() -> {
+            feederSubsystem.setUpperFeederSpeed(1);
+            feederSubsystem.setLowerFeederSpeed(1);
+    }, feederSubsystem);
 
     private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
@@ -138,8 +145,11 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        JoystickButton shootButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
+        JoystickButton shootButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
         shootButton.whileHeld(shooterCommand);
+
+        JoystickButton feedShooterButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
+        feedShooterButton.whileHeld(feedShooterCommand);
 
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
         aimButton.whileHeld(aimHighCommand);
