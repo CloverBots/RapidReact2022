@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Ids;
 import frc.robot.RobotLifecycleCallbacks;
 
-public class IntakeDeploySubsystem extends SubsystemBase implements RobotLifecycleCallbacks {
+public class IntakeDeploySubsystem extends SubsystemBase implements RobotLifecycleCallbacks, IntakeDeployObserver {
     DoubleSolenoid solenoid1 = new DoubleSolenoid(Ids.PCM_ID, PneumaticsModuleType.CTREPCM,
             Ids.INTAKE_SOLENOID1_FORWARD,
             Ids.INTAKE_SOLENOID1_REVERSE);
