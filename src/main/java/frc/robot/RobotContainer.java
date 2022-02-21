@@ -135,7 +135,7 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        JoystickButton shootButton = new JoystickButton(driverController, XboxController.Button.kY.value);
+        JoystickButton shootButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
         shootButton.whileHeld(shooterCommand);
 
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);

@@ -20,6 +20,7 @@ public class IntakeDeploySubsystem extends SubsystemBase implements RobotLifecyc
 
     /** Creates a new IntakeDeploySubsystem. */
     public IntakeDeploySubsystem() {
+        setSolenoid(false);
     }
 
     @Override
