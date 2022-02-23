@@ -28,7 +28,7 @@ public class AutonomousLeftLeftCommand extends SequentialCommandGroupExtended {
         addInstant(() -> intakeDeploySubsystem.setSolenoid(true), intakeDeploySubsystem); 
         addInstant(() -> intakeSubsystem.startIntake(), intakeSubsystem);
         addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, 0));
-        addCommands(new AimHighCommand(driveSubsystem, visionTargetTracker));
+        addCommands(new AlignHighCommand(driveSubsystem, visionTargetTracker));
         addCommands(new ShooterCommand(shooterSubsystem, visionTargetTracker));
         // addInstant(() -> feederSubsystem.startFeeder(), feederSubsystem);
         addCommands(new WaitCommand(3));

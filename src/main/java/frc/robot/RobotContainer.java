@@ -10,22 +10,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AimHighCommand;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.commands.AlignHighCommand;
 import frc.robot.commands.AutonomousLeftMiddleCommand;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeCommand.IntakeConfig;
-import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.LiftCommand;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.SpinShooterHighCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.LowerFeederSubsystem;
-import frc.robot.subsystems.UpperFeederSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.LowerFeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.UpperFeederSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -40,6 +43,8 @@ public class RobotContainer {
     private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
     private static final double CAMERA_HEIGHT = 55.75; // on test robot
     private static final double CAMERA_PITCH = -3.0;
+    private static final double LOW_SHOOT_RPM = 1800;
+    private static final double HIGH_SHOOT_RPM = 4000;
 
     private final VisionConfiguration visionConfiguration = new VisionConfiguration(
             VISION_TARGET_HEIGHT,
@@ -68,7 +73,17 @@ public class RobotContainer {
     private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem,
             visionTargetTracker);
 
-    private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTargetTracker);
+    private final AlignHighCommand alignHighCommand = new AlignHighCommand(driveSubsystem, visionTargetTracker);
+    private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker);
+    private final Command lowShootCommand = new RunCommand(()-> {
+        shooterSubsystem.setShooterRPM(LOW_SHOOT_RPM);
+    }, shooterSubsystem);
+    private final Command highShootCommand = new RunCommand(()-> {
+        shooterSubsystem.setShooterRPM(HIGH_SHOOT_RPM);
+    }, shooterSubsystem);
+    private final Command stopShooterCommand = new InstantCommand(()-> {
+        shooterSubsystem.setShooterRPM(0);
+    }, shooterSubsystem);
 
     // By passing in the driverController right trigger to the intakeCommand, the
     // controller value will
@@ -167,7 +182,16 @@ public class RobotContainer {
         feedShooterButton.whenReleased(stopFeedShooterCommand);
 
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
-        aimButton.whileHeld(aimHighCommand);
+        aimButton.whileHeld(alignHighCommand);
+        aimButton.whileHeld(spinShooterHighCommand);
+        
+        POVButton dPadDownButton = new POVButton(operatorController, 270);
+        dPadDownButton.whileHeld(lowShootCommand, false);
+        dPadDownButton.whenReleased(stopShooterCommand);
+
+        POVButton dPadUpButton = new POVButton(operatorController, 90);
+        dPadUpButton.whileHeld(highShootCommand, false);
+        dPadUpButton.whenReleased(stopShooterCommand);
 
         JoystickButton intakeDeployButton = new JoystickButton(operatorController,
                 XboxController.Button.kA.value);

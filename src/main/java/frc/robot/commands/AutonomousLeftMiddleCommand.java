@@ -28,7 +28,7 @@ public class AutonomousLeftMiddleCommand extends SequentialCommandGroupExtended 
         addInstant(() -> intakeDeploySubsystem.setSolenoid(true), intakeDeploySubsystem); 
         addInstant(() -> intakeSubsystem.startIntake(), intakeSubsystem);
         addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE));
-        addCommands(new AimHighCommand(driveSubsystem, visionTargetTracker));
+        addCommands(new AlignHighCommand(driveSubsystem, visionTargetTracker));
         addCommands(new ShooterCommand(shooterSubsystem, visionTargetTracker)); //TODO: feeder system was removed- set upper feeder
         // addInstant(() -> feederSubsystem.startFeeder(), feederSubsystem);
         addCommands(new WaitCommand(3));
