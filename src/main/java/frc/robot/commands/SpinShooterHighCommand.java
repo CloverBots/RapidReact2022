@@ -6,43 +6,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.VisionTargetTracker;
-import frc.robot.VisionTargetTracker.LedMode;
-import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class AimHighCommand extends CommandBase {
-    private static final double MAX_OUTPUT = .05;
-
-    private final DriveSubsystem driveSubsystem;
+public class SpinShooterHighCommand extends CommandBase {
+    private final ShooterSubsystem shooterSubsystem;
     private final VisionTargetTracker visionTargetTracker;
 
-    /** Creates a new AimRobotForHigh. */
-    public AimHighCommand(DriveSubsystem driveSubsystem, VisionTargetTracker visionTargetTracker) {
-
-        this.driveSubsystem = driveSubsystem;
+    /** Creates a new SpinShooterHighCommand. */
+    public SpinShooterHighCommand(ShooterSubsystem shooterSubsystem, VisionTargetTracker visionTargetTracker) {
+        this.shooterSubsystem = shooterSubsystem;
         this.visionTargetTracker = visionTargetTracker;
 
         // Use addRequirements() here to declare subsystem dependencies.
-        addRequirements(driveSubsystem);
+        addRequirements(shooterSubsystem);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        visionTargetTracker.setLedMode(LedMode.FORCE_ON);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double xOffset = visionTargetTracker.getX();
-        double rotation = Math.min(MAX_OUTPUT, Math.max(-MAX_OUTPUT, xOffset * .01));
-        driveSubsystem.autoDrive(0, rotation);
+        double targetDistance = visionTargetTracker.computeTargetDistance();
+        shooterSubsystem.setShooterRPM(targetDistance * 10);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        visionTargetTracker.setLedMode(LedMode.FORCE_OFF);
     }
 
     // Returns true when the command should end.
