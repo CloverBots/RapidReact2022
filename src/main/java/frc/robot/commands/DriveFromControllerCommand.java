@@ -38,7 +38,7 @@ public class DriveFromControllerCommand extends CommandBase {
     public void execute() {
         updateMaximumOutput();
         driveSubsystem.arcadeDrive(
-            computeInputCurve(forward.getAsDouble(), 1.5), 
+            -computeInputCurve(forward.getAsDouble(), 1.5), 
             computeInputCurve(rotation.getAsDouble(), 2));
     }
 

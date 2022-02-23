@@ -73,7 +73,7 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
     }
 
     public double getLiftEncoderPostion() {
-        return winch0.getEncoder().getPosition();
+        return -winch0.getEncoder().getPosition();
     }
 
     public void setLiftMaximumPosition(double min, double max) {
