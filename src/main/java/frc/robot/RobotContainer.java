@@ -120,7 +120,7 @@ public class RobotContainer {
         intakeSubsystem = new IntakeSubsystem(intakeDeploySubsystem);
 
         intakeInCommand = new IntakeCommand(intakeSubsystem, lowerFeederSubsystem,
-                IntakeConfig.TWO_BALLS, 1);
+                IntakeConfig.TWO_BALLS, 1, operatorController::getRightTriggerAxis);
 
         upperFeederOutCommand = new InstantCommand(() -> {
             upperFeederSubsystem.setSpeed(-1);
@@ -174,10 +174,10 @@ public class RobotContainer {
         intakeDeployButton.whenPressed(intakeDeployCommand);
         intakeDeployButton.whenReleased(intakeRetractCommand);
 
-        JoystickButton startIntakeButton = new JoystickButton(operatorController,
-                XboxController.Button.kX.value);
-        startIntakeButton.whileHeld(intakeInCommand);
-
+        //right trigger is axis id 3
+        JoystickTrigger startIntakeTrigger = new JoystickTrigger(operatorController, 3);
+        startIntakeTrigger.whileHeld(intakeInCommand)
+;
         JoystickButton reverseUpperFeederButton = new JoystickButton(operatorController,
                 XboxController.Button.kBack.value);
         reverseUpperFeederButton.whileHeld(upperFeederOutCommand);
