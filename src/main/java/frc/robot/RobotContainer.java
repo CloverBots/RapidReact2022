@@ -20,7 +20,8 @@ import frc.robot.commands.IntakeCommand.IntakeConfig;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.LiftCommand;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.LowerFeederSubsystem;
+import frc.robot.subsystems.UpperFeederSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
@@ -56,14 +57,15 @@ public class RobotContainer {
     // LiftSubsystem with a dummy class that says the lift is always down.
 
     private final LiftSubsystem liftSubsystem = new LiftSubsystem();
-//     private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
+    // private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
     private final IntakeSubsystem intakeSubsystem;
-    private final FeederSubsystem feederSubsystem = new FeederSubsystem();
+    private final UpperFeederSubsystem upperFeederSubsystem = new UpperFeederSubsystem();
+    private final LowerFeederSubsystem lowerFeederSubsystem = new LowerFeederSubsystem();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem, feederSubsystem,
+    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem,
             visionTargetTracker);
 
     private final AimHighCommand aimHighCommand = new AimHighCommand(driveSubsystem, visionTargetTracker);
@@ -73,26 +75,28 @@ public class RobotContainer {
     // automatically be fed into the intakeCommand as the speed value.
 
     private final IntakeCommand intakeInCommand;
-    // Use an InstantCommand since all we need is to run a intakeSubsystem.startIntake method and don't
+    // Use an InstantCommand since all we need is to run a
+    // intakeSubsystem.startIntake method and don't
     // need a whole command class for this.
-    private final Command intakeOutCommand;
+    private final Command upperFeederOutCommand;
 
     private final Command feedShooterCommand = new InstantCommand(() -> {
-            feederSubsystem.setUpperFeederSpeed(1);
-            feederSubsystem.setLowerFeederSpeed(1);
-    }, feederSubsystem);
+        upperFeederSubsystem.setSpeed(1);
+        lowerFeederSubsystem.setSpeed(1);
+    }, upperFeederSubsystem, lowerFeederSubsystem);
 
     private final Command stopFeedShooterCommand = new InstantCommand(() -> {
-        feederSubsystem.setUpperFeederSpeed(0);
-        feederSubsystem.setLowerFeederSpeed(0);
-    }, feederSubsystem);
+        upperFeederSubsystem.setSpeed(0);
+        lowerFeederSubsystem.setSpeed(0);
+    }, upperFeederSubsystem, lowerFeederSubsystem);
 
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
             intakeDeploySubsystem);
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
             intakeDeploySubsystem);
 
-    private final LiftCommand liftCommand = new LiftCommand(liftSubsystem, operatorController::getLeftTriggerAxis, operatorController::getLeftY);
+    private final LiftCommand liftCommand = new LiftCommand(liftSubsystem, operatorController::getLeftTriggerAxis,
+            operatorController::getLeftY);
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
@@ -115,13 +119,12 @@ public class RobotContainer {
     public RobotContainer() {
         intakeSubsystem = new IntakeSubsystem(intakeDeploySubsystem);
 
-        intakeInCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
-            IntakeConfig.TWO_BALLS, 1);
-        intakeOutCommand = new InstantCommand(() -> {
-            intakeSubsystem.startIntake(0);
-            feederSubsystem.setUpperFeederSpeed(-1);
-            feederSubsystem.setLowerFeederSpeed(0);
-        }, intakeSubsystem, feederSubsystem);
+        intakeInCommand = new IntakeCommand(intakeSubsystem, lowerFeederSubsystem,
+                IntakeConfig.TWO_BALLS, 1);
+
+        upperFeederOutCommand = new InstantCommand(() -> {
+            upperFeederSubsystem.setSpeed(-1);
+        }, upperFeederSubsystem);
 
         driveSubsystem.setDefaultCommand(driveFromController);
         liftSubsystem.setDefaultCommand(liftCommand);
@@ -135,7 +138,8 @@ public class RobotContainer {
                 driveSubsystem,
                 intakeSubsystem,
                 intakeDeploySubsystem,
-                feederSubsystem,
+                lowerFeederSubsystem,
+                upperFeederSubsystem,
                 shooterSubsystem,
                 visionTargetTracker));
         // Add chooser to the SmartDashboard
@@ -174,10 +178,10 @@ public class RobotContainer {
                 XboxController.Button.kX.value);
         startIntakeButton.whileHeld(intakeInCommand);
 
-        JoystickButton reverseIntakeButton = new JoystickButton(operatorController,
+        JoystickButton reverseUpperFeederButton = new JoystickButton(operatorController,
                 XboxController.Button.kBack.value);
-        reverseIntakeButton.whileHeld(intakeOutCommand);
-        reverseIntakeButton.whenReleased(stopFeedShooterCommand);
+        reverseUpperFeederButton.whileHeld(upperFeederOutCommand);
+        reverseUpperFeederButton.whenReleased(stopFeedShooterCommand);
     }
 
     /**

@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.VisionTargetTracker;
 import frc.robot.VisionTargetTracker.LedMode;
-import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterCommand extends CommandBase {
@@ -14,14 +13,12 @@ public class ShooterCommand extends CommandBase {
 
     private final ShooterSubsystem shooterSubsystem;
     private final VisionTargetTracker visionTarget;
-    private final FeederSubsystem feederSubsystem;
 
     /** Creates a new ShootBall. */
-    public ShooterCommand(ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem,
+    public ShooterCommand(ShooterSubsystem shooterSubsystem,
             VisionTargetTracker visionTarget) {
         this.shooterSubsystem = shooterSubsystem;
         this.visionTarget = visionTarget;
-        this.feederSubsystem = feederSubsystem;
 
         // By adding requirement to the shooterSubsystem, WPI will ensure that if
         // another system is using the motors, this command will supersede control of
