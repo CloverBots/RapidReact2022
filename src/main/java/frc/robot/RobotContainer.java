@@ -92,7 +92,7 @@ public class RobotContainer {
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
             intakeDeploySubsystem);
 
-    private final LiftCommand liftCommand = new LiftCommand(liftSubsystem, operatorController::getRightTriggerAxis, operatorController::getLeftY);
+    private final LiftCommand liftCommand = new LiftCommand(liftSubsystem, operatorController::getLeftTriggerAxis, operatorController::getLeftY);
 
     private final DriveFromControllerCommand driveFromController = new DriveFromControllerCommand(
             driveSubsystem,
