@@ -39,17 +39,17 @@ public class LiftCommand extends CommandBase {
     @Override
     public void execute() {
         
-        SmartDashboard.putNumber("elevator height", liftSubsystem.getLiftEncoderPostion());
+        SmartDashboard.putNumber("elevator height", liftSubsystem.getLiftEncoderPosition());
 
         if (trigger.getAsDouble() > .5) {
             double liftSpeed = leftJoystickY.getAsDouble();
             
-            if((liftSubsystem.getLiftEncoderPostion() <= LOWER_ENDPOINT && liftSpeed > 0) ||
-             (liftSubsystem.getLiftEncoderPostion() >= UPPER_ENDPOINT && liftSpeed < 0)) {
+            if((liftSubsystem.getLiftEncoderPosition() <= LOWER_ENDPOINT && liftSpeed > 0) ||
+             (liftSubsystem.getLiftEncoderPosition() >= UPPER_ENDPOINT && liftSpeed < 0)) {
                 liftSpeed = 0;
             }
             
-            if (liftSubsystem.getLiftEncoderPostion() - LOWER_ENDPOINT < 3 || UPPER_ENDPOINT - liftSubsystem.getLiftEncoderPostion() < 3) {
+            if (liftSubsystem.getLiftEncoderPosition() - LOWER_ENDPOINT < 3 || UPPER_ENDPOINT - liftSubsystem.getLiftEncoderPosition() < 3) {
                 liftSpeed = Math.min(Math.max(liftSpeed, -APPROACH_MAX_SPEED), APPROACH_MAX_SPEED);
             }
             if (liftSubsystem.getLowerSwitch() && liftSpeed > 0) {

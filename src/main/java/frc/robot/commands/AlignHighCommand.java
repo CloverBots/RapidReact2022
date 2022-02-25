@@ -10,7 +10,7 @@ import frc.robot.VisionTargetTracker.LedMode;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class AlignHighCommand extends CommandBase {
-    private static final double MAX_OUTPUT = .05;
+    private static final double MAX_OUTPUT = .15;
 
     private final DriveSubsystem driveSubsystem;
     private final VisionTargetTracker visionTargetTracker;
@@ -35,7 +35,7 @@ public class AlignHighCommand extends CommandBase {
     @Override
     public void execute() {
         double xOffset = visionTargetTracker.getX();
-        double rotation = Math.min(MAX_OUTPUT, Math.max(-MAX_OUTPUT, xOffset * .01));
+        double rotation = -Math.min(MAX_OUTPUT, Math.max(-MAX_OUTPUT, xOffset * .01));
         driveSubsystem.autoDrive(0, rotation);
     }
 
