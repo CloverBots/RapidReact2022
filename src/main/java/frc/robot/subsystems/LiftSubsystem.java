@@ -72,7 +72,7 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
         winch0.set(speed);
     }
 
-    public double getLiftEncoderPostion() {
+    public double getLiftEncoderPosition() {
         return -winch0.getEncoder().getPosition();
     }
 

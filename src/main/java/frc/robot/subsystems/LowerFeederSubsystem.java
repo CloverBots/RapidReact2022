@@ -14,7 +14,7 @@ import frc.robot.Ids;
 
 public class LowerFeederSubsystem extends SubsystemBase {
 
-    TalonSRX feederMotor = new WPI_TalonSRX(Ids.FEEDER_UPPER_TALON);
+    TalonSRX feederMotor = new WPI_TalonSRX(Ids.FEEDER_LOWER_TALON);
 
     /** Creates a new FeederSubsystem. */
     public LowerFeederSubsystem() {

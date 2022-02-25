@@ -142,7 +142,7 @@ public class RobotContainer {
         }, upperFeederSubsystem);
 
         driveSubsystem.setDefaultCommand(driveFromController);
-        liftSubsystem.setDefaultCommand(liftCommand);
+        // liftSubsystem.setDefaultCommand(liftCommand);
 
         // TODO: Enable when ready (it doesn't work consistantly with no motors
         // connected)
@@ -184,12 +184,13 @@ public class RobotContainer {
         JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
         aimButton.whileHeld(alignHighCommand);
         aimButton.whileHeld(spinShooterHighCommand);
+        aimButton.whenReleased(stopShooterCommand);
         
-        POVButton dPadDownButton = new POVButton(operatorController, 270);
+        POVButton dPadDownButton = new POVButton(operatorController, 180);
         dPadDownButton.whileHeld(lowShootCommand, false);
         dPadDownButton.whenReleased(stopShooterCommand);
 
-        POVButton dPadUpButton = new POVButton(operatorController, 90);
+        POVButton dPadUpButton = new POVButton(operatorController, 0);
         dPadUpButton.whileHeld(highShootCommand, false);
         dPadUpButton.whenReleased(stopShooterCommand);
 
