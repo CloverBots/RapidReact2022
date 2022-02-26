@@ -1,14 +1,10 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LowerFeederSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-
 import java.util.function.DoubleSupplier;
 
-import com.fasterxml.jackson.databind.ser.std.NumberSerializers.DoubleSerializer;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LowerFeederSubsystem;
 
 public class IntakeCommand extends CommandBase {
     public enum IntakeConfig {
@@ -17,15 +13,13 @@ public class IntakeCommand extends CommandBase {
     }
     private final IntakeSubsystem intakeSubsystem;
     private final LowerFeederSubsystem lowerFeederSubsystem;
-    private final IntakeConfig intakeConfig;
     private final double feederSpeed;
     private final DoubleSupplier intakeSpeed;
 
     /** Creates a new IntakeCommand. */
-    public IntakeCommand(IntakeSubsystem intakeSubsystem, LowerFeederSubsystem lowerFeederSubsystem, IntakeConfig intakeConfig, double feederSpeed, DoubleSupplier intakeSpeed) {
+    public IntakeCommand(IntakeSubsystem intakeSubsystem, LowerFeederSubsystem lowerFeederSubsystem, double feederSpeed, DoubleSupplier intakeSpeed) {
         this.intakeSubsystem = intakeSubsystem;
         this.lowerFeederSubsystem = lowerFeederSubsystem;
-        this.intakeConfig = intakeConfig;
         this.feederSpeed = feederSpeed;
         this.intakeSpeed = intakeSpeed;
         addRequirements(intakeSubsystem);
@@ -60,16 +54,6 @@ public class IntakeCommand extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        // TODO: fix this when sensors are actually on the robot or dont
-        return false;/*
-        switch (intakeConfig) {
-            case ONE_BALL: 
-                return feederSubsystem.getUpperSensor();
-            case TWO_BALLS:
-                return feederSubsystem.getUpperSensor() && feederSubsystem.getLowerSensor();
-            default: 
-                System.err.println("Unknown intake configuration " + intakeConfig);
-                return true;       
-        }*/
+        return false;
     }
 }

@@ -18,9 +18,7 @@ import frc.robot.commands.AutonomousLeftMiddleCommand;
 import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeCommand.IntakeConfig;
 import frc.robot.commands.LiftCommand;
-import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SpinShooterHighCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
@@ -43,9 +41,7 @@ public class RobotContainer {
     private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
     private static final double CAMERA_HEIGHT = 55.75; // on test robot
     private static final double CAMERA_PITCH = -3.0;
-    //might go back to using these later
-    private static final double LOW_SHOOT_RPM = 1800;
-    private static final double HIGH_SHOOT_RPM = 4000;
+    // might go back to using these later
 
     private final VisionConfiguration visionConfiguration = new VisionConfiguration(
             VISION_TARGET_HEIGHT,
@@ -59,11 +55,7 @@ public class RobotContainer {
 
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
-    // For now, we don't want a working LifSubsystem. So, we are replacing the real
-    // LiftSubsystem with a dummy class that says the lift is always down.
-
     private final LiftSubsystem liftSubsystem = new LiftSubsystem();
-    // private final LiftObserver liftSubsystem = new LiftSubsystemDummy();
 
     private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
     private final IntakeSubsystem intakeSubsystem;
@@ -71,18 +63,17 @@ public class RobotContainer {
     private final LowerFeederSubsystem lowerFeederSubsystem = new LowerFeederSubsystem();
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final ShooterCommand shooterCommand = new ShooterCommand(shooterSubsystem,
-            visionTargetTracker);
 
     private final AlignHighCommand alignHighCommand = new AlignHighCommand(driveSubsystem, visionTargetTracker);
-    private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker);
-    private final Command lowShootCommand = new RunCommand(()-> {
+    private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem,
+            visionTargetTracker);
+    private final Command lowShootCommand = new RunCommand(() -> {
         shooterSubsystem.setLowGoalRPM();
     }, shooterSubsystem);
-    private final Command highShootCommand = new RunCommand(()-> {
+    private final Command highShootCommand = new RunCommand(() -> {
         shooterSubsystem.setHighGoalRPM();
     }, shooterSubsystem);
-    private final Command stopShooterCommand = new InstantCommand(()-> {
+    private final Command stopShooterCommand = new InstantCommand(() -> {
         shooterSubsystem.setShooterRPM(0);
     }, shooterSubsystem);
 
@@ -120,7 +111,7 @@ public class RobotContainer {
             driveSubsystem,
             liftSubsystem,
             driverController::getLeftY,
-            driverController::getRightX, 
+            driverController::getRightX,
             driverController::getLeftTriggerAxis);
 
     // lifecyclecallbacks used when special cases are needed for autonomous and
@@ -139,11 +130,11 @@ public class RobotContainer {
         intakeSubsystem = new IntakeSubsystem(intakeDeploySubsystem);
 
         intakeInCommand = new IntakeCommand(intakeSubsystem, lowerFeederSubsystem,
-                IntakeConfig.TWO_BALLS, 1, operatorController::getRightTriggerAxis);
+            1, operatorController::getRightTriggerAxis);
 
         reverseIntakeCommand = new InstantCommand(()-> {
             intakeSubsystem.startIntake(-1);
-            lowerFeederSubsystem.setSpeed(1);
+            lowerFeederSubsystem.setSpeed(-1);
         }, intakeSubsystem, lowerFeederSubsystem);
 
         stopIntakeCommand = new InstantCommand(()-> {
@@ -156,10 +147,7 @@ public class RobotContainer {
         }, upperFeederSubsystem);
 
         driveSubsystem.setDefaultCommand(driveFromController);
-        // liftSubsystem.setDefaultCommand(liftCommand);
-
-        // TODO: Enable when ready (it doesn't work consistantly with no motors
-        // connected)
+        liftSubsystem.setDefaultCommand(liftCommand);
 
         // Add choices to the chooser
         chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
@@ -188,9 +176,6 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        //Are we still using this?
-        // JoystickButton shootButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
-        // shootButton.whileHeld(shooterCommand);
 
         JoystickButton feedShooterButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
         feedShooterButton.whileHeld(feedShooterCommand);
@@ -200,7 +185,7 @@ public class RobotContainer {
         aimTrigger.whileHeld(alignHighCommand);
         aimTrigger.whileHeld(spinShooterHighCommand);
         aimTrigger.whenReleased(stopShooterCommand);
-        
+
         POVButton dPadDownButton = new POVButton(operatorController, 180);
         dPadDownButton.whileHeld(lowShootCommand, false);
         dPadDownButton.whenReleased(stopShooterCommand);
@@ -214,7 +199,7 @@ public class RobotContainer {
         intakeDeployButton.whenPressed(intakeDeployCommand);
         intakeDeployButton.whenReleased(intakeRetractCommand);
 
-        //right trigger is axis id 3
+        // right trigger is axis id 3
         JoystickTrigger startIntakeTrigger = new JoystickTrigger(operatorController, 3);
         startIntakeTrigger.whileHeld(intakeInCommand);
 
