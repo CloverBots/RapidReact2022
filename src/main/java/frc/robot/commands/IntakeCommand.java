@@ -13,6 +13,7 @@ public class IntakeCommand extends CommandBase {
     }
     private final IntakeSubsystem intakeSubsystem;
     private final LowerFeederSubsystem lowerFeederSubsystem;
+
     private final double feederSpeed;
     private final DoubleSupplier intakeSpeed;
 
@@ -20,6 +21,7 @@ public class IntakeCommand extends CommandBase {
     public IntakeCommand(IntakeSubsystem intakeSubsystem, LowerFeederSubsystem lowerFeederSubsystem, double feederSpeed, DoubleSupplier intakeSpeed) {
         this.intakeSubsystem = intakeSubsystem;
         this.lowerFeederSubsystem = lowerFeederSubsystem;
+     
         this.feederSpeed = feederSpeed;
         this.intakeSpeed = intakeSpeed;
         addRequirements(intakeSubsystem);

@@ -40,7 +40,6 @@ public class RobotContainer {
     private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
     private static final double CAMERA_HEIGHT = 55.75; // on test robot
     private static final double CAMERA_PITCH = -3.0;
-    // might go back to using these later
 
     private final VisionConfiguration visionConfiguration = new VisionConfiguration(
             VISION_TARGET_HEIGHT,
@@ -64,12 +63,12 @@ public class RobotContainer {
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
     private final AlignHighCommand alignHighCommand = new AlignHighCommand(driveSubsystem, visionTargetTracker);
-    private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem,
-            visionTargetTracker);
-    private final Command lowShootCommand = new RunCommand(() -> {
+  
+    private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker);
+    private final Command lowShootCommand = new RunCommand(()-> {
         shooterSubsystem.setLowGoalRPM();
     }, shooterSubsystem);
-    private final Command highShootCommand = new RunCommand(() -> {
+    private final Command highShootCommand = new RunCommand(()-> {
         shooterSubsystem.setHighGoalRPM();
     }, shooterSubsystem);
     private final Command stopShooterCommand = new InstantCommand(() -> {
@@ -110,7 +109,7 @@ public class RobotContainer {
             driveSubsystem,
             liftSubsystem,
             driverController::getLeftY,
-            driverController::getRightX,
+            driverController::getRightX, 
             driverController::getLeftTriggerAxis);
 
     // lifecyclecallbacks used when special cases are needed for autonomous and
@@ -134,6 +133,16 @@ public class RobotContainer {
         reverseIntakeCommand = new InstantCommand(()-> {
             intakeSubsystem.startIntake(-1);
             lowerFeederSubsystem.setSpeed(-1);
+        }, intakeSubsystem, lowerFeederSubsystem);
+
+        stopIntakeCommand = new InstantCommand(()-> {
+            intakeSubsystem.stop();
+            lowerFeederSubsystem.setSpeed(0);
+        }, intakeSubsystem, lowerFeederSubsystem);
+
+        reverseIntakeCommand = new InstantCommand(()-> {
+            intakeSubsystem.startIntake(-1);
+            lowerFeederSubsystem.setSpeed(1);
         }, intakeSubsystem, lowerFeederSubsystem);
 
         stopIntakeCommand = new InstantCommand(()-> {
@@ -184,7 +193,7 @@ public class RobotContainer {
         aimTrigger.whileHeld(alignHighCommand);
         aimTrigger.whileHeld(spinShooterHighCommand);
         aimTrigger.whenReleased(stopShooterCommand);
-
+      
         POVButton dPadDownButton = new POVButton(operatorController, 180);
         dPadDownButton.whileHeld(lowShootCommand, false);
         dPadDownButton.whenReleased(stopShooterCommand);
