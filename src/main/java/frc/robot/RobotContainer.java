@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.AlignHighCommand;
 import frc.robot.commands.AutonomousLeftMiddleCommand;
-import frc.robot.commands.AutonomousOne;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LiftCommand;
@@ -150,7 +149,7 @@ public class RobotContainer {
         liftSubsystem.setDefaultCommand(liftCommand);
 
         // Add choices to the chooser
-        chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
+        // chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
         chooser.setDefaultOption("Autonomous Left Middle", new AutonomousLeftMiddleCommand(
                 driveSubsystem,
                 intakeSubsystem,

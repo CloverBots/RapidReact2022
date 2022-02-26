@@ -27,7 +27,7 @@ public class AutonomousLeftMiddleCommand extends SequentialCommandGroupExtended 
         //   Autonomous commands in running order
         addInstant(() -> intakeDeploySubsystem.setSolenoid(true), intakeDeploySubsystem); 
         addInstant(() -> intakeSubsystem.startIntake(), intakeSubsystem);
-        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, 0));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE));
         addCommands(new AlignHighCommand(driveSubsystem, visionTargetTracker));
         addCommands(new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker));
         addInstant(() -> lowerFeederSubsystem.setSpeed(1), lowerFeederSubsystem);
