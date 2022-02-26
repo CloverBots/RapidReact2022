@@ -15,8 +15,12 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double WHEEL_DIAMETER_METERS = 0.1524;
     private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;//0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;//ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
+
     private static final String SHOOT_HIGH_KEY = "Shoot high rpm";
     private static final String SHOOT_LOW_KEY = "Shoot low rpm";
+
+    private static final double DEFAULT_HIGH_SPEED = 4000;
+    private static final double DEFAULT_LOW_SPEED = 1800;
 
     private final CANSparkMax shooterLeadMotor = new CANSparkMax(Ids.SHOOTER_LEAD_DEVICE, MotorType.kBrushless);
     private final CANSparkMax shooterFollowMotor1 = new CANSparkMax(Ids.SHOOTER_FOLLOW_DEVICE_1, MotorType.kBrushless);
@@ -60,6 +64,9 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
+
+        SmartDashboard.putNumber(SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
+        SmartDashboard.putNumber(SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
     }
 
     @Override
@@ -140,13 +147,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setHighGoalRPM(){
-        SmartDashboard.putNumber(SHOOT_HIGH_KEY, 4000);
         double rpm = SmartDashboard.getNumber(SHOOT_HIGH_KEY, 0);
         setShooterRPM(rpm);
     }
 
     public void setLowGoalRPM(){
-        SmartDashboard.putNumber(SHOOT_LOW_KEY, 1800);
         double rpm = SmartDashboard.getNumber(SHOOT_LOW_KEY, 0);
         setShooterRPM(rpm);
     }
