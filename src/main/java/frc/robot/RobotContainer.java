@@ -43,6 +43,7 @@ public class RobotContainer {
     private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
     private static final double CAMERA_HEIGHT = 55.75; // on test robot
     private static final double CAMERA_PITCH = -3.0;
+    //might go back to using these later
     private static final double LOW_SHOOT_RPM = 1800;
     private static final double HIGH_SHOOT_RPM = 4000;
 
@@ -76,10 +77,10 @@ public class RobotContainer {
     private final AlignHighCommand alignHighCommand = new AlignHighCommand(driveSubsystem, visionTargetTracker);
     private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker);
     private final Command lowShootCommand = new RunCommand(()-> {
-        shooterSubsystem.setShooterRPM(LOW_SHOOT_RPM);
+        shooterSubsystem.setLowGoalRPM();
     }, shooterSubsystem);
     private final Command highShootCommand = new RunCommand(()-> {
-        shooterSubsystem.setShooterRPM(HIGH_SHOOT_RPM);
+        shooterSubsystem.setHighGoalRPM();
     }, shooterSubsystem);
     private final Command stopShooterCommand = new InstantCommand(()-> {
         shooterSubsystem.setShooterRPM(0);
@@ -93,6 +94,8 @@ public class RobotContainer {
     // Use an InstantCommand since all we need is to run a
     // intakeSubsystem.startIntake method and don't
     // need a whole command class for this.
+    private final Command reverseIntakeCommand;
+    private final Command stopIntakeCommand;
     private final Command upperFeederOutCommand;
 
     private final Command feedShooterCommand = new InstantCommand(() -> {
@@ -117,7 +120,8 @@ public class RobotContainer {
             driveSubsystem,
             liftSubsystem,
             driverController::getLeftY,
-            driverController::getRightX);
+            driverController::getRightX, 
+            driverController::getLeftTriggerAxis);
 
     // lifecyclecallbacks used when special cases are needed for autonomous and
     // teleop
@@ -136,6 +140,16 @@ public class RobotContainer {
 
         intakeInCommand = new IntakeCommand(intakeSubsystem, lowerFeederSubsystem,
                 IntakeConfig.TWO_BALLS, 1, operatorController::getRightTriggerAxis);
+
+        reverseIntakeCommand = new InstantCommand(()-> {
+            intakeSubsystem.startIntake(-1);
+            lowerFeederSubsystem.setSpeed(1);
+        }, intakeSubsystem, lowerFeederSubsystem);
+
+        stopIntakeCommand = new InstantCommand(()-> {
+            intakeSubsystem.stop();
+            lowerFeederSubsystem.setSpeed(0);
+        }, intakeSubsystem, lowerFeederSubsystem);
 
         upperFeederOutCommand = new InstantCommand(() -> {
             upperFeederSubsystem.setSpeed(-1);
@@ -174,17 +188,18 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        JoystickButton shootButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
-        shootButton.whileHeld(shooterCommand);
+        //Are we still using this?
+        // JoystickButton shootButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+        // shootButton.whileHeld(shooterCommand);
 
         JoystickButton feedShooterButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
         feedShooterButton.whileHeld(feedShooterCommand);
         feedShooterButton.whenReleased(stopFeedShooterCommand);
 
-        JoystickButton aimButton = new JoystickButton(driverController, XboxController.Button.kB.value);
-        aimButton.whileHeld(alignHighCommand);
-        aimButton.whileHeld(spinShooterHighCommand);
-        aimButton.whenReleased(stopShooterCommand);
+        JoystickTrigger aimTrigger = new JoystickTrigger(driverController, 3);
+        aimTrigger.whileHeld(alignHighCommand);
+        aimTrigger.whileHeld(spinShooterHighCommand);
+        aimTrigger.whenReleased(stopShooterCommand);
         
         POVButton dPadDownButton = new POVButton(operatorController, 180);
         dPadDownButton.whileHeld(lowShootCommand, false);
@@ -201,12 +216,16 @@ public class RobotContainer {
 
         //right trigger is axis id 3
         JoystickTrigger startIntakeTrigger = new JoystickTrigger(operatorController, 3);
-        startIntakeTrigger.whileHeld(intakeInCommand)
-;
+        startIntakeTrigger.whileHeld(intakeInCommand);
+
         JoystickButton reverseUpperFeederButton = new JoystickButton(operatorController,
                 XboxController.Button.kBack.value);
         reverseUpperFeederButton.whileHeld(upperFeederOutCommand);
         reverseUpperFeederButton.whenReleased(stopFeedShooterCommand);
+
+        JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kStart.value);
+        reverseIntakeButton.whileHeld(reverseIntakeCommand);
+        reverseIntakeButton.whenReleased(stopIntakeCommand);
     }
 
     /**
