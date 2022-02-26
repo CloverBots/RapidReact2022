@@ -16,7 +16,7 @@ public class IntakeCommand extends CommandBase {
         TWO_BALLS
     }
     private final IntakeSubsystem intakeSubsystem;
-    private final LowerFeederSubsystem feederSubsystem;
+    private final LowerFeederSubsystem lowerFeederSubsystem;
     private final IntakeConfig intakeConfig;
     private final double feederSpeed;
     private final DoubleSupplier intakeSpeed;
@@ -24,12 +24,12 @@ public class IntakeCommand extends CommandBase {
     /** Creates a new IntakeCommand. */
     public IntakeCommand(IntakeSubsystem intakeSubsystem, LowerFeederSubsystem lowerFeederSubsystem, IntakeConfig intakeConfig, double feederSpeed, DoubleSupplier intakeSpeed) {
         this.intakeSubsystem = intakeSubsystem;
-        this.feederSubsystem = lowerFeederSubsystem;
+        this.lowerFeederSubsystem = lowerFeederSubsystem;
         this.intakeConfig = intakeConfig;
         this.feederSpeed = feederSpeed;
         this.intakeSpeed = intakeSpeed;
         addRequirements(intakeSubsystem);
-        addRequirements(feederSubsystem);
+        addRequirements(lowerFeederSubsystem);
         // SmartDashboard.putNumber("Intake Speed", 0);
     }
 
@@ -46,7 +46,7 @@ public class IntakeCommand extends CommandBase {
         // feederSubsystem.loadLower(1); //TODO: determine proper value
         // feederSubsystem.loadUpper(1);
         
-        feederSubsystem.setSpeed(feederSpeed);
+        lowerFeederSubsystem.setSpeed(feederSpeed);
         // feederSubsystem.setUpperFeederSpeed(testSpeed);
     }
 
@@ -54,7 +54,7 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         intakeSubsystem.stop();
-        feederSubsystem.setSpeed(0);
+        lowerFeederSubsystem.setSpeed(0);
     }
 
     // Returns true when the command should end.
