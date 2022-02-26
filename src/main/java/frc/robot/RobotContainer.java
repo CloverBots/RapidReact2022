@@ -140,16 +140,6 @@ public class RobotContainer {
             lowerFeederSubsystem.setSpeed(0);
         }, intakeSubsystem, lowerFeederSubsystem);
 
-        reverseIntakeCommand = new InstantCommand(()-> {
-            intakeSubsystem.startIntake(-1);
-            lowerFeederSubsystem.setSpeed(1);
-        }, intakeSubsystem, lowerFeederSubsystem);
-
-        stopIntakeCommand = new InstantCommand(()-> {
-            intakeSubsystem.stop();
-            lowerFeederSubsystem.setSpeed(0);
-        }, intakeSubsystem, lowerFeederSubsystem);
-
         upperFeederOutCommand = new InstantCommand(() -> {
             upperFeederSubsystem.setSpeed(-1);
         }, upperFeederSubsystem);
