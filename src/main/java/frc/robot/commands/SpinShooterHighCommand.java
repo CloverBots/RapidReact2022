@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -30,7 +31,8 @@ public class SpinShooterHighCommand extends CommandBase {
     @Override
     public void execute() {
         double targetDistance = visionTargetTracker.computeTargetDistance();
-        shooterSubsystem.setShooterRPM(targetDistance * 10);
+        SmartDashboard.putNumber("Distance", targetDistance);
+        //shooterSubsystem.setShooterRPM(computeRPM(targetDistance));
     }
 
     // Called once the command ends or is interrupted.
@@ -42,5 +44,9 @@ public class SpinShooterHighCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
+    }
+
+    private double computeRPM(double distance) {
+        return 2734 +26.196 * distance;
     }
 }

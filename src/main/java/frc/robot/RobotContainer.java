@@ -38,8 +38,8 @@ import frc.robot.subsystems.UpperFeederSubsystem;
  */
 public class RobotContainer {
     private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
-    private static final double CAMERA_HEIGHT = 55.75; // on test robot
-    private static final double CAMERA_PITCH = -3.0;
+    private static final double CAMERA_HEIGHT = 43.7; // on test robot
+    private static final double CAMERA_PITCH = 22.0;
 
     private final VisionConfiguration visionConfiguration = new VisionConfiguration(
             VISION_TARGET_HEIGHT,
@@ -62,7 +62,7 @@ public class RobotContainer {
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
-    private final AlignHighCommand alignHighCommand = new AlignHighCommand(driveSubsystem, visionTargetTracker);
+    private final AlignHighCommand alignHighCommand = new AlignHighCommand(driveSubsystem, driverController::getLeftY, visionTargetTracker);
   
     private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker);
     private final Command lowShootCommand = new RunCommand(()-> {
@@ -191,6 +191,14 @@ public class RobotContainer {
         POVButton dPadUpButton = new POVButton(operatorController, 0);
         dPadUpButton.whileHeld(highShootCommand, false);
         dPadUpButton.whenReleased(stopShooterCommand);
+
+        POVButton dPadUpLeftButton = new POVButton(operatorController, 315);
+        dPadUpLeftButton.whileHeld(highShootCommand, false);
+        dPadUpLeftButton.whenReleased(stopShooterCommand);
+
+        POVButton dPadUpRightButton = new POVButton(operatorController, 45);
+        dPadUpRightButton.whileHeld(highShootCommand, false);
+        dPadUpRightButton.whenReleased(stopShooterCommand);
 
         JoystickButton intakeDeployButton = new JoystickButton(operatorController,
                 XboxController.Button.kA.value);

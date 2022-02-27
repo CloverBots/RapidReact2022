@@ -29,7 +29,7 @@ public class AutonomousLeftLeftCommand extends SequentialCommandGroupExtended {
         addInstant(() -> intakeDeploySubsystem.setSolenoid(true), intakeDeploySubsystem); 
         addInstant(() -> intakeSubsystem.startIntake(), intakeSubsystem);
         addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE));
-        addCommands(new AlignHighCommand(driveSubsystem, visionTargetTracker));
+        // addCommands(new AlignHighCommand(driveSubsystem, 0, visionTargetTracker));
         addCommands(new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker));
         addInstant(() -> lowerFeederSubsystem.setSpeed(1), lowerFeederSubsystem);
         addInstant(()-> upperFeederSubsystem.setSpeed(1), upperFeederSubsystem);

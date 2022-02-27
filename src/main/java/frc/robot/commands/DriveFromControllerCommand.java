@@ -51,14 +51,14 @@ public class DriveFromControllerCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        SmartDashboard.putNumber(SLOW_FORWARD_RATIO_KEY, .3);
+        SmartDashboard.putNumber(SLOW_FORWARD_RATIO_KEY, .2);
         SmartDashboard.putNumber(SLOW_FOWARD_CURVE_KEY, 1.5);
         SmartDashboard.putNumber(SLOW_ROTATION_RATIO_KEY, .3);
         SmartDashboard.putNumber(SLOW_ROTATION_CURVE_KEY, 2);
 
-        SmartDashboard.putNumber(DEFAULT_FORWARD_RATIO_KEY, .8);
+        SmartDashboard.putNumber(DEFAULT_FORWARD_RATIO_KEY, .7);
         SmartDashboard.putNumber(DEFAULT_FOWARD_CURVE_KEY, 1.5);
-        SmartDashboard.putNumber(DEFAULT_ROTATION_RATIO_KEY, .8);
+        SmartDashboard.putNumber(DEFAULT_ROTATION_RATIO_KEY, .6);
         SmartDashboard.putNumber(DEFAULT_ROTATION_CURVE_KEY, 2);
     }
 
