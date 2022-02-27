@@ -12,7 +12,7 @@ public class DriveFromControllerCommand extends CommandBase {
     private static final double SLOW_FORWARD_RATIO = .2;
     private static final double SLOW_FORWARD_CURVE = 1.5;
     private static final double SLOW_ROTATION_RATIO = .3;
-    private static final double SLOW_ROtATION_CURVE = 2;
+    private static final double SLOW_ROTATION_CURVE = 2;
 
     private static final double DEFAULT_FOWARD_RATIO = .7;
     private static final double DEFAULT_FORWARD_CURVE = 1.5;
@@ -67,7 +67,7 @@ public class DriveFromControllerCommand extends CommandBase {
             forwardRatio = SLOW_FORWARD_RATIO;
             forwardCurve = SLOW_FORWARD_CURVE;
             rotationRatio = SLOW_ROTATION_RATIO;
-            rotationCurve = SLOW_ROtATION_CURVE;
+            rotationCurve = SLOW_ROTATION_CURVE;
         } else {
             forwardRatio = DEFAULT_FOWARD_RATIO;
             forwardCurve = DEFAULT_FORWARD_CURVE;
