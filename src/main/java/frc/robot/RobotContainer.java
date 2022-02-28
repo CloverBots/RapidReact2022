@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -85,7 +86,6 @@ public class RobotContainer {
     // need a whole command class for this.
     private final Command reverseIntakeCommand;
     private final Command stopIntakeCommand;
-    private final Command upperFeederOutCommand;
 
     private final Command feedShooterCommand = new InstantCommand(() -> {
         upperFeederSubsystem.setSpeed(1);
@@ -96,6 +96,18 @@ public class RobotContainer {
         upperFeederSubsystem.setSpeed(0);
         lowerFeederSubsystem.setSpeed(0);
     }, upperFeederSubsystem, lowerFeederSubsystem);
+
+    private final Command upperFeederInCommand = new InstantCommand(()-> {
+        upperFeederSubsystem.setSpeed(1);
+    }, upperFeederSubsystem);
+
+    private final Command upperFeederOutCommand = new InstantCommand(() -> {
+        upperFeederSubsystem.setSpeed(-1);
+    }, upperFeederSubsystem);
+
+    private final Command stopUpperFeederCommand = new InstantCommand(()-> {
+        upperFeederSubsystem.setSpeed(0);
+    }, upperFeederSubsystem);
 
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
             intakeDeploySubsystem);
@@ -140,10 +152,6 @@ public class RobotContainer {
             lowerFeederSubsystem.setSpeed(0);
         }, intakeSubsystem, lowerFeederSubsystem);
 
-        upperFeederOutCommand = new InstantCommand(() -> {
-            upperFeederSubsystem.setSpeed(-1);
-        }, upperFeederSubsystem);
-
         driveSubsystem.setDefaultCommand(driveFromController);
         liftSubsystem.setDefaultCommand(liftCommand);
 
@@ -179,6 +187,10 @@ public class RobotContainer {
         feedShooterButton.whileHeld(feedShooterCommand);
         feedShooterButton.whenReleased(stopFeedShooterCommand);
 
+        JoystickButton feedUpperButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+        feedUpperButton.whileHeld(upperFeederInCommand);
+        feedUpperButton.whenReleased(stopFeedShooterCommand);
+
         JoystickTrigger aimTrigger = new JoystickTrigger(driverController, 3);
         aimTrigger.whileHeld(alignHighCommand);
         aimTrigger.whileHeld(spinShooterHighCommand);
@@ -212,7 +224,7 @@ public class RobotContainer {
         JoystickButton reverseUpperFeederButton = new JoystickButton(operatorController,
                 XboxController.Button.kBack.value);
         reverseUpperFeederButton.whileHeld(upperFeederOutCommand);
-        reverseUpperFeederButton.whenReleased(stopFeedShooterCommand);
+        reverseUpperFeederButton.whenReleased(stopUpperFeederCommand);
 
         JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kStart.value);
         reverseIntakeButton.whileHeld(reverseIntakeCommand);
