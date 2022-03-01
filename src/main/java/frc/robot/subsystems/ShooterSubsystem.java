@@ -63,13 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // This method will be called once per scheduler run
     }
 
-    public void startShooter(double speed) {
-        // shooterMotors.set(speed);
-
-    }
-
     public void stop() {
-        // shooterMotors.set(0);
         pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
     }
 

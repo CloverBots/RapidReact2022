@@ -32,7 +32,7 @@ public class SpinShooterHighCommand extends CommandBase {
     public void execute() {
         double targetDistance = visionTargetTracker.computeTargetDistance();
         SmartDashboard.putNumber("Distance", targetDistance);
-        //shooterSubsystem.setShooterRPM(computeRPM(targetDistance));
+        shooterSubsystem.setShooterRPM(computeRPM(targetDistance));
     }
 
     // Called once the command ends or is interrupted.

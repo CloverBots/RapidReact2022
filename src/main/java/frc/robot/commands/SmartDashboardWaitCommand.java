@@ -19,7 +19,7 @@ public class SmartDashboardWaitCommand extends CommandBase {
      * @param seconds the time to wait, in seconds
      */
     public SmartDashboardWaitCommand(String name) {
-        duration = SmartDashboard.getNumber(name, 0);
+        duration = Math.min(Math.abs(SmartDashboard.getNumber(name, 0)), 8);
     }
 
     @Override

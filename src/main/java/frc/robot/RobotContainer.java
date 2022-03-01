@@ -192,7 +192,7 @@ public class RobotContainer {
 
         JoystickTrigger aimTrigger = new JoystickTrigger(driverController, 3);
         aimTrigger.whileHeld(alignHighCommand);
-        aimTrigger.whileHeld(spinShooterHighCommand);
+        // aimTrigger.whileHeld(spinShooterHighCommand);
         aimTrigger.whenReleased(stopShooterCommand);
       
         POVButton dPadDownButton = new POVButton(operatorController, 180);
