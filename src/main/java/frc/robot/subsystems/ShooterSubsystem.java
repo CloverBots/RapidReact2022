@@ -15,6 +15,15 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;//0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;//ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
 
+    private static final double SHOOTER_P = 8e-5;
+    private static final double SHOOTER_I = 0;
+    private static final double SHOOTER_D = 0;
+    private static final double SHOOTER_Iz = 0;
+    private static final double SHOOTER_FF = 0.00017;
+    private static final double SHOOTER_MAX_OUTPUT = 1;
+    private static final double SHOOTER_MIN_OUTPUT = -1;
+    private static final double MAX_RPM = 5700;
+
     private static final String SHOOT_HIGH_KEY = "Shoot high rpm";
     private static final String SHOOT_LOW_KEY = "Shoot low rpm";
 
@@ -29,8 +38,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private SparkMaxPIDController pidController;
 
-    public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
-
     /** Creates a new Shooter. */
     public ShooterSubsystem() {
         // shooterFollowMotor1.setInverted(true);
@@ -38,31 +45,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
         configureEncoder(encoder);
         pidController = shooterLeadMotor.getPIDController();
-        kP = 8e-5;
-        kI = 0;
-        kD = 0;
-        kIz = 0;
-        kFF = 0.00017;
-        kMaxOutput = 1;
-        kMinOutput = -1;
-        maxRPM = 5700;
 
         // set PID coefficients
-        pidController.setP(kP);
-        pidController.setI(kI);
-        pidController.setD(kD);
-        pidController.setIZone(kIz);
-        pidController.setFF(kFF);
-        pidController.setOutputRange(kMinOutput, kMaxOutput);
-
-        // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("P Gain", kP);
-        SmartDashboard.putNumber("I Gain", kI);
-        SmartDashboard.putNumber("D Gain", kD);
-        SmartDashboard.putNumber("I Zone", kIz);
-        SmartDashboard.putNumber("Feed Forward", kFF);
-        SmartDashboard.putNumber("Max Output", kMaxOutput);
-        SmartDashboard.putNumber("Min Output", kMinOutput);
+        pidController.setP(SHOOTER_P);
+        pidController.setI(SHOOTER_I);
+        pidController.setD(SHOOTER_D);
+        pidController.setIZone(SHOOTER_Iz);
+        pidController.setFF(SHOOTER_FF);
+        pidController.setOutputRange(SHOOTER_MAX_OUTPUT, SHOOTER_MIN_OUTPUT);
 
         SmartDashboard.putNumber(SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
         SmartDashboard.putNumber(SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
@@ -89,41 +79,6 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setShooterRPM(double rpm) {
-        double p = SmartDashboard.getNumber("P Gain", 0);
-        double i = SmartDashboard.getNumber("I Gain", 0);
-        double d = SmartDashboard.getNumber("D Gain", 0);
-        double iz = SmartDashboard.getNumber("I Zone", 0);
-        double ff = SmartDashboard.getNumber("Feed Forward", 0);
-        double max = SmartDashboard.getNumber("Max Output", 0);
-        double min = SmartDashboard.getNumber("Min Output", 0);
-
-        // if PID coefficients on SmartDashboard have changed, write new values to
-        // controller
-        if ((p != kP)) {
-            pidController.setP(p);
-            kP = p;
-        }
-        if ((i != kI)) {
-            pidController.setI(i);
-            kI = i;
-        }
-        if ((d != kD)) {
-            pidController.setD(d);
-            kD = d;
-        }
-        if ((iz != kIz)) {
-            pidController.setIZone(iz);
-            kIz = iz;
-        }
-        if ((ff != kFF)) {
-            pidController.setFF(ff);
-            kFF = ff;
-        }
-        if ((max != kMaxOutput) || (min != kMinOutput)) {
-            pidController.setOutputRange(min, max);
-            kMinOutput = min;
-            kMaxOutput = max;
-        }
 
         /**
          * PIDController objects are commanded to a set point using the
