@@ -38,8 +38,8 @@ import frc.robot.subsystems.UpperFeederSubsystem;
  */
 public class RobotContainer {
     private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
-    private static final double CAMERA_HEIGHT = 55.75; // on test robot
-    private static final double CAMERA_PITCH = -3.0;
+    private static final double CAMERA_HEIGHT = 43.7; // on test robot
+    private static final double CAMERA_PITCH = 22.0;
 
     private final VisionConfiguration visionConfiguration = new VisionConfiguration(
             VISION_TARGET_HEIGHT,
@@ -62,7 +62,7 @@ public class RobotContainer {
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
-    private final AlignHighCommand alignHighCommand = new AlignHighCommand(driveSubsystem, visionTargetTracker);
+    private final AlignHighCommand alignHighCommand = new AlignHighCommand(driveSubsystem, driverController::getLeftY, visionTargetTracker);
   
     private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker);
     private final Command lowShootCommand = new RunCommand(()-> {
@@ -85,7 +85,6 @@ public class RobotContainer {
     // need a whole command class for this.
     private final Command reverseIntakeCommand;
     private final Command stopIntakeCommand;
-    private final Command upperFeederOutCommand;
 
     private final Command feedShooterCommand = new InstantCommand(() -> {
         upperFeederSubsystem.setSpeed(1);
@@ -96,6 +95,18 @@ public class RobotContainer {
         upperFeederSubsystem.setSpeed(0);
         lowerFeederSubsystem.setSpeed(0);
     }, upperFeederSubsystem, lowerFeederSubsystem);
+
+    private final Command upperFeederInCommand = new InstantCommand(()-> {
+        upperFeederSubsystem.setSpeed(1);
+    }, upperFeederSubsystem);
+
+    private final Command upperFeederOutCommand = new InstantCommand(() -> {
+        upperFeederSubsystem.setSpeed(-1);
+    }, upperFeederSubsystem);
+
+    private final Command stopUpperFeederCommand = new InstantCommand(()-> {
+        upperFeederSubsystem.setSpeed(0);
+    }, upperFeederSubsystem);
 
     private Command intakeDeployCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(true),
             intakeDeploySubsystem);
@@ -140,10 +151,6 @@ public class RobotContainer {
             lowerFeederSubsystem.setSpeed(0);
         }, intakeSubsystem, lowerFeederSubsystem);
 
-        upperFeederOutCommand = new InstantCommand(() -> {
-            upperFeederSubsystem.setSpeed(-1);
-        }, upperFeederSubsystem);
-
         driveSubsystem.setDefaultCommand(driveFromController);
         liftSubsystem.setDefaultCommand(liftCommand);
 
@@ -179,6 +186,10 @@ public class RobotContainer {
         feedShooterButton.whileHeld(feedShooterCommand);
         feedShooterButton.whenReleased(stopFeedShooterCommand);
 
+        JoystickButton feedUpperButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
+        feedUpperButton.whileHeld(upperFeederInCommand);
+        feedUpperButton.whenReleased(stopFeedShooterCommand);
+
         JoystickTrigger aimTrigger = new JoystickTrigger(driverController, 3);
         aimTrigger.whileHeld(alignHighCommand);
         aimTrigger.whileHeld(spinShooterHighCommand);
@@ -188,9 +199,25 @@ public class RobotContainer {
         dPadDownButton.whileHeld(lowShootCommand, false);
         dPadDownButton.whenReleased(stopShooterCommand);
 
+        POVButton dPadDownLeftButton = new POVButton(operatorController, 135);
+        dPadDownLeftButton.whileHeld(lowShootCommand, false);
+        dPadDownLeftButton.whenReleased(stopShooterCommand);
+
+        POVButton dPadDownRightButton = new POVButton(operatorController, 225);
+        dPadDownRightButton.whileHeld(lowShootCommand, false);
+        dPadDownRightButton.whenReleased(stopShooterCommand);
+
         POVButton dPadUpButton = new POVButton(operatorController, 0);
         dPadUpButton.whileHeld(highShootCommand, false);
         dPadUpButton.whenReleased(stopShooterCommand);
+
+        POVButton dPadUpLeftButton = new POVButton(operatorController, 315);
+        dPadUpLeftButton.whileHeld(highShootCommand, false);
+        dPadUpLeftButton.whenReleased(stopShooterCommand);
+
+        POVButton dPadUpRightButton = new POVButton(operatorController, 45);
+        dPadUpRightButton.whileHeld(highShootCommand, false);
+        dPadUpRightButton.whenReleased(stopShooterCommand);
 
         JoystickButton intakeDeployButton = new JoystickButton(operatorController,
                 XboxController.Button.kA.value);
@@ -204,7 +231,7 @@ public class RobotContainer {
         JoystickButton reverseUpperFeederButton = new JoystickButton(operatorController,
                 XboxController.Button.kBack.value);
         reverseUpperFeederButton.whileHeld(upperFeederOutCommand);
-        reverseUpperFeederButton.whenReleased(stopFeedShooterCommand);
+        reverseUpperFeederButton.whenReleased(stopUpperFeederCommand);
 
         JoystickButton reverseIntakeButton = new JoystickButton(operatorController, XboxController.Button.kStart.value);
         reverseIntakeButton.whileHeld(reverseIntakeCommand);

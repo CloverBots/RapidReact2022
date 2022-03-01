@@ -8,7 +8,7 @@ import frc.robot.Ids;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-    private final double INTAKE_DEFAULT_SPEED = 10.0;
+    private final double INTAKE_DEFAULT_SPEED = 1.0;
     private final IntakeDeployObserver intakeDeployObserver;
 
     private final TalonSRX intakeLeadMotor = new TalonSRX(Ids.INTAKE_LEAD_DEVICE);

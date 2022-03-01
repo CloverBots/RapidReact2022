@@ -48,11 +48,6 @@ public class DriveFromControllerCommand extends CommandBase {
         addRequirements(driveSubsystem);
     }
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
-    }
-
     @Override
     public void execute() {
         updateMaximumOutput();
