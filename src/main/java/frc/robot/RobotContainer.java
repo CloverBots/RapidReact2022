@@ -199,6 +199,14 @@ public class RobotContainer {
         dPadDownButton.whileHeld(lowShootCommand, false);
         dPadDownButton.whenReleased(stopShooterCommand);
 
+        POVButton dPadDownLeftButton = new POVButton(operatorController, 135);
+        dPadDownLeftButton.whileHeld(lowShootCommand, false);
+        dPadDownLeftButton.whenReleased(stopShooterCommand);
+
+        POVButton dPadDownRightButton = new POVButton(operatorController, 225);
+        dPadDownRightButton.whileHeld(lowShootCommand, false);
+        dPadDownRightButton.whenReleased(stopShooterCommand);
+
         POVButton dPadUpButton = new POVButton(operatorController, 0);
         dPadUpButton.whileHeld(highShootCommand, false);
         dPadUpButton.whenReleased(stopShooterCommand);
