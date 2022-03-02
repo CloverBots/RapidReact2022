@@ -167,7 +167,6 @@ public class RobotContainer {
                 upperFeederSubsystem,
                 shooterSubsystem,
                 visionTargetTracker));
-    
         chooser.addOption("Delayed Taxi", new AutoDelayedTaxiCommand(driveSubsystem));
         chooser.addOption("Low Taxi", new AutoLowGoalTaxiCommand(
                 driveSubsystem, 
@@ -178,8 +177,13 @@ public class RobotContainer {
                 shooterSubsystem, 
                 visionTargetTracker));
         chooser.addOption("High Taxi", new AutoHighGoalTaxiCommand(
-            driveSubsystem,
-            intakeSubsystem, intakeDeploySubsystem, lowerFeederSubsystem, upperFeederSubsystem, shooterSubsystem, visionTargetTracker));
+                driveSubsystem,
+                intakeSubsystem,
+                intakeDeploySubsystem, 
+                lowerFeederSubsystem, 
+                upperFeederSubsystem, 
+                shooterSubsystem, 
+                visionTargetTracker));
         // Add chooser to the SmartDashboard
         SmartDashboard.putData("Autonomous Selection", chooser);
         SmartDashboard.putNumber("AutoWaitTime", 0);
