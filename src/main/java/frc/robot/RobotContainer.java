@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.AlignHighCommand;
+import frc.robot.commands.AutoDelayedTaxiCommand;
+import frc.robot.commands.AutoHighGoalTaxiCommand;
+import frc.robot.commands.AutoLowGoalTaxiCommand;
 import frc.robot.commands.AutonomousLeftMiddleCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
@@ -164,9 +167,22 @@ public class RobotContainer {
                 upperFeederSubsystem,
                 shooterSubsystem,
                 visionTargetTracker));
+    
+        chooser.addOption("Delayed Taxi", new AutoDelayedTaxiCommand(driveSubsystem));
+        chooser.addOption("Low Taxi", new AutoLowGoalTaxiCommand(
+                driveSubsystem, 
+                intakeSubsystem, 
+                intakeDeploySubsystem, 
+                lowerFeederSubsystem, 
+                upperFeederSubsystem, 
+                shooterSubsystem, 
+                visionTargetTracker));
+        chooser.addOption("High Taxi", new AutoHighGoalTaxiCommand(
+            driveSubsystem,
+            intakeSubsystem, intakeDeploySubsystem, lowerFeederSubsystem, upperFeederSubsystem, shooterSubsystem, visionTargetTracker));
         // Add chooser to the SmartDashboard
-        SmartDashboard.putData("Autonomous One", chooser);
-        SmartDashboard.putData("Autonomous Left Middle", chooser);
+        SmartDashboard.putData("Autonomous Selection", chooser);
+        SmartDashboard.putNumber("AutoWaitTime", 0);
 
         // Configure the button bindings
         configureButtonBindings();

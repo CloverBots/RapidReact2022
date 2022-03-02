@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.SequentialCommandGroupExtended;
 import frc.robot.VisionTargetTracker;
@@ -13,7 +12,8 @@ import frc.robot.subsystems.UpperFeederSubsystem;
 
 public class AutoLowGoalTaxiCommand extends SequentialCommandGroupExtended {
     private final static double DRIVE_SPEED = 0.5;
-    private final static double DRIVE_DISTANCE = 1;
+    private final static double DRIVE_DISTANCE = 2
+    ;
     private final static double DRIVE_ROTATE = 0;
     private final static String SMART_DASHBOARD_AUTO_WAIT_TIME = "AutoWaitTime"; 
 
@@ -26,8 +26,6 @@ public class AutoLowGoalTaxiCommand extends SequentialCommandGroupExtended {
         UpperFeederSubsystem upperFeederSubsystem,
         ShooterSubsystem shooterSubsystem,
         VisionTargetTracker visionTargetTracker) {
-
-        SmartDashboard.putNumber(SMART_DASHBOARD_AUTO_WAIT_TIME, 0);
         
         //   Autonomous commands in running order
         addInstant(() -> shooterSubsystem.setLowGoalRPM(), shooterSubsystem);
