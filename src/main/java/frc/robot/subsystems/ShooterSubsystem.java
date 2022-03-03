@@ -91,7 +91,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         pidController.setReference(rpm, CANSparkMax.ControlType.kVelocity);
 
-        SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
+        // SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
     }
 
     public void setHighGoalRPM(){
