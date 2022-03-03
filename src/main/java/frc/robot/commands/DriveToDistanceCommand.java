@@ -50,12 +50,12 @@ public class DriveToDistanceCommand extends CommandBase {
         // target distance
         double currentEncoderPosition = driveSubsystem.getAverageEncoderPosition();
         double distanceTraveled = currentEncoderPosition;
-        SmartDashboard.putNumber("Distance Traveled", distanceTraveled);
+        // SmartDashboard.putNumber("Distance Traveled", distanceTraveled);
         double rotateSpeed = driveSubsystem.driveRotatePidController.calculate(driveSubsystem.navXGyro.getHeading());
         // double rotateSpeed = 0;
         double drivingSpeed = driveSubsystem.driveStraightPidController.calculate(distanceTraveled);
         drivingSpeed = Math.max(Math.min(drivingSpeed, maxSpeed), -maxSpeed);
-        SmartDashboard.putNumber("Drive Speed", drivingSpeed);
+        // SmartDashboard.putNumber("Drive Speed", drivingSpeed);
         driveSubsystem.autoDrive(drivingSpeed, -rotateSpeed);
     }
 
