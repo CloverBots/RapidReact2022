@@ -29,6 +29,16 @@ public class AlignHighCommand extends CommandBase {
         addRequirements(driveSubsystem);
     }
 
+    public AlignHighCommand(DriveSubsystem driveSubsystem, VisionTargetTracker visionTargetTracker) {
+
+        this.driveSubsystem = driveSubsystem;
+        this.visionTargetTracker = visionTargetTracker;
+        this.foward = () -> 0;
+
+        // Use addRequirements() here to declare subsystem dependencies.
+        addRequirements(driveSubsystem);
+    }
+
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {

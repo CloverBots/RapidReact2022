@@ -13,4 +13,8 @@ public class NavXGyro {
     public double getHeading() {
         return ahrs.getYaw();
     }
+
+    public void reset() {
+        ahrs.reset();
+    }
 }

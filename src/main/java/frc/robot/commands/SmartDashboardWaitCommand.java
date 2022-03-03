@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,7 +20,7 @@ public class SmartDashboardWaitCommand extends CommandBase {
      * @param seconds the time to wait, in seconds
      */
     public SmartDashboardWaitCommand(String name) {
-        duration = SmartDashboard.getNumber(name, 0);
+        duration = Math.min(Math.abs(SmartDashboard.getNumber(name, 0)), 8);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class SmartDashboardWaitCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(duration);
+        return timer.get() >= duration;
     }
 
     @Override

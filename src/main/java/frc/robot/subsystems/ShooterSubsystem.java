@@ -52,7 +52,7 @@ public class ShooterSubsystem extends SubsystemBase {
         pidController.setD(SHOOTER_D);
         pidController.setIZone(SHOOTER_Iz);
         pidController.setFF(SHOOTER_FF);
-        pidController.setOutputRange(SHOOTER_MAX_OUTPUT, SHOOTER_MIN_OUTPUT);
+        pidController.setOutputRange(SHOOTER_MIN_OUTPUT, SHOOTER_MAX_OUTPUT);
 
         SmartDashboard.putNumber(SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
         SmartDashboard.putNumber(SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
@@ -63,13 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // This method will be called once per scheduler run
     }
 
-    public void startShooter(double speed) {
-        // shooterMotors.set(speed);
-
-    }
-
     public void stop() {
-        // shooterMotors.set(0);
         pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
     }
 
