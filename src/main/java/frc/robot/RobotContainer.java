@@ -159,15 +159,15 @@ public class RobotContainer {
 
         // Add choices to the chooser
         // chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
-        chooser.setDefaultOption("Autonomous Left Middle", new AutonomousLeftMiddleCommand(
-                driveSubsystem,
-                intakeSubsystem,
-                intakeDeploySubsystem,
-                lowerFeederSubsystem,
-                upperFeederSubsystem,
-                shooterSubsystem,
-                visionTargetTracker));
-        chooser.addOption("Delayed Taxi", new AutoDelayedTaxiCommand(driveSubsystem));
+        // chooser.setDefaultOption("Autonomous Left Middle", new AutonomousLeftMiddleCommand(
+        //         driveSubsystem,
+        //         intakeSubsystem,
+        //         intakeDeploySubsystem,
+        //         lowerFeederSubsystem,
+        //         upperFeederSubsystem,
+        //         shooterSubsystem,
+        //         visionTargetTracker));
+        chooser.setDefaultOption("Delayed Taxi", new AutoDelayedTaxiCommand(driveSubsystem));
         chooser.addOption("Low Taxi", new AutoLowGoalTaxiCommand(
                 driveSubsystem, 
                 intakeSubsystem, 
