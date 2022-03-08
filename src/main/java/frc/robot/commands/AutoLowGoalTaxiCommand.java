@@ -27,7 +27,7 @@ public class AutoLowGoalTaxiCommand extends SequentialCommandGroupExtended {
         VisionTargetTracker visionTargetTracker) {
         
         //   Autonomous commands in running order
-        addInstant(() -> shooterSubsystem.setLowGoalRPM(), shooterSubsystem);
+        addInstant(() -> shooterSubsystem.setAutoLowGoalRPM(), shooterSubsystem);
         addCommands(new WaitCommand(1));
         addInstant(() -> lowerFeederSubsystem.setSpeed(1), lowerFeederSubsystem);
         addInstant(()-> upperFeederSubsystem.setSpeed(1), upperFeederSubsystem);

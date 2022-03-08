@@ -31,7 +31,7 @@ public class AutoHighGoalTaxiCommand extends SequentialCommandGroupExtended {
         addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE_ONE, DRIVE_SPEED, DRIVE_ROTATE));
         // addCommands(new AlignHighCommand(driveSubsystem, visionTargetTracker));
         // addCommands(new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker));
-        addInstant(() -> shooterSubsystem.setHighGoalRPM(), shooterSubsystem);
+        addInstant(() -> shooterSubsystem.setAutoHighGoalRPM(), shooterSubsystem);
         addCommands(new WaitCommand(1));
         addInstant(() -> lowerFeederSubsystem.setSpeed(1), lowerFeederSubsystem);
         addInstant(()-> upperFeederSubsystem.setSpeed(1), upperFeederSubsystem);
