@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftObserver;
@@ -24,6 +25,7 @@ public class DriveFromControllerCommand extends CommandBase {
     private final DoubleSupplier forward;
     private final DoubleSupplier rotation;
     private final DoubleSupplier slowModeTrigger;
+    private final SlewRateLimiter filter = new SlewRateLimiter(0.5);
 
     /**
      * Constructs a new {@link DriveFromControllerCommand} instance.
@@ -71,8 +73,8 @@ public class DriveFromControllerCommand extends CommandBase {
         }
 
         driveSubsystem.arcadeDrive(
-                    -computeInputCurve(forwardRatio * forward.getAsDouble(), forwardCurve),
-                    computeInputCurve(rotationRatio * rotation.getAsDouble(), rotationCurve));
+                    -computeInputCurve(filter.calculate(forwardRatio * forward.getAsDouble()), filter.calculate(forwardCurve)),
+                    computeInputCurve(filter.calculate(rotationRatio * rotation.getAsDouble()), filter.calculate(rotationCurve)));
     }
 
     private double computeInputCurve(double rawInput, double power) {
