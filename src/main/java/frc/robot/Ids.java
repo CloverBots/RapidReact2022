@@ -33,6 +33,8 @@ public final class Ids {
     public static final int PCM_ID = 1;
     public static final int TEST_SOLENOID1_FORWARD = 4;  //TODO change to correct value
     public static final int TEST_SOLENOID1_REVERSE = 5; //TODO change to correct value
+    public static final int LIFT_HOOK_SOLENOID_FORWARD = 23;
+    public static final int LIFT_HOOK_SOLENOID_REVERSE = 24;
 
     //NavX Gyro
     public static final Port AHRS_PORT_ID = Port.kMXP;
