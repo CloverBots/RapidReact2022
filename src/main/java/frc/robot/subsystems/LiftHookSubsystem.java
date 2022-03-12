@@ -16,7 +16,6 @@
     DoubleSolenoid solenoid1 = new DoubleSolenoid(Ids.PCM_ID, PneumaticsModuleType.CTREPCM,
             Ids.LIFT_HOOK_SOLENOID_FORWARD,
             Ids.LIFT_HOOK_SOLENOID_REVERSE);
-    Compressor compressor = new Compressor(Ids.PCM_ID, PneumaticsModuleType.CTREPCM);
 
     public LiftHookSubsystem(){
         setSolenoid(false);

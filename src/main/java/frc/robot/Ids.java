@@ -13,13 +13,8 @@ public final class Ids {
 
     public static final int LIFT_WINCH_DEVICE0 = 8;
     public static final int LIFT_WINCH_DEVICE1 = 9;
-    public static final int LIFT_SOLENOID_FORWARD = 1;
-    public static final int LIFT_SOLENOID_REVERSE = 1;
     public static final int LIFT_UPPER_SWITCH = 0;
     public static final int LIFT_LOWER_SWITCH = 1;
-
-    public static final int RATCHET_SOLENOID_FORWARD = 3;
-    public static final int RATCHET_SOLENOID_REVERSE = 7;
 
     // Shooter motor ID
     public static final int SHOOTER_LEAD_DEVICE = 11; //TODO check proper port number
@@ -31,10 +26,10 @@ public final class Ids {
 
     // pneumatics ids
     public static final int PCM_ID = 1;
-    public static final int TEST_SOLENOID1_FORWARD = 4;  //TODO change to correct value
-    public static final int TEST_SOLENOID1_REVERSE = 5; //TODO change to correct value
-    public static final int LIFT_HOOK_SOLENOID_FORWARD = 23;
-    public static final int LIFT_HOOK_SOLENOID_REVERSE = 24;
+    public static final int TEST_SOLENOID1_FORWARD = 40;  //TODO change to correct value
+    public static final int TEST_SOLENOID1_REVERSE = 50; //TODO change to correct value
+    public static final int LIFT_HOOK_SOLENOID_FORWARD = 4;
+    public static final int LIFT_HOOK_SOLENOID_REVERSE = 5;
 
     //NavX Gyro
     public static final Port AHRS_PORT_ID = Port.kMXP;
