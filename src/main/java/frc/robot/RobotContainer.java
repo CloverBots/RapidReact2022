@@ -21,6 +21,7 @@ import frc.robot.commands.AutonomousLeftMiddleCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LiftCommand;
+import frc.robot.commands.LiftHookCommand;
 import frc.robot.commands.SpinShooterHighCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
@@ -118,10 +119,8 @@ public class RobotContainer {
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
             intakeDeploySubsystem);
 
-    private Command liftHookDeployCommand = new InstantCommand(() -> liftHookSubsystem.setSolenoid(true),
-            liftHookSubsystem);
-    private Command LiftHookRetractCommand = new InstantCommand(() -> liftHookSubsystem.setSolenoid(false),
-            liftHookSubsystem);
+    private LiftHookCommand liftHookCommand = new LiftHookCommand(liftHookSubsystem,
+            operatorController::getLeftTriggerAxis);
 
     private final LiftCommand liftCommand = new LiftCommand(liftSubsystem, operatorController::getLeftTriggerAxis,
             operatorController::getLeftY);
@@ -256,11 +255,7 @@ public class RobotContainer {
 
         JoystickButton liftHookDeployButton = new JoystickButton(operatorController, 
                 XboxController.Button.kX.value);
-        liftHookDeployButton.whenPressed(liftHookDeployCommand);
-
-        JoystickButton liftHookRetractButton = new JoystickButton(operatorController, 
-                XboxController.Button.kB.value);
-        liftHookRetractButton.whenPressed(LiftHookRetractCommand);
+        liftHookDeployButton.whenPressed(liftHookCommand);
 
         // right trigger is axis id 3
         JoystickTrigger startIntakeTrigger = new JoystickTrigger(operatorController, 3);

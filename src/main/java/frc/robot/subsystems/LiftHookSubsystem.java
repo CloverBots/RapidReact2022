@@ -22,6 +22,18 @@
         setSolenoid(false);
     }
 
+    public void invertLift() {
+        if(solenoid1.get() == DoubleSolenoid.Value.kForward) {
+            solenoid1.set(Value.kReverse);
+        }
+        else if(solenoid1.get() == DoubleSolenoid.Value.kReverse) {
+            solenoid1.set(Value.kForward);
+        }
+        else {
+            System.out.println("Unrecognized liftHook solenoid position");
+        }
+    }
+
     public void setSolenoid(boolean position) {
         if (position) {
             solenoid1.set(Value.kForward);
@@ -29,8 +41,6 @@
             solenoid1.set(Value.kReverse);
         }
     }
-
-    
 
     @Override
     public void periodic() {
@@ -57,4 +67,4 @@
         // TODO Auto-generated method stub
         
     }
-    }
+}
