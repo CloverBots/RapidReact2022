@@ -36,6 +36,6 @@ public class AutoLowGoalTaxiCommand extends SequentialCommandGroupExtended {
         addInstant(()-> upperFeederSubsystem.setSpeed(0), upperFeederSubsystem);
         addInstant(()-> shooterSubsystem.setShooterRPM(0), shooterSubsystem);
         addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
-        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
     }
 }

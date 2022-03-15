@@ -28,7 +28,7 @@ public class AutoHighGoalTaxiCommand extends SequentialCommandGroupExtended {
         VisionTargetTracker visionTargetTracker) {
         
         //   Autonomous commands in running order
-        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE_ONE, DRIVE_SPEED, DRIVE_ROTATE));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE_ONE, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
         // addCommands(new AlignHighCommand(driveSubsystem, visionTargetTracker));
         // addCommands(new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker));
         addInstant(() -> shooterSubsystem.setHighGoalRPM(), shooterSubsystem);
@@ -40,6 +40,6 @@ public class AutoHighGoalTaxiCommand extends SequentialCommandGroupExtended {
         addInstant(()-> upperFeederSubsystem.setSpeed(0), upperFeederSubsystem);
         addInstant(()-> shooterSubsystem.setShooterRPM(0), shooterSubsystem);
         addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
-        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE_TWO, DRIVE_SPEED, DRIVE_ROTATE));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE_TWO, DRIVE_SPEED, DRIVE_ROTATE, 0.03));
     }
 }

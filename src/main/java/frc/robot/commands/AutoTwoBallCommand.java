@@ -11,7 +11,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class AutoTwoBallCommand extends SequentialCommandGroupExtended {
-    private final static double DRIVE_SPEED = 0.5;
+    private final static double DRIVE_SPEED = 0.25;
     private final static double DRIVE_DISTANCE = 1;
     private final static double DRIVE_ROTATE = 0;
 
@@ -26,9 +26,13 @@ public class AutoTwoBallCommand extends SequentialCommandGroupExtended {
         VisionTargetTracker visionTargetTracker) {
         
         //   Autonomous commands in running order
-        addInstant(() -> intakeDeploySubsystem.setSolenoid(true), intakeDeploySubsystem); 
+        addInstant(() -> intakeDeploySubsystem.setSolenoid(true), intakeDeploySubsystem);
+        addCommands(new WaitCommand(1));
         addInstant(() -> intakeSubsystem.startIntake(), intakeSubsystem);
-        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE));
+        addInstant(() -> lowerFeederSubsystem.setSpeed(0.5), lowerFeederSubsystem);
+        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
+        addCommands(new WaitCommand(1));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, -0.65, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
         addCommands(new AutoAlignHighCommand(driveSubsystem, visionTargetTracker, 1));
         addInstant(() -> shooterSubsystem.setShooterRPM(4000));
         addCommands(new WaitCommand(1));

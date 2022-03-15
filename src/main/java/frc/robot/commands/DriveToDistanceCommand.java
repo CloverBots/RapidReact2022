@@ -12,6 +12,7 @@ public class DriveToDistanceCommand extends CommandBase {
     private final double distance;
     private final double maxSpeed;
     private double rotate;
+    private double tolerance;
 
     /**
      * Creates a new DriveToDistance.
@@ -22,8 +23,9 @@ public class DriveToDistanceCommand extends CommandBase {
      * @param rotate         how much to roatate in degrees
      */
 
-    public DriveToDistanceCommand(DriveSubsystem driveSubsystem, double distance, double maxSpeed, double rotate) {
+    public DriveToDistanceCommand(DriveSubsystem driveSubsystem, double distance, double maxSpeed, double rotate, double tolerance) {
         this.distance = distance;
+        this.tolerance = tolerance;
         this.maxSpeed = maxSpeed;
         this.driveSubsystem = driveSubsystem;
         this.rotate = rotate;
@@ -38,8 +40,8 @@ public class DriveToDistanceCommand extends CommandBase {
         //drives in reverse, so reverse distance to move forward
         driveSubsystem.driveStraightPidController.setSetpoint(-distance); 
         driveSubsystem.driveRotatePidController.setSetpoint(rotate);
-        // Tolerance within 3 cm
-        driveSubsystem.driveStraightPidController.setTolerance(0.03);
+        // setting tolerance
+        driveSubsystem.driveStraightPidController.setTolerance(tolerance);
         driveSubsystem.navXGyro.reset();
     }
 
@@ -50,7 +52,7 @@ public class DriveToDistanceCommand extends CommandBase {
         // target distance
         double currentEncoderPosition = driveSubsystem.getAverageEncoderPosition();
         double distanceTraveled = currentEncoderPosition;
-        // SmartDashboard.putNumber("Distance Traveled", distanceTraveled);
+        SmartDashboard.putNumber("Distance Traveled", distanceTraveled);
         double rotateSpeed = driveSubsystem.driveRotatePidController.calculate(driveSubsystem.navXGyro.getHeading());
         // double rotateSpeed = 0;
         double drivingSpeed = driveSubsystem.driveStraightPidController.calculate(distanceTraveled);
