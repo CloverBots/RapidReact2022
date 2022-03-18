@@ -69,10 +69,10 @@ public class RobotContainer {
   
     private final SpinShooterHighCommand spinShooterHighCommand = new SpinShooterHighCommand(shooterSubsystem, visionTargetTracker);
     private final Command lowShootCommand = new RunCommand(()-> {
-        shooterSubsystem.setDCLowGoalRPM();
+        shooterSubsystem.setTeleOpLowGoalRPM();
     }, shooterSubsystem);
     private final Command highShootCommand = new RunCommand(()-> {
-        shooterSubsystem.setDCHighGoalRPM();
+        shooterSubsystem.setTeleOpHighGoalRPM();
     }, shooterSubsystem);
     private final Command stopShooterCommand = new InstantCommand(() -> {
         shooterSubsystem.setShooterRPM(0);

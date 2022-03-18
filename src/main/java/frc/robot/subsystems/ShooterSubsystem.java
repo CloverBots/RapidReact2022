@@ -26,8 +26,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private static final String AUTO_SHOOT_HIGH_KEY = "Auto shoot high rpm";
     private static final String AUTO_SHOOT_LOW_KEY = "Auto shoot low rpm";
-    private static final String DC_SHOOT_HIGH_KEY = "Driver Control shoot high rpm";
-    private static final String DC_SHOOT_LOW_KEY = "Driver Control shoot low rpm";
+    private static final String TELEOP_SHOOT_HIGH_KEY = "Tele-Op shoot high rpm";
+    private static final String TELEOP_SHOOT_LOW_KEY = "Tele-Op shoot low rpm";
 
     private static final double DEFAULT_HIGH_SPEED = 4000;
     private static final double DEFAULT_LOW_SPEED = 1800;
@@ -58,8 +58,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber(AUTO_SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
         SmartDashboard.putNumber(AUTO_SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
-        SmartDashboard.putNumber(DC_SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
-        SmartDashboard.putNumber(DC_SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
+        SmartDashboard.putNumber(TELEOP_SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
+        SmartDashboard.putNumber(TELEOP_SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
     }
 
     @Override
@@ -103,8 +103,8 @@ public class ShooterSubsystem extends SubsystemBase {
         setShooterRPM(rpm);
     }
 
-    public void setDCHighGoalRPM(){
-        double rpm = SmartDashboard.getNumber(DC_SHOOT_HIGH_KEY, 0);
+    public void setTeleOpHighGoalRPM(){
+        double rpm = SmartDashboard.getNumber(TELEOP_SHOOT_HIGH_KEY, 0);
         setShooterRPM(rpm);
     }
 
@@ -113,8 +113,8 @@ public class ShooterSubsystem extends SubsystemBase {
         setShooterRPM(rpm);
     }
 
-    public void setDCLowGoalRPM(){
-        double rpm = SmartDashboard.getNumber(DC_SHOOT_LOW_KEY, 0);
+    public void setTeleOpLowGoalRPM(){
+        double rpm = SmartDashboard.getNumber(TELEOP_SHOOT_LOW_KEY, 0);
         setShooterRPM(rpm);
     }
 }
