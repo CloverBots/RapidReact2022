@@ -22,16 +22,6 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
     private final DigitalInput lowerSwitch = new DigitalInput(Ids.LIFT_LOWER_SWITCH);
     private final DigitalInput upperSwitch = new DigitalInput(Ids.LIFT_UPPER_SWITCH);
 
-    private final DoubleSolenoid liftSolenoid = new DoubleSolenoid(
-            PneumaticsModuleType.CTREPCM,
-            Ids.LIFT_SOLENOID_FORWARD,
-            Ids.LIFT_SOLENOID_REVERSE);
-
-    private final DoubleSolenoid ratchetSolenoid = new DoubleSolenoid(
-            PneumaticsModuleType.CTREPCM,
-            Ids.RATCHET_SOLENOID_FORWARD,
-            Ids.RATCHET_SOLENOID_REVERSE);
-
     private LiftPosition liftPosition;
     
     /**
@@ -47,25 +37,7 @@ public class LiftSubsystem extends SubsystemBase implements LiftObserver {
         winch0.getEncoder().setPosition(0);
         winch1.follow(winch0, true);
 
-        ratchetSolenoid.set(Value.kReverse);
-
-        setLiftPosition(LiftPosition.UP);
-    }
-
-    /**
-     * Sets the lift's position.
-     * @param position The new position of the lift.
-     */
-    public void setLiftPosition(LiftPosition position) {
-        liftPosition = position;
-        switch (liftPosition) {
-            case DOWN:
-                liftSolenoid.set(Value.kReverse);
-                break;
-            case UP:
-                liftSolenoid.set(Value.kForward);
-                break;
-        }
+        liftPosition = LiftPosition.DOWN;
     }
 
     public void setLiftSpeed(double speed) {

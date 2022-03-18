@@ -2,6 +2,9 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import org.ejml.sparse.ComputePermutation;
+
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LiftObserver;
@@ -75,6 +78,7 @@ public class DriveFromControllerCommand extends CommandBase {
                     computeInputCurve(rotationRatio * rotation.getAsDouble(), rotationCurve));
     }
 
+    //math calculation
     private double computeInputCurve(double rawInput, double power) {
         var sign = rawInput < 0 ? 1 : -1;
         return Math.pow(Math.abs(rawInput), power) * sign;
