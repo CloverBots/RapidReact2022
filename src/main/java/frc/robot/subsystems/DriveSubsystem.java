@@ -105,6 +105,14 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
         rightLeadMotor.set(TalonFXControlMode.PercentOutput, forward - rotate);
     }
 
+    //documentation at CTRE Pheonix TalonFX documentation
+    public void setOpenLoopRamp(double secondsFromNeutralToFull) {
+        leftLeadMotor.configOpenloopRamp(secondsFromNeutralToFull, 10);
+        rightLeadMotor.configOpenloopRamp(secondsFromNeutralToFull, 10);
+        leftFollowMotor.configOpenloopRamp(secondsFromNeutralToFull, 10);
+        rightFollowMotor.configOpenloopRamp(secondsFromNeutralToFull, 10);
+    }
+
     // Get the current position of the left encoder.
     // Currently used to get the left encoder for driving by distance, but may be changed to include right
     public double getLeftEncoderPosition() {
@@ -137,6 +145,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
 
     @Override
     public void autonomousInit() {
+        setOpenLoopRamp(0);
         // Disable the differentialDrive safety during autonomous
         // differentialDrive requires constant feeding of motor inputs when safety is
         // enabled.
@@ -145,6 +154,7 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
 
     @Override
     public void teleopInit() {
+        setOpenLoopRamp(0.1); //.1 is how much time it takes to get desired value, values of 0.5+ make it really drifty
         // Re-enable safety for teleop
         // differentialDrive.setSafetyEnabled(true);
     }
