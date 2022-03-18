@@ -11,7 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardWaitCommand extends CommandBase {
     private Timer timer = new Timer();
-    private final double duration;
+    private double duration;
+    private final String name;
 
     /**
      * Creates a new WaitCommand. This command will do nothing, and end after the
@@ -20,11 +21,13 @@ public class SmartDashboardWaitCommand extends CommandBase {
      * @param seconds the time to wait, in seconds
      */
     public SmartDashboardWaitCommand(String name) {
-        duration = Math.min(Math.abs(SmartDashboard.getNumber(name, 0)), 8);
+        this.name = name;
+        duration = 0;
     }
 
     @Override
     public void initialize() {
+        duration = Math.min(Math.abs(SmartDashboard.getNumber(name, 0)), 8);
         timer.reset();
         timer.start();
     }
