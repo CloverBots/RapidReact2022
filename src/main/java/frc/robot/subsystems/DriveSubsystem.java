@@ -23,9 +23,9 @@ public class DriveSubsystem extends SubsystemBase implements RobotLifecycleCallb
     private static final double DRIVESTRAIGHT_PID_I = 0.0;
     private static final double DRIVESTRAIGHT_PID_D = 0.06;
 
-    private static final double DRIVEROTATE_PID_P = 0.001;
+    private static final double DRIVEROTATE_PID_P = 0.0005;
     private static final double DRIVEROTATE_PID_I = 0.00;
-    private static final double DRIVEROTATE_PID_D = 0.007;
+    private static final double DRIVEROTATE_PID_D = 0.0;
 
     public static final double WHEEL_DIAMETER_METERS = 0.1524;
     public static final double ENCODER_POSITION_CONVERSION_FACTOR = 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
