@@ -24,8 +24,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double SHOOTER_MIN_OUTPUT = -1;
     private static final double MAX_RPM = 5700;
 
-    private static final String SHOOT_HIGH_KEY = "Shoot high rpm";
-    private static final String SHOOT_LOW_KEY = "Shoot low rpm";
+    private static final String AUTO_SHOOT_HIGH_KEY = "Auto shoot high rpm";
+    private static final String AUTO_SHOOT_LOW_KEY = "Auto shoot low rpm";
+    private static final String TELEOP_SHOOT_HIGH_KEY = "Tele-Op shoot high rpm";
+    private static final String TELEOP_SHOOT_LOW_KEY = "Tele-Op shoot low rpm";
 
     private static final double DEFAULT_HIGH_SPEED = 4000;
     private static final double DEFAULT_LOW_SPEED = 1800;
@@ -54,8 +56,10 @@ public class ShooterSubsystem extends SubsystemBase {
         pidController.setFF(SHOOTER_FF);
         pidController.setOutputRange(SHOOTER_MIN_OUTPUT, SHOOTER_MAX_OUTPUT);
 
-        SmartDashboard.putNumber(SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
-        SmartDashboard.putNumber(SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
+        SmartDashboard.putNumber(AUTO_SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
+        SmartDashboard.putNumber(AUTO_SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
+        SmartDashboard.putNumber(TELEOP_SHOOT_HIGH_KEY, DEFAULT_HIGH_SPEED);
+        SmartDashboard.putNumber(TELEOP_SHOOT_LOW_KEY, DEFAULT_LOW_SPEED);
     }
 
     @Override
@@ -94,13 +98,23 @@ public class ShooterSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
     }
 
-    public void setHighGoalRPM(){
-        double rpm = SmartDashboard.getNumber(SHOOT_HIGH_KEY, 0);
+    public void setAutoHighGoalRPM(){
+        double rpm = SmartDashboard.getNumber(AUTO_SHOOT_HIGH_KEY, 0);
         setShooterRPM(rpm);
     }
 
-    public void setLowGoalRPM(){
-        double rpm = SmartDashboard.getNumber(SHOOT_LOW_KEY, 0);
+    public void setTeleOpHighGoalRPM(){
+        double rpm = SmartDashboard.getNumber(TELEOP_SHOOT_HIGH_KEY, 0);
+        setShooterRPM(rpm);
+    }
+
+    public void setAutoLowGoalRPM(){
+        double rpm = SmartDashboard.getNumber(AUTO_SHOOT_LOW_KEY, 0);
+        setShooterRPM(rpm);
+    }
+
+    public void setTeleOpLowGoalRPM(){
+        double rpm = SmartDashboard.getNumber(TELEOP_SHOOT_LOW_KEY, 0);
         setShooterRPM(rpm);
     }
 }
