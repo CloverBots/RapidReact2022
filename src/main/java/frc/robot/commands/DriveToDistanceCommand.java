@@ -37,12 +37,12 @@ public class DriveToDistanceCommand extends CommandBase {
     @Override
     public void initialize() {
         driveSubsystem.resetEncoders();
+        driveSubsystem.navXGyro.reset();
         //drives in reverse, so reverse distance to move forward
         driveSubsystem.driveStraightPidController.setSetpoint(-distance); 
         driveSubsystem.driveRotatePidController.setSetpoint(rotate+driveSubsystem.navXGyro.getHeading());
         // setting tolerance
         driveSubsystem.driveStraightPidController.setTolerance(tolerance);
-        driveSubsystem.navXGyro.reset();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -57,7 +57,8 @@ public class DriveToDistanceCommand extends CommandBase {
         // double rotateSpeed = 0;
         double drivingSpeed = driveSubsystem.driveStraightPidController.calculate(distanceTraveled);
         drivingSpeed = Math.max(Math.min(drivingSpeed, maxSpeed), -maxSpeed);
-        // SmartDashboard.putNumber("Drive Speed", drivingSpeed);
+
+        //SmartDashboard.putNumber("Rotate Speed", rotateSpeed);
         driveSubsystem.autoDrive(drivingSpeed, -rotateSpeed);
     }
 
