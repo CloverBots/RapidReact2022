@@ -14,6 +14,6 @@ public class AutoDelayedTaxiCommand extends SequentialCommandGroupExtended {
         // Autonomous commands in running order
 
         addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
-        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, 0));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, 0, 0.03));
     }
 }
