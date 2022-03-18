@@ -50,6 +50,7 @@ public class AutoAlignHighCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         visionTargetTracker.setLedMode(LedMode.FORCE_OFF);
+        driveSubsystem.autoDrive(0, 0);
         timer.stop();
     }
 

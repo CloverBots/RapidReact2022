@@ -43,5 +43,7 @@ public class AutoTwoBallCommand extends SequentialCommandGroupExtended {
         addInstant(() -> upperFeederSubsystem.setSpeed(0), upperFeederSubsystem);
         addInstant(() -> intakeSubsystem.stop(), intakeSubsystem);
         addInstant(() -> intakeDeploySubsystem.setSolenoid(false), intakeDeploySubsystem);
+        addInstant(() -> shooterSubsystem.setShooterRPM(0));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, 0.9, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
     }
 }

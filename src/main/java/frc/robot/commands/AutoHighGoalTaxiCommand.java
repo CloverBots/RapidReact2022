@@ -12,7 +12,7 @@ import frc.robot.subsystems.UpperFeederSubsystem;
 
 public class AutoHighGoalTaxiCommand extends SequentialCommandGroupExtended {
     private final static double DRIVE_SPEED = 0.5;
-    private final static double DRIVE_DISTANCE_ONE = 1.8;
+    private final static double DRIVE_DISTANCE_ONE = 1.3;
     private final static double DRIVE_DISTANCE_TWO = 1.3;
     private final static double DRIVE_ROTATE = 0;
     private final static String SMART_DASHBOARD_AUTO_WAIT_TIME = "AutoWaitTime"; 
