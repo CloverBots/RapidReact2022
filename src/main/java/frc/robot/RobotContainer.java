@@ -21,6 +21,7 @@ import frc.robot.commands.AutoTwoBallCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LiftCommand;
+import frc.robot.commands.LiftHookCommand;
 import frc.robot.commands.SpinShooterHighCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeDeploySubsystem;
@@ -29,6 +30,7 @@ import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.LowerFeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.UpperFeederSubsystem;
+import frc.robot.subsystems.LiftHookSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -57,6 +59,7 @@ public class RobotContainer {
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
     private final LiftSubsystem liftSubsystem = new LiftSubsystem();
+    private final LiftHookSubsystem liftHookSubsystem = new LiftHookSubsystem();
 
     private final IntakeDeploySubsystem intakeDeploySubsystem = new IntakeDeploySubsystem();
     private final IntakeSubsystem intakeSubsystem;
@@ -116,6 +119,9 @@ public class RobotContainer {
     private Command intakeRetractCommand = new InstantCommand(() -> intakeDeploySubsystem.setSolenoid(false),
             intakeDeploySubsystem);
 
+    private LiftHookCommand liftHookCommand = new LiftHookCommand(liftHookSubsystem,
+            operatorController::getLeftTriggerAxis);
+
     private final LiftCommand liftCommand = new LiftCommand(liftSubsystem, operatorController::getLeftTriggerAxis,
             operatorController::getLeftY);
 
@@ -130,7 +136,8 @@ public class RobotContainer {
     // teleop
     private final RobotLifecycleCallbacks[] robotLifecycleCallbacks = new RobotLifecycleCallbacks[] {
             driveSubsystem,
-            intakeDeploySubsystem
+            intakeDeploySubsystem,
+            liftHookSubsystem
     };
 
     private final SendableChooser<Command> chooser = new SendableChooser<>();
@@ -153,6 +160,8 @@ public class RobotContainer {
             intakeSubsystem.stop();
             lowerFeederSubsystem.setSpeed(0);
         }, intakeSubsystem, lowerFeederSubsystem);
+
+        
 
         driveSubsystem.setDefaultCommand(driveFromController);
         liftSubsystem.setDefaultCommand(liftCommand);
@@ -250,6 +259,10 @@ public class RobotContainer {
                 XboxController.Button.kA.value);
         intakeDeployButton.whenPressed(intakeDeployCommand);
         intakeDeployButton.whenReleased(intakeRetractCommand);
+
+        JoystickButton liftHookDeployButton = new JoystickButton(operatorController, 
+                XboxController.Button.kX.value);
+        liftHookDeployButton.whenPressed(liftHookCommand);
 
         // right trigger is axis id 3
         JoystickTrigger startIntakeTrigger = new JoystickTrigger(operatorController, 3);
