@@ -18,6 +18,7 @@ import frc.robot.commands.AutoDelayedTaxiCommand;
 import frc.robot.commands.AutoHighGoalTaxiCommand;
 import frc.robot.commands.AutoLowGoalTaxiCommand;
 import frc.robot.commands.AutoTwoBallCommand;
+import frc.robot.commands.AutoTwoBallWallCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LiftCommand;
@@ -200,6 +201,14 @@ public class RobotContainer {
                 upperFeederSubsystem,
                 shooterSubsystem,
                 visionTargetTracker));
+        chooser.addOption("Two Ball Wall", new AutoTwoBallWallCommand(driveSubsystem,
+                intakeSubsystem,
+                intakeDeploySubsystem,
+                lowerFeederSubsystem,
+                upperFeederSubsystem,
+                shooterSubsystem,
+                visionTargetTracker));
+        
         // Add chooser to the SmartDashboard
         SmartDashboard.putData("Autonomous Selection", chooser);
         SmartDashboard.putNumber("AutoWaitTime", 0);
@@ -228,7 +237,7 @@ public class RobotContainer {
 
         JoystickTrigger aimTrigger = new JoystickTrigger(driverController, 3);
         aimTrigger.whileHeld(alignHighCommand);
-        // aimTrigger.whileHeld(spinShooterHighCommand);
+        aimTrigger.whileHeld(spinShooterHighCommand);
         aimTrigger.whenReleased(stopShooterCommand);
       
         POVButton dPadDownButton = new POVButton(operatorController, 180);
