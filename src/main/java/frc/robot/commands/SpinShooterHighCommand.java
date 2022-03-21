@@ -31,8 +31,19 @@ public class SpinShooterHighCommand extends CommandBase {
     @Override
     public void execute() {
         double targetDistance = visionTargetTracker.computeTargetDistance();
-        //SmartDashboard.putNumber("Distance", targetDistance);
-        //shooterSubsystem.setShooterRPM(computeRPM(targetDistance));
+
+        Boolean isTargetValid = visionTargetTracker.isValid();
+
+        SmartDashboard.putBoolean("TargetTracking", isTargetValid);
+
+        if(isTargetValid)
+        {
+            shooterSubsystem.setShooterRPM(computeRPM(targetDistance));
+        }
+        else
+        {
+            shooterSubsystem.setShooterRPM(3500);
+        }
     }
 
     // Called once the command ends or is interrupted.
@@ -47,6 +58,6 @@ public class SpinShooterHighCommand extends CommandBase {
     }
 
     private double computeRPM(double distance) {
-        return 2734 +26.196 * distance;
+        return 46.7 * distance + 1793;
     }
 }

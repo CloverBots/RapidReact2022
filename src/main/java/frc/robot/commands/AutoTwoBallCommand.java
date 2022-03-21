@@ -12,7 +12,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class AutoTwoBallCommand extends SequentialCommandGroupExtended {
     private final static double DRIVE_SPEED = 0.25;
-    private final static double DRIVE_DISTANCE = 1;
+    private final static double DRIVE_DISTANCE = 1.5;
     private final static double DRIVE_ROTATE = 0;
 
     /** Creates a new AutonomousLM. */
@@ -29,12 +29,14 @@ public class AutoTwoBallCommand extends SequentialCommandGroupExtended {
         addInstant(() -> intakeDeploySubsystem.setSolenoid(true), intakeDeploySubsystem);
         addCommands(new WaitCommand(1));
         addInstant(() -> intakeSubsystem.startIntake(), intakeSubsystem);
-        addInstant(() -> lowerFeederSubsystem.setSpeed(0.5), lowerFeederSubsystem);
+        addInstant(() -> lowerFeederSubsystem.setSpeed(1), lowerFeederSubsystem);
         addCommands(new DriveToDistanceCommand(driveSubsystem, DRIVE_DISTANCE, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
         addCommands(new WaitCommand(1));
-        addCommands(new DriveToDistanceCommand(driveSubsystem, -0.65, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
+        addInstant(() -> intakeSubsystem.stop(), intakeSubsystem);
+        addInstant(() -> lowerFeederSubsystem.setSpeed(0), lowerFeederSubsystem);
+        addCommands(new DriveToDistanceCommand(driveSubsystem, -1.2, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
         addCommands(new AutoAlignHighCommand(driveSubsystem, visionTargetTracker, 1));
-        addInstant(() -> shooterSubsystem.setShooterRPM(4000));
+        addInstant(() -> shooterSubsystem.setShooterRPM(4200));
         addCommands(new WaitCommand(1));
         addInstant(() -> lowerFeederSubsystem.setSpeed(1), lowerFeederSubsystem);
         addInstant(() -> upperFeederSubsystem.setSpeed(1), upperFeederSubsystem);
@@ -44,6 +46,6 @@ public class AutoTwoBallCommand extends SequentialCommandGroupExtended {
         addInstant(() -> intakeSubsystem.stop(), intakeSubsystem);
         addInstant(() -> intakeDeploySubsystem.setSolenoid(false), intakeDeploySubsystem);
         addInstant(() -> shooterSubsystem.setShooterRPM(0));
-        addCommands(new DriveToDistanceCommand(driveSubsystem, 0.9, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
+        addCommands(new DriveToDistanceCommand(driveSubsystem, 1.15, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
     }
 }
