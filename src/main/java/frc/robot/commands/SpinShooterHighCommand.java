@@ -12,11 +12,14 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class SpinShooterHighCommand extends CommandBase {
     private final ShooterSubsystem shooterSubsystem;
     private final VisionTargetTracker visionTargetTracker;
+    private static final String BALL_INFLATION_FACTOR = "Ball Inflation Factor";
 
     /** Creates a new SpinShooterHighCommand. */
     public SpinShooterHighCommand(ShooterSubsystem shooterSubsystem, VisionTargetTracker visionTargetTracker) {
         this.shooterSubsystem = shooterSubsystem;
         this.visionTargetTracker = visionTargetTracker;
+
+        SmartDashboard.putNumber(BALL_INFLATION_FACTOR, 0);
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooterSubsystem);
@@ -35,14 +38,15 @@ public class SpinShooterHighCommand extends CommandBase {
         Boolean isTargetValid = visionTargetTracker.isValid();
 
         SmartDashboard.putBoolean("TargetTracking", isTargetValid);
+        double ballInflationFactor = SmartDashboard.getNumber(BALL_INFLATION_FACTOR, 0);
 
         if(isTargetValid)
         {
-            shooterSubsystem.setShooterRPM(computeRPM(targetDistance));
+            shooterSubsystem.setShooterRPM(computeRPM(targetDistance) + ballInflationFactor);
         }
         else
         {
-            shooterSubsystem.setShooterRPM(3500);
+            shooterSubsystem.setShooterRPM(3500 + ballInflationFactor);
         }
     }
 
