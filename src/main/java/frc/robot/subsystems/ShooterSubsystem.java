@@ -77,6 +77,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setShooterRPM(double rpm) {
+        if (rpm > MAX_RPM)
+        {
+            rpm = MAX_RPM;
+        }
 
         /**
          * PIDController objects are commanded to a set point using the
