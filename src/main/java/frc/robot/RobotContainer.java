@@ -211,7 +211,8 @@ public class RobotContainer {
         
         // Add chooser to the SmartDashboard
         SmartDashboard.putData("Autonomous Selection", chooser);
-        SmartDashboard.putNumber("AutoWaitTime", 0);
+        SmartDashboard.putNumber("Auto wait time", 0);
+        SmartDashboard.putNumber("Auto feeder speed", 1);
 
         // Configure the button bindings
         configureButtonBindings();

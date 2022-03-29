@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.SequentialCommandGroupExtended;
@@ -22,6 +23,7 @@ public class AutoTwoBallWallCommand extends SequentialCommandGroupExtended {
   private final static double DRIVE_SPEED = 0.25;
   private final static double DRIVE_DISTANCE = 1.35;
   private final static double DRIVE_ROTATE = 0;
+  private static final String AUTO_FEEDER_SPEED = "Auto feeder speed";
 
   /** Creates a new AutoTwoBallWallCommand. */
   public AutoTwoBallWallCommand(
@@ -44,8 +46,8 @@ public class AutoTwoBallWallCommand extends SequentialCommandGroupExtended {
     addCommands(new AutoAlignHighCommand(driveSubsystem, visionTargetTracker, 1));
     addInstant(() -> shooterSubsystem.setShooterRPM(4000));
     addCommands(new WaitCommand(1));
-    addInstant(() -> lowerFeederSubsystem.setSpeed(1), lowerFeederSubsystem);
-    addInstant(() -> upperFeederSubsystem.setSpeed(1), upperFeederSubsystem);
+    addInstant(() -> lowerFeederSubsystem.setSpeed(SmartDashboard.getNumber(AUTO_FEEDER_SPEED, 1)), lowerFeederSubsystem);
+    addInstant(() -> upperFeederSubsystem.setSpeed(SmartDashboard.getNumber(AUTO_FEEDER_SPEED, 1)), upperFeederSubsystem);
     addCommands(new WaitCommand(3));
     addInstant(() -> lowerFeederSubsystem.setSpeed(0), lowerFeederSubsystem);
     addInstant(() -> upperFeederSubsystem.setSpeed(0), upperFeederSubsystem);

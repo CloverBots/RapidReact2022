@@ -24,10 +24,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double SHOOTER_MIN_OUTPUT = -1;
     private static final double MAX_RPM = 5700;
 
-    private static final String AUTO_SHOOT_HIGH_KEY = "Auto shoot high rpm";
-    private static final String AUTO_SHOOT_LOW_KEY = "Auto shoot low rpm";
-    private static final String TELEOP_SHOOT_HIGH_KEY = "Tele-Op shoot high rpm";
-    private static final String TELEOP_SHOOT_LOW_KEY = "Tele-Op shoot low rpm";
+    private static final String AUTO_SHOOT_HIGH_KEY = "Auto high rpm";
+    private static final String AUTO_SHOOT_LOW_KEY = "Auto low rpm";
+    private static final String TELEOP_SHOOT_HIGH_KEY = "Tele-Op high rpm";
+    private static final String TELEOP_SHOOT_LOW_KEY = "Tele-Op low rpm";
 
     private static final double DEFAULT_HIGH_SPEED = 4000;
     private static final double DEFAULT_LOW_SPEED = 1800;
