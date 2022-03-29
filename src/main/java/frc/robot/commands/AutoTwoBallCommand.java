@@ -36,7 +36,7 @@ public class AutoTwoBallCommand extends SequentialCommandGroupExtended {
         addInstant(() -> lowerFeederSubsystem.setSpeed(0), lowerFeederSubsystem);
         addCommands(new DriveToDistanceCommand(driveSubsystem, -1.2, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
         addCommands(new AutoAlignHighCommand(driveSubsystem, visionTargetTracker, 1));
-        addInstant(() -> shooterSubsystem.setShooterRPM(4200));
+        addInstant(() -> shooterSubsystem.setShooterRPM(4120));
         addCommands(new WaitCommand(1));
         addInstant(() -> lowerFeederSubsystem.setSpeed(1), lowerFeederSubsystem);
         addInstant(() -> upperFeederSubsystem.setSpeed(1), upperFeederSubsystem);
