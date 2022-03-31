@@ -19,7 +19,7 @@ public class SpinShooterHighCommand extends CommandBase {
         this.shooterSubsystem = shooterSubsystem;
         this.visionTargetTracker = visionTargetTracker;
 
-        SmartDashboard.putNumber(BALL_INFLATION_FACTOR, 0);
+        SmartDashboard.putNumber(BALL_INFLATION_FACTOR, -80);
 
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(shooterSubsystem);

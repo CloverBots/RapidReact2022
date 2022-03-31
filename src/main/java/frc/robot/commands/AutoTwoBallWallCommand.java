@@ -44,7 +44,7 @@ public class AutoTwoBallWallCommand extends SequentialCommandGroupExtended {
     addCommands(new WaitCommand(1));
     addCommands(new DriveToDistanceCommand(driveSubsystem, -1.06, DRIVE_SPEED, DRIVE_ROTATE, 0.08));
     addCommands(new AutoAlignHighCommand(driveSubsystem, visionTargetTracker, 1));
-    addInstant(() -> shooterSubsystem.setShooterRPM(4000));
+    addInstant(() -> shooterSubsystem.setShooterRPM(3920));
     addCommands(new WaitCommand(1));
     addInstant(() -> lowerFeederSubsystem.setSpeed(SmartDashboard.getNumber(AUTO_FEEDER_SPEED, 1)), lowerFeederSubsystem);
     addInstant(() -> upperFeederSubsystem.setSpeed(SmartDashboard.getNumber(AUTO_FEEDER_SPEED, 1)), upperFeederSubsystem);
