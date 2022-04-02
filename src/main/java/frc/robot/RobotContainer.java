@@ -17,6 +17,7 @@ import frc.robot.commands.AlignHighCommand;
 import frc.robot.commands.AutoDelayedTaxiCommand;
 import frc.robot.commands.AutoHighGoalTaxiCommand;
 import frc.robot.commands.AutoLowGoalTaxiCommand;
+import frc.robot.commands.AutoOneBallCommand;
 import frc.robot.commands.AutoTwoBallCommand;
 import frc.robot.commands.AutoTwoBallWallCommand;
 import frc.robot.commands.DriveFromControllerCommand;
@@ -162,8 +163,6 @@ public class RobotContainer {
             lowerFeederSubsystem.setSpeed(0);
         }, intakeSubsystem, lowerFeederSubsystem);
 
-        
-
         driveSubsystem.setDefaultCommand(driveFromController);
         liftSubsystem.setDefaultCommand(liftCommand);
 
@@ -207,6 +206,14 @@ public class RobotContainer {
                 lowerFeederSubsystem,
                 upperFeederSubsystem,
                 shooterSubsystem,
+                visionTargetTracker));
+
+        chooser.addOption("One Ball", new AutoOneBallCommand(driveSubsystem,
+                intakeSubsystem, 
+                intakeDeploySubsystem, 
+                lowerFeederSubsystem, 
+                upperFeederSubsystem, 
+                shooterSubsystem, 
                 visionTargetTracker));
         
         // Add chooser to the SmartDashboard
