@@ -17,6 +17,7 @@ import frc.robot.commands.AlignHighCommand;
 import frc.robot.commands.AutoDelayedTaxiCommand;
 import frc.robot.commands.AutoHighGoalTaxiCommand;
 import frc.robot.commands.AutoLowGoalTaxiCommand;
+import frc.robot.commands.AutoOneBallHighCommand;
 import frc.robot.commands.AutoTwoBallCommand;
 import frc.robot.commands.AutoTwoBallWallCommand;
 import frc.robot.commands.DriveFromControllerCommand;
@@ -167,16 +168,6 @@ public class RobotContainer {
         driveSubsystem.setDefaultCommand(driveFromController);
         liftSubsystem.setDefaultCommand(liftCommand);
 
-        // Add choices to the chooser
-        // chooser.addOption("Autonomous One", new AutonomousOne(driveSubsystem));
-        // chooser.setDefaultOption("Autonomous Left Middle", new AutonomousLeftMiddleCommand(
-        //         driveSubsystem,
-        //         intakeSubsystem,
-        //         intakeDeploySubsystem,
-        //         lowerFeederSubsystem,
-        //         upperFeederSubsystem,
-        //         shooterSubsystem,
-        //         visionTargetTracker));
         chooser.setDefaultOption("Delayed Taxi", new AutoDelayedTaxiCommand(driveSubsystem));
         chooser.addOption("Low Taxi", new AutoLowGoalTaxiCommand(
                 driveSubsystem, 
@@ -204,6 +195,11 @@ public class RobotContainer {
         chooser.addOption("Two Ball Wall", new AutoTwoBallWallCommand(driveSubsystem,
                 intakeSubsystem,
                 intakeDeploySubsystem,
+                lowerFeederSubsystem,
+                upperFeederSubsystem,
+                shooterSubsystem,
+                visionTargetTracker));
+        chooser.addOption("One Ball High", new AutoOneBallHighCommand(driveSubsystem,
                 lowerFeederSubsystem,
                 upperFeederSubsystem,
                 shooterSubsystem,
